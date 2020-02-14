@@ -100,9 +100,9 @@ export default class Form extends Component {
                                                                 { pathOr([], ['settings', 'questions'], field).map(question =>
                                                                     <div key={`${name}-${question.field}`}>
                                                                         { this.renderField(question, `${name}.${question.field}`) }
-                                                                        <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.remove(index)}>Удалить</button>
                                                                     </div>
                                                                 )}
+                                                                <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.remove(index)}>Удалить</button>
                                                             </div>
                                                         )}
                                                         <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>Добавить</button>
