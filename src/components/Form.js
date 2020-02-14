@@ -3,6 +3,7 @@ import { Form as FinalFormForm, Field } from 'react-final-form';
 import { path, pathOr, contains } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
+import * as yup from 'yup';
 
 import Input from './formComponents/Input';
 import Checkbox, { PersonalDataAgreement } from './formComponents/Checkbox';
@@ -24,6 +25,25 @@ const FIELDS = {
     city: Select,
     date: DateSelect,
     file: File
+};
+
+const validate = (field, value) => {
+    const rules = {
+        email: yup.string().email('Неверный email'),
+        personalDataAgreement: yup.boolean(),
+        boolean: yup.boolean(),
+        choice: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
+        file: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
+    };
+    let rule = rules[field.type] || yup.string();
+    rule = field.required ? rule.nullable().required('Поле обязательно для заполнения') : rule.nullable();
+
+    try {
+        rule.validateSync(value);
+        return undefined;
+    } catch (e) {
+        return e.message;
+    }
 };
 
 export default class Form extends Component {
@@ -70,7 +90,7 @@ export default class Form extends Component {
                 pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }))
             }
             opd={opd}
-            validate={value => !value && field.required ? 'Это поле обязательно' : undefined}
+            validate={value => validate(field, value)}
             getDictionary={this.getDictionary}
             getFileUrl={getFileUrl}
             postFileUrl={postFileUrl}
@@ -83,7 +103,8 @@ export default class Form extends Component {
         return <div className={styles.formWrapper}>
             <FinalFormForm
                 onSubmit={onSubmit}
-                mutators={{ ...arrayMutators }}>
+                mutators={{ ...arrayMutators }}
+                noValidate>
                 { ({ handleSubmit }) =>
                     <form onSubmit={handleSubmit}>
                         { fields.map(field =>

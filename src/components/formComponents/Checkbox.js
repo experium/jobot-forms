@@ -5,7 +5,7 @@ import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/form.sass';
 
 class CheckboxComponent extends Component {
-    onChange = e => this.props.onChange(e.target.checked);
+    onChange = e => this.props.onChange(e.target.checked ? true : null);
 
     render() {
         const { input: { value }, label } = this.props;
