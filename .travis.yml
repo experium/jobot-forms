@@ -16,9 +16,8 @@ jobs:
       deploy:
         skip_cleanup: true
         edge: true
-        provider: npm
-        email: "webdev@experium.ru"
-        api_key: "$NPM_API_KEY"
+        provider: script
+        script: "cp .npmrc.template $HOME/.npmrc && npm version 1.1.$TRAVIS_BUILD_NUMBER && npm publish"
         on:
           branch: master
     - stage: deploy gh pages

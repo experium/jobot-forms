@@ -22,6 +22,10 @@ module.exports = {
             {
                 from: 'demo/index.html',
                 to: 'index.html'
+            },
+            {
+                from: 'demo/404.html',
+                to: '404.html'
             }
         ])
     ]

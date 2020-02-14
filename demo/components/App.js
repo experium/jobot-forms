@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import AppForm from './AppForm';
 import Success from './Success';
@@ -13,13 +13,13 @@ const client = new ApolloClient({
 export default class App extends Component {
     render() {
         return <ApolloProvider client={client}>
-            <Router>
+            <BrowserRouter basename='/jobot-forms'>
                 <Switch>
                     <Route path='/form/success' component={Success} />
                     <Route path='/form/:id' component={AppForm} />
                     <Route render={() => 'Страница не найдена'} />
                 </Switch>
-            </Router>
+            </BrowserRouter>
         </ApolloProvider>;
     }
 }
