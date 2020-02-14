@@ -1,4 +1,3 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -62,12 +61,6 @@ module.exports = {
         extensions: ['.js', '.json', '.jsx', '.css', '.scss']
     },
     plugins: [
-        new CopyWebpackPlugin([
-            {
-                from: 'demo/index.html',
-                to: 'index.html'
-            }
-        ]),
         new CleanWebpackPlugin(),
     ]
 };

@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     output: {
@@ -16,7 +17,13 @@ module.exports = {
                 'NODE_ENV': '"development"'
             }
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new CopyWebpackPlugin([
+            {
+                from: 'demo/indexDev.html',
+                to: 'index.html'
+            }
+        ]),
     ],
     devServer: {
         publicPath: '/',
