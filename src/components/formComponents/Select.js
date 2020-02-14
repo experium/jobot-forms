@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactSelect from 'react-select';
-import { path, contains } from 'ramda';
+import { path, contains, find, propEq } from 'ramda';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 
@@ -27,7 +27,7 @@ class Select extends Component {
         }
     }
 
-    onChange = value => {
+    onChange = ({ value }) => {
         const { settings, onChange } = this.props;
         const multiple = path(['multiple'], settings);
 
@@ -39,7 +39,7 @@ class Select extends Component {
         const multiple = path(['multiple'], settings);
 
         return <ReactSelect
-            value={value}
+            value={multiple ? filter(item => contains(item.value, value || []), options) : find(propEq('value', value), options)}
             options={options}
             onChange={this.onChange}
             isMulti={multiple}
