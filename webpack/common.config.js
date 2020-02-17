@@ -1,4 +1,3 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
@@ -39,7 +38,7 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/,
                 use: [
-                    (process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader'),
+                    'style-loader',
                     { loader: 'css-loader', options: {
                         modules: true,
                         importLoaders: 2,
