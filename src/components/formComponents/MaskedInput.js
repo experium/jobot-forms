@@ -3,7 +3,7 @@ import Masked from 'react-text-mask';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { PHONE_MASK, PHONE_MASK_EIGHT } from '../../constants/masks';
-import styles from '../../styles/form.sass';
+import styles from '../../styles/index.css';
 
 class MaskedInputComponent extends Component {
     render() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import styles from '../../styles/form.sass';
+import styles from '../../styles/index.css';
 
 class Input extends Component {
     static defaultProps = {

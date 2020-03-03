@@ -33,10 +33,6 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            },
-            {
-                test: /\.s[ac]ss$/,
                 use: [
                     'style-loader',
                     { loader: 'css-loader', options: {
@@ -45,8 +41,7 @@ module.exports = {
                         modules: {
                             localIdentName: '[name]__[local]___[hash:base64:5]'
                         }
-                    }},
-                    'sass-loader'
+                    }}
                 ]
             },
             {
@@ -57,7 +52,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.json', '.jsx', '.css', '.scss']
+        extensions: ['.js', '.json', '.jsx', '.css']
     },
     plugins: [
         new CleanWebpackPlugin(),

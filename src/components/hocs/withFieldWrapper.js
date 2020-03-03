@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { contains } from 'ramda';
 
-import styles from '../../styles/form.sass';
+import styles from '../../styles/index.css';
 
 export default WrappedComponent =>
     class FieldWrapper extends Component {

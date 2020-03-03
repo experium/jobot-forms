@@ -11,7 +11,7 @@ import Select from './formComponents/Select';
 import { PhoneInput } from './formComponents/MaskedInput';
 import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
-import styles from '../styles/form.sass';
+import styles from '../styles/index.css';
 
 const FIELDS = {
     text: Input,

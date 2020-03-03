@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Webcam from 'react-webcam';
 
-import styles from '../../styles/form.sass';
+import styles from '../../styles/index.css';
 import MediaLength from './MediaLength';
 
 const videoConstraints = {

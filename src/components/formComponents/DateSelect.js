@@ -7,7 +7,7 @@ import moment from 'moment';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { YEAR_MASK, DAY_MASK } from '../../constants/masks';
 import { MONTHS } from '../../constants/dates';
-import styles from '../../styles/form.sass';
+import styles from '../../styles/index.css';
 
 class DateSelect extends Component {
     state = {

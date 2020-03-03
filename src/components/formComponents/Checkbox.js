@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-responsive-modal';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import styles from '../../styles/form.sass';
+import styles from '../../styles/index.css';
 
 class CheckboxComponent extends Component {
     onChange = e => this.props.onChange(e.target.checked ? true : null);

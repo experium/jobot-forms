@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Webcam from 'react-webcam';
 
-import styles from '../../styles/form.sass';
+import styles from '../../styles/index.css';
 import { dataURItoBlob } from '../../utils/file';
 
 export default class ImageFile extends Component {
