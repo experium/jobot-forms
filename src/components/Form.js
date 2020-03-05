@@ -57,13 +57,14 @@ export default class Form extends Component {
     };
 
     dictionaryTypes = [];
+    formProps = null;
 
     getDictionary = async (type) => {
         if (!contains(type, this.dictionaryTypes)) {
             this.dictionaryTypes.push(type);
 
             const { dictionaryUrl, dictionaryOptions } = this.props;
-            const response = await fetch(`${dictionaryUrl || ''}/${type}`, {
+            const response = await fetch(`${dictionaryUrl || '/api/dictionary'}/${type}`, {
                 ...dictionaryOptions,
                 method: 'GET'
             });
@@ -97,16 +98,22 @@ export default class Form extends Component {
             {...field} />;
     }
 
+    onSubmit = values => this.props.onSubmit(values, this.formProps);
+
     render() {
-        const { onSubmit, fields } = this.props;
+        const { fields } = this.props;
 
         return <div className={styles.formWrapper}>
             <FinalFormForm
-                onSubmit={onSubmit}
+                onSubmit={this.onSubmit}
                 mutators={{ ...arrayMutators }}
                 noValidate>
-                { ({ handleSubmit }) =>
-                    <form onSubmit={handleSubmit}>
+                { ({ handleSubmit, form }) => {
+                    if (!this.formProps) {
+                        this.formProps = form;
+                    }
+
+                    return <form onSubmit={handleSubmit}>
                         { fields.map(field =>
                             <div key={field.field}>
                                 { field.type === 'composite' ?
@@ -145,8 +152,8 @@ export default class Form extends Component {
                         <div>
                             <button className={styles.formBtn} type='submit'>Отправить</button>
                         </div>
-                    </form>
-                }
+                    </form>;
+                }}
             </FinalFormForm>
         </div>;
     }
