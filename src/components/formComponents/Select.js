@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactSelect from 'react-select';
-import { path, contains, find, propEq } from 'ramda';
+import { path, contains, find, propEq, filter } from 'ramda';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 
@@ -27,11 +27,15 @@ class Select extends Component {
         }
     }
 
-    onChange = ({ value }) => {
+    onChange = (data) => {
         const { settings, onChange } = this.props;
         const multiple = path(['multiple'], settings);
 
-        onChange(multiple ? (value && value.length ? value : null) : value);
+        if (multiple) {
+            onChange(data && data.length ? data.map(({ value }) => value) : undefined);
+        } else {
+            onChange(data.value || undefined);
+        }
     }
 
     render() {

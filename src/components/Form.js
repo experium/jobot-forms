@@ -66,7 +66,7 @@ export default class Form extends Component {
             const { dictionaryUrl, dictionaryOptions } = this.props;
             const response = await fetch(`${dictionaryUrl || '/api/dictionary'}/${type}`, {
                 ...dictionaryOptions,
-                method: 'GET'
+                method: 'GET',
             });
             const data = await response.json();
 

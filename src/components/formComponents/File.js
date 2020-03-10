@@ -136,13 +136,16 @@ class File extends Component {
                 }
             </div>
             { this.state.error && <div>Не удалось загрузить файл</div> }
-            <Modal
-                open={this.state.visibleModal}
-                onClose={this.closeModal}>
-                <ModalContent
-                    available={this.state.available}
-                    onChange={this.onSaveModalContent} />
-            </Modal>
+            { type && (
+                <Modal
+                    open={this.state.visibleModal}
+                    onClose={this.closeModal}
+                >
+                    <ModalContent
+                        available={this.state.available}
+                        onChange={this.onSaveModalContent} />
+                </Modal>
+            )}
         </div>;
     }
 }

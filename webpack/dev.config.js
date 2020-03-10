@@ -30,6 +30,7 @@ module.exports = {
         contentBase: path.resolve(__dirname, '../.tmp'),
         watchContentBase: true,
         port: 9000,
+        host: '0.0.0.0',
         historyApiFallback: true
     }
 };
