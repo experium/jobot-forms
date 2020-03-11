@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Recorder from 'recorder-js';
 
 import MediaLength from './MediaLength';
-import styles from '../../styles/index.css';
+import styles from '../../styles/index.module.css';
 
 export default class AudioFile extends Component {
     state = {

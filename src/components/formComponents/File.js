@@ -7,8 +7,8 @@ import withFieldWrapper from '../hocs/withFieldWrapper';
 import ImageFile from './ImageFile';
 import VideoFile from './VideoFile';
 import AudioFile from './AudioFile';
-import styles from '../../styles/index.css';
-import formStyles from '../../styles/index.css';
+import styles from '../../styles/index.module.css';
+import formStyles from '../../styles/index.module.css';
 
 const TYPES = {
     audio: 'audio/*',
