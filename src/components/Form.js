@@ -11,20 +11,30 @@ import Select from './formComponents/Select';
 import { PhoneInput } from './formComponents/MaskedInput';
 import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
-import styles from '../styles/index.css';
+import '../styles/index.css';
+import styles from '../styles/index.module.css';
+import Radio from './formComponents/Radio';
 
-const FIELDS = {
-    text: Input,
-    email: Input,
-    personalDataAgreement: PersonalDataAgreement,
-    dictionary: Select,
-    phone: PhoneInput,
-    boolean: Checkbox,
-    choice: Select,
-    country: Select,
-    city: Select,
-    date: DateSelect,
-    file: File
+const getFieldComponent = (field) => {
+    const { type, settings: { multiple, checkboxes = false } } = field;
+
+    const FIELDS = {
+        text: Input,
+        email: Input,
+        personalDataAgreement: PersonalDataAgreement,
+        dictionary: checkboxes ? (
+            multiple ? Checkbox : Radio
+        ) : Select,
+        phone: PhoneInput,
+        boolean: Checkbox,
+        choice: Select,
+        country: Select,
+        city: Select,
+        date: DateSelect,
+        file: File
+    };
+
+    return FIELDS[type];
 };
 
 const validate = (field, value) => {
@@ -84,7 +94,7 @@ export default class Form extends Component {
 
         return <Field
             name={name || field.field}
-            component={FIELDS[field.type] || (() => null)}
+            component={getFieldComponent(field) || (() => null)}
             fieldType={field.type}
             options={
                 this.state.dictionaries[path(['settings', 'dictionary'], field)] ||

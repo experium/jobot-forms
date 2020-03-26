@@ -1,24 +1,67 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Modal from 'react-responsive-modal';
+import RcCheckbox from 'rc-checkbox';
+import { path, isEmpty, contains, filter } from 'ramda';
+import 'rc-checkbox/assets/index.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import styles from '../../styles/index.css';
+import styles from '../../styles/index.module.css';
 
 class CheckboxComponent extends Component {
-    onChange = e => this.props.onChange(e.target.checked ? true : null);
+    static propTypes = {
+        value: PropTypes.array,
+        disabled: PropTypes.bool,
+        options: PropTypes.array,
+    }
+
+    static defaultProps = {
+        value: [],
+    }
+
+    componentDidMount() {
+        const { settings, getDictionary } = this.props;
+        const dictionary = path(['dictionary'], settings);
+
+        if (dictionary) {
+            getDictionary(dictionary);
+        }
+    }
+
+    onChange = ({ target }) => {
+        const { input: { value, onChange } } = this.props;
+        if (target.checked) {
+            onChange([...value, target.value]);
+        } else {
+            const newValue = filter((value) => value !== target.value, value);
+
+            isEmpty(newValue) ? onChange(undefined) : onChange(newValue);
+        }
+    }
 
     render() {
-        const { input: { value }, label } = this.props;
+        const { input: { value = [] }, options, disabled } = this.props;
 
-        return <div>
-            <label>
-                <input
-                    type='checkbox'
-                    checked={!!value}
-                    onChange={this.onChange} />
-                <span>{ label }</span>
-            </label>
-        </div>;
+        return options && !isEmpty(options) ? (
+            <div className='checkbox-block'>
+                { options.map(({ value: checkboxValue, label }) => {
+                    return (
+                        <label className='checkbox-wrapper' key={label}>
+                            <RcCheckbox
+                                onChange={this.onChange}
+                                className='checkbox'
+                                defaultChecked={contains(checkboxValue, value)}
+                                value={checkboxValue}
+                                disabled={disabled}
+                            />
+                            <div className='checkbox-label'>
+                                { label }
+                            </div>
+                        </label>
+                    );
+                })}
+            </div>
+        ) : null;
     }
 }
 

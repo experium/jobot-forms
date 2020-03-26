@@ -22,9 +22,9 @@ module.exports = {
                     presets: ['@babel/preset-env', '@babel/preset-react'],
                     plugins: [
                         '@babel/plugin-proposal-class-properties',
-                        ["@babel/plugin-transform-runtime",
+                        ['@babel/plugin-transform-runtime',
                             {
-                            "regenerator": true
+                                'regenerator': true
                             }
                         ]
                     ],
@@ -32,16 +32,32 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
+                test: /\.module\.css$/,
+                exclude: /node_modules/,
                 use: [
                     'style-loader',
-                    { loader: 'css-loader', options: {
-                        modules: true,
-                        importLoaders: 2,
-                        modules: {
-                            localIdentName: '[name]__[local]___[hash:base64:5]'
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 2,
+                            modules: {
+                                localIdentName: '[name]__[local]___[hash:base64:5]'
+                            }
                         }
-                    }}
+                    }
+                ]
+            },
+            {
+                test: /\.css$/,
+                exclude: /\.module\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: false,
+                        }
+                    }
                 ]
             },
             {

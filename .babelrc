@@ -8,7 +8,7 @@
         ["babel-plugin-css-modules-transform", {
             "extensions": [".css"],
             "generateScopedName": "[name]__[local]",
-            "extractCss": "./lib/styles/index.css"
+            "extractCss": "./lib/styles/index.module.css"
         }],
         ["@babel/plugin-transform-runtime",
             {
