@@ -17,7 +17,7 @@ class DateSelect extends Component {
     };
 
     onChange = (day, month, year) => {
-        const format = path(['options', 'format'], this.props);
+        const format = path(['settings', 'format'], this.props);
 
         if (format) {
             if (format === 'dd.MM.y') {
