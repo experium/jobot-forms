@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Masked from 'react-text-mask';
 import Select from 'react-select';
-import { contains, path, isNil } from 'ramda';
+import { contains, path, isNil, find, propEq } from 'ramda';
 import moment from 'moment';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
@@ -55,8 +55,9 @@ class DateSelect extends Component {
         this.onChange(day, month, year);
     }
 
-    onChangeMonth = month => {
+    onChangeMonth = value => {
         const { day: current, year } = this.state;
+        const month = path(['value'], value);
         const day = month && !year && moment().month(month).daysInMonth() < current ? moment().month(month).daysInMonth() :
             month && year && moment().month(month).year(year).daysInMonth() < current ? moment().month(month).year(year).daysInMonth() :
                 current;
@@ -119,7 +120,7 @@ class DateSelect extends Component {
             }
             { showMonth &&
                 <Select
-                    value={month}
+                    value={find(propEq('value', month), MONTHS)}
                     onChange={this.onChangeMonth}
                     options={MONTHS}
                     placeholder='Месяц'
