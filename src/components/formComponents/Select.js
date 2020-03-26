@@ -49,7 +49,8 @@ class Select extends Component {
             isMulti={multiple}
             isSearchable={contains(fieldType, ['city', 'country'])}
             noOptionsMessage={() => 'Нет данных'}
-            placeholder='Выберите значение...' />;
+            placeholder='Выберите значение...'
+            classNamePrefix='jobot-forms' />;
     }
 }
 

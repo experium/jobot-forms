@@ -124,6 +124,7 @@ class DateSelect extends Component {
                     onChange={this.onChangeMonth}
                     options={MONTHS}
                     placeholder='Месяц'
+                    classNamePrefix='jobot-forms'
                     styles={{
                         container: s => ({ ...s, width: 150, marginRight: 10 })
                     }}
