@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
-import { path, pathOr, contains } from 'ramda';
+import { path, pathOr, contains, prop, propOr } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import * as yup from 'yup';
@@ -14,6 +14,7 @@ import File from './formComponents/File';
 import '../styles/index.css';
 import styles from '../styles/index.module.css';
 import Radio from './formComponents/Radio';
+import Money from './formComponents/Money';
 
 const getFieldComponent = (field) => {
     const { type, settings: { multiple, checkboxes = false } } = field;
@@ -31,10 +32,15 @@ const getFieldComponent = (field) => {
         country: Select,
         city: Select,
         date: DateSelect,
-        file: File
+        file: File,
+        money: Money,
     };
 
     return FIELDS[type];
+};
+
+const DICTIONARIES_NAMES = {
+    money: 'currency',
 };
 
 const validate = (field, value) => {
@@ -69,28 +75,31 @@ export default class Form extends Component {
     dictionaryTypes = [];
     formProps = null;
 
-    getDictionary = async (type) => {
+    getDictionary = async (type, dataPath, urlParams, optionsPaths = {}) => {
         if (!contains(type, this.dictionaryTypes)) {
             this.dictionaryTypes.push(type);
-
             const { dictionaryUrl, dictionaryOptions } = this.props;
-            const response = await fetch(`${dictionaryUrl || '/api/dictionary'}/${type}`, {
+            const response = await fetch(`${dictionaryUrl || '/api/dictionary'}/${type}${urlParams || ''}`, {
                 ...dictionaryOptions,
                 method: 'GET',
             });
-            const data = await response.json();
+
+            const data = dataPath ? prop(dataPath, await response.json()) : await response.json();
 
             this.setState(prev => ({
                 dictionaries: {
                     ...prev.dictionaries,
-                    [type]: data.map(({ name, id }) => ({ label: name, value: id }))
+                    [type]: data.map((item) => ({
+                        label: propOr(item.name, optionsPaths.labelPath, item),
+                        value: propOr(item.id, optionsPaths.valuePath, item)
+                    }))
                 }
             }));
         }
     }
 
     renderField = (field, name) => {
-        const { opd, getFileUrl, postFileUrl } = this.props;
+        const { opd, getFileUrl, postFileUrl, dictionaryUrl } = this.props;
 
         return <Field
             name={name || field.field}
@@ -98,6 +107,7 @@ export default class Form extends Component {
             fieldType={field.type}
             options={
                 this.state.dictionaries[path(['settings', 'dictionary'], field)] ||
+                this.state.dictionaries[DICTIONARIES_NAMES[field.type]] ||
                 pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }))
             }
             opd={opd}
@@ -105,6 +115,7 @@ export default class Form extends Component {
             getDictionary={this.getDictionary}
             getFileUrl={getFileUrl}
             postFileUrl={postFileUrl}
+            dictionaryUrl={dictionaryUrl}
             {...field} />;
     }
 
