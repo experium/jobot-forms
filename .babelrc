@@ -7,8 +7,8 @@
         "@babel/plugin-proposal-class-properties",
         ["babel-plugin-css-modules-transform", {
             "extensions": [".css"],
-            "generateScopedName": "[name]__[local]",
-            "extractCss": "./lib/styles/index.module.css"
+            "generateScopedName": "./generateName.js",
+            "extractCss": "./lib/styles/index.css"
         }],
         ["@babel/plugin-transform-runtime",
             {
