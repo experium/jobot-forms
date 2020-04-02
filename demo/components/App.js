@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import AppForm from './AppForm';
 import Success from './Success';
+import VacanciesList from './VacanciesList';
 
 const client = new ApolloClient({
     uri: 'https://jobot.dev.experium.net/api/graphql'
@@ -14,7 +15,8 @@ export default class App extends Component {
     render() {
         return <ApolloProvider client={client}>
             <BrowserRouter basename='/jobot-forms'>
-                <Switch>
+                <Switch>/
+                    <Route path='/' exact component={VacanciesList} />
                     <Route path='/form/success' component={Success} />
                     <Route path='/form/:id' component={AppForm} />
                     <Route render={() => 'Страница не найдена'} />
