@@ -3,11 +3,7 @@ import ReactSelect from 'react-select';
 import { path, contains, find, propEq, filter } from 'ramda';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-
-const DICTIONARIES = {
-    city: 'TownList',
-    country: 'CountryList'
-};
+import DICTIONARIES_NAMES from '../../constants/dictionaries';
 
 class Select extends Component {
     static defaultProps = {
@@ -22,8 +18,8 @@ class Select extends Component {
             getDictionary(dictionary);
         }
 
-        if (DICTIONARIES[fieldType]) {
-            getDictionary(DICTIONARIES[fieldType]);
+        if (DICTIONARIES_NAMES[fieldType]) {
+            getDictionary(DICTIONARIES_NAMES[fieldType]);
         }
     }
 

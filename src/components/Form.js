@@ -15,6 +15,7 @@ import '../styles/index.css';
 import styles from '../styles/index.module.css';
 import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
+import DICTIONARIES_NAMES from '../constants/dictionaries';
 
 const getFieldComponent = (field) => {
     const { type, settings: { multiple, checkboxes = false } } = field;
@@ -37,10 +38,6 @@ const getFieldComponent = (field) => {
     };
 
     return FIELDS[type];
-};
-
-const DICTIONARIES_NAMES = {
-    money: 'currency',
 };
 
 const validate = (field, value) => {

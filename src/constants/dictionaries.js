@@ -1,0 +1,26 @@
+const DICTIONARIES_NAMES = {
+    money: 'currency',
+    city: 'TownList',
+    country: 'CountryList',
+    sex: 'Sex',
+    yesNo: 'YesNoOtherCombo',
+    educationLevel: 'PplEduLevel',
+    educationType: 'VocEduType',
+    educationForm: 'PplEduForm',
+    languageLevel: 'LangLevelNew',
+    militaryDuty: 'PplMilitaryDolg',
+    maritalStatus: 'PplMaritalStatus',
+    pcProficiency: 'PCProficiency',
+    driverLicence: 'OldDriverLicCategories',
+    hasHasNot: 'HasHasnotCombo',
+    readyNotReady: 'ReadyNotready',
+    workSchedule: 'PrjChartOfWork',
+    employeeType: 'PrjEmployType',
+    jobDistance: 'TimeToGetToWork',
+    relocation: 'PplMoving',
+    businessTrips: 'PplBusinessTrips',
+    callbackType: 'CallbackType',
+    languages: 'Languages',
+};
+
+export default DICTIONARIES_NAMES;
