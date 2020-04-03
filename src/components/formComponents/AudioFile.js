@@ -35,14 +35,14 @@ export default class AudioFile extends Component {
                         <audio controls>
                             <source src={URL.createObjectURL(this.state.audio)} />
                         </audio>
-                        <div>
+                        <div className={styles.modalButtonGroup}>
+                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>Отмена</button>
                             <button className={styles.formBtn} type='button' onClick={this.save}>Сохранить</button>
-                            <button className={styles.formBtn} type='button' onClick={this.cancel}>Отмена</button>
                         </div>
                     </div> :
                     <Fragment>
                         <MediaLength recording={this.state.recording} data={this.state.data} />
-                        <div>
+                        <div className={styles.modalButtonGroup}>
                             <button className={styles.formBtn} onClick={this.state.recording ? this.stop : this.start}>
                                 { this.state.recording ? 'Остановить запись' : 'Начать запись' }
                             </button>

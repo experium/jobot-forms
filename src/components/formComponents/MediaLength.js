@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
+import styles from '../../styles/index.module.css';
+
 export default class MediaLength extends Component {
     state = {
         seconds: 0
@@ -33,7 +35,7 @@ export default class MediaLength extends Component {
         const time = moment().hour(0).minute(0).seconds(this.state.seconds)
             .format('HH:mm:ss');
 
-        return <div>
+        return <div className={styles.timeIndicator}>
             { time }
         </div>;
     }

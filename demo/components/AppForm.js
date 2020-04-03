@@ -5,7 +5,7 @@ import { pathOr } from 'ramda';
 import Form from '../../src/index';
 import { getVacancy } from '../queries/vacancy';
 import { createApplicant } from '../queries/applicants';
-import { DICTIONARY_URL, FILE_URL } from '../constants/url';
+import { DICTIONARY_URL, GET_FILE, POST_FILE } from '../constants/url';
 
 class AppForm extends Component {
     state = {
@@ -41,8 +41,8 @@ class AppForm extends Component {
                                     });
                                 }}
                                 opd={vacancy.pda}
-                                postFileUrl={FILE_URL}
-                                getFileUrl={id => `${FILE_URL}/${id}`}
+                                postFileUrl={`${POST_FILE}/${vacancy.id}`}
+                                getFileUrl={id => `${GET_FILE}/${id}`}
                             />
                         }
                     </Mutation>

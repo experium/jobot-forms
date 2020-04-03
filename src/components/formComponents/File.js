@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { path, append } from 'ramda';
+import { prop, append, remove, isEmpty, path, pathOr } from 'ramda';
 import Modal from 'react-responsive-modal';
 import getusermedia from 'getusermedia';
 
@@ -39,13 +39,14 @@ class File extends Component {
         loading: false,
         error: false,
         available: false,
-        visibleModal: false
+        visibleModal: false,
+        fileNames: {},
     };
 
     onSave = file => {
         if (file) {
-            const { postFileUrl, settings, getFileUrl, input: { value }, onChange } = this.props;
-            const multiple = path(['type'], settings);
+            const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange } = this.props;
+            const multiple = prop('multiple', settings);
             const fd = new FormData();
 
             fd.append('file', file);
@@ -59,10 +60,23 @@ class File extends Component {
             })
                 .then(response => response.json())
                 .then(data => {
-                    const val = getFileUrl ? getFileUrl(data.id) : data.id;
-
+                    const { input: { name } } = this.props;
+                    const fileName = data.filename;
+                    const url = getFileUrl ? getFileUrl(data.id) : data.id;
                     this.setState({ loading: false });
-                    onChange(multiple ? append(val, value || []) : val);
+
+                    if (multiple) {
+                        const fieldFiles = pathOr([], ['fileNames', name], this.state);
+                        this.setState({ fileNames: {
+                            [name]: [...fieldFiles, fileName],
+                        }});
+                        onChange(append(url, value || []));
+                    } else {
+                        this.setState({ fileNames: {
+                            [name]: [fileName],
+                        }});
+                        onChange(url);
+                    }
                 })
                 .catch(() => this.setState({ error: true }));
         }
@@ -72,6 +86,24 @@ class File extends Component {
         const file = e.target.files[0];
 
         this.onSave(file);
+    }
+
+    onDelete = (index) => {
+        const { input: { value, onChange, name }} = this.props;
+        const fieldFiles = path(['fileNames', name], this.state);
+
+        this.setState({
+            fileNames: {
+                [name]: remove(index, 1, fieldFiles),
+            },
+        });
+
+        if (Array.isArray(value)) {
+            const newFieldValue = remove(index, 1, value);
+            onChange(isEmpty(newFieldValue) ? undefined : newFieldValue);
+        } else {
+            onChange(undefined);
+        }
     }
 
     openModal = () => {
@@ -100,20 +132,82 @@ class File extends Component {
         this.closeModal();
     }
 
+    renderPreview = (url, index) => {
+        const { input: { name } } = this.props;
+        const type = path(['settings', 'type'], this.props);
+        const fileName = path(['fileNames', name, index], this.state);
+        const isBlob = fileName === 'blob';
+
+        switch (type) {
+            case 'image':
+                return (
+                    <div>
+                        { isBlob ? (
+                            <img className={styles.imagePreview} src={url} alt='file' />
+                        ) : fileName}
+                    </div>
+                );
+            case 'video':
+                return (
+                    <div>
+                        { isBlob ? (
+                            <video key={url} height={200} controls>
+                                <source src={url} type='video/webm' />
+                            </video>
+                        ) : fileName}
+                    </div>
+                );
+            case 'audio':
+                return (
+                    <div>
+                        { isBlob ? (
+                            <audio controls key={url}>
+                                <source src={url} />
+                            </audio>
+                        ) : fileName}
+                    </div>
+                );
+            default:
+                return (
+                    <div>
+                        { fileName }
+                    </div>
+                );
+        }
+    }
+
     render() {
-        const { settings, input: { value }} = this.props;
+        const { settings, input: { value, name }} = this.props;
         const { type, multiple } = settings || {};
         const values = value ? (multiple ? value : [value]) : [];
         const ModalContent = MODAL_CONTENT[type];
 
         return <div>
-            { values.map((v, index) =>
-                <div key={`file-${index}`}>
-                    { type === 'image' ?
-                        <img src={v} alt='file' /> :
-                        <a href={v} download target='_blank' rel='noopener noreferrer'>Скачать</a>
-                    }
-                    <button>Удалить</button>
+            { !isEmpty(value) && (
+                <div className={styles.fileList}>
+                    { values.map((url, index) =>
+                        <div className={styles.fileItem} key={`file-${index}`}>
+                            { this.renderPreview(url, index) }
+                            <div className={styles.fileButtonGroup}>
+                                <a
+                                    className={styles.downloadButton}
+                                    href={url}
+                                    download
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    Скачать
+                                </a>
+                                <button
+                                    className={styles.dangerBtn}
+                                    type='button'
+                                    onClick={() => this.onDelete(index)}
+                                >
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
             <div className={styles.fileControls}>
@@ -121,25 +215,32 @@ class File extends Component {
                     <div>
                         <input
                             className={styles.fileInput}
-                            id='file'
+                            id={name}
                             type='file'
                             value=''
                             onChange={this.onChange}
                             accept={TYPES[type]} />
-                        <label htmlFor='file'>Загрузить</label>
+                        <label htmlFor={name}>Загрузить</label>
                     </div>
                 }
-                { type &&
-                    <button className={formStyles.formBtn} type='button' onClick={this.openModal}>
-                        { BTN_TEXT[type] }
-                    </button>
-                }
+                { !multiple && value.length > 1 ? null : (
+                    type && (
+                        <button className={formStyles.formBtn} type='button' onClick={this.openModal}>
+                            { BTN_TEXT[type] }
+                        </button>
+                    )
+                )}
             </div>
             { this.state.error && <div>Не удалось загрузить файл</div> }
             { type && (
                 <Modal
+                    center
                     open={this.state.visibleModal}
                     onClose={this.closeModal}
+                    classNames={{
+                        modal: 'modal',
+                        closeButton: 'modalCloseButton',
+                    }}
                 >
                     <ModalContent
                         available={this.state.available}
