@@ -5,7 +5,7 @@ import { pathOr } from 'ramda';
 import Form from '../../src/index';
 import { getVacancy } from '../queries/vacancy';
 import { createApplicant } from '../queries/applicants';
-import { DICTIONARY_URL, GET_FILE, POST_FILE } from '../constants/url';
+import { API_URL, GET_FILE, POST_FILE } from '../constants/url';
 
 class AppForm extends Component {
     state = {
@@ -30,7 +30,7 @@ class AppForm extends Component {
                         onError={this.onError}>
                         { mutation =>
                             <Form
-                                dictionaryUrl={DICTIONARY_URL}
+                                apiUrl={API_URL}
                                 fields={vacancy.questions || []}
                                 onSubmit={form => {
                                     this.state.error && this.setState({ error: false });
