@@ -113,7 +113,8 @@ export default class Form extends Component {
             getFileUrl={getFileUrl}
             postFileUrl={postFileUrl}
             dictionaryUrl={dictionaryUrl}
-            {...field} />;
+            {...field}
+        />;
     }
 
     onSubmit = values => this.props.onSubmit(values, this.formProps);
@@ -132,7 +133,7 @@ export default class Form extends Component {
                     }
 
                     return <form onSubmit={handleSubmit}>
-                        { fields.map(field =>
+                        { fields.map((field) =>
                             <div key={field.field}>
                                 { field.type === 'composite' ?
                                     <Fragment>

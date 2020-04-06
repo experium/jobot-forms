@@ -13,13 +13,39 @@
     border: none;
     font-size: inherit;
     cursor: pointer;
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.formBtn:last-child {
+    margin-right: 0;
 }
 
 .formBtn:focus {
     outline: none;
 }
+
 .formBtn:hover {
     background: #4487dd;
+}
+
+.formBtnCancel {
+    color: white;
+    background: #ffffff;
+    padding: 10px;
+    font-size: inherit;
+    cursor: pointer;
+    border: 1px solid #d9d9d9;
+    color: rgba(0,0,0,.65);
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.formBtnCancel:focus {
+    outline: none;
+}
+
+.formBtnCancel:hover {
+    border-color: #4487dd;
+    color: #4487dd;
 }
 
 .formLink {
@@ -108,6 +134,10 @@
     display: flex;
 }
 
+.fileControls > div {
+    margin-right: 10px;
+}
+
 .formInput::-webkit-outer-spin-button,
 .formInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -123,7 +153,6 @@
     margin-right: 10px;
 }
 
-
 .amountField {
     margin-right: 10px;
     width: calc(100% - 225px);
@@ -133,4 +162,92 @@
 .currencyField {
     width: 215px;
     display: inline-block;
+}
+
+.imagePreview {
+    height: 200px;
+}
+
+.dangerBtn {
+    cursor: pointer;
+    height: 32px;
+    padding: 4px 15px;
+    font-size: 14px;
+    border-radius: 2px;
+    color: #ff4d4f;
+    border: 1px solid #ff4d4f;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .015);
+    margin-right: 10px;
+    text-decoration: none;
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.dangerBtn:hover, .dangerBtn:focus {
+    color: #ff7875;
+    border-color: #ff7875;
+}
+
+/* File */
+
+.fileList {
+    margin-bottom: 15px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+}
+
+.fileItem {
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+}
+
+.fileItem:last-child {
+    border: none;
+}
+
+.downloadButton {
+    display: inline-block;
+    height: 32px;
+    padding: 0 15px;
+    font-size: 14px;
+    border-radius: 2px;
+    color: rgba(0,0,0,.65);
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .015);
+    margin-right: 10px;
+    text-decoration: none;
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    line-height: 32px;
+}
+
+.downloadButton:hover, .downloadButton:focus {
+    color: #4487dd;
+    border-color: #4487dd;
+}
+
+.fileButtonGroup {
+    display: flex;
+    align-items: center;
+}
+
+.timeIndicator {
+    text-align: center;
+    padding-top: 10px;
+}
+
+/* Modal */
+
+.modalButtonGroup {
+    padding-top: 15px;
+    text-align: right;
+}
+
+.modalButtonGroup button {
+    margin-right: 10px;
+}
+
+.modalButtonGroup button:last-child {
+    margin-right: 0;
 }

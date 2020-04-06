@@ -25,9 +25,9 @@ export default class ImageFile extends Component {
                 (this.state.image ?
                     <div>
                         <img alt='webcam' src={this.state.image} />
-                        <div>
+                        <div className={styles.modalButtonGroup}>
+                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>Отмена</button>
                             <button className={styles.formBtn} type='button' onClick={this.save}>Сохранить</button>
-                            <button className={styles.formBtn} type='button' onClick={this.cancel}>Отмена</button>
                         </div>
                     </div> :
                     <Fragment>
@@ -37,7 +37,7 @@ export default class ImageFile extends Component {
                             screenshotFormat='image/jpeg'
                             screenshotQuality={1}
                             screenshotWidth={640} />
-                        <div>
+                        <div className={styles.modalButtonGroup}>
                             <button className={styles.formBtn} onClick={this.capture}>Сделать фото</button>
                         </div>
                     </Fragment>
