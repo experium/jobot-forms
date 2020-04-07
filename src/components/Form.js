@@ -19,14 +19,14 @@ import Money from './formComponents/Money';
 import DICTIONARIES_NAMES from '../constants/dictionaries';
 
 const getFieldComponent = (field) => {
-    const { type, settings: { multiple, checkboxes = false } } = field;
+    const { type, settings = {} } = field;
 
     const FIELDS = {
         text: Input,
         email: Input,
         personalDataAgreement: PersonalDataAgreement,
-        dictionary: checkboxes ? (
-            multiple ? Checkbox : Radio
+        dictionary: prop('checkboxes', settings) ? (
+            prop('multiple', settings) ? Checkbox : Radio
         ) : Select,
         phone: PhoneInput,
         boolean: Checkbox,

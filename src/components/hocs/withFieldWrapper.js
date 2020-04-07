@@ -21,7 +21,9 @@ export default WrappedComponent =>
 
             return <div style={{ marginBottom: 20 }}>
                 { !this.hideLabel() &&
-                    <label className={styles.formLabel}>{ label }{ !required && <span className={styles.formLabelOptional}> (опционально)</span> }</label>
+                    <label className={styles.formLabel}>
+                        { label }{ !required && <span className={styles.formLabelOptional}> (опционально)</span> }
+                    </label>
                 }
                 <div>
                     <WrappedComponent {...this.props} onChange={this.onChange} />
