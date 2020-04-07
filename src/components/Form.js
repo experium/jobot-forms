@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import Input from './formComponents/Input';
 import Checkbox, { PersonalDataAgreement } from './formComponents/Checkbox';
 import Select from './formComponents/Select';
+import DictionarySelect from './formComponents/DictionarySelect';
 import { PhoneInput } from './formComponents/MaskedInput';
 import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
@@ -35,6 +36,7 @@ const getFieldComponent = (field) => {
         date: DateSelect,
         file: File,
         money: Money,
+        company_dictionary: DictionarySelect,
     };
 
     return FIELDS[type];
@@ -75,13 +77,14 @@ export default class Form extends Component {
     getDictionary = async (type, dataPath, urlParams, optionsPaths = {}) => {
         if (!contains(type, this.dictionaryTypes)) {
             this.dictionaryTypes.push(type);
-            const { dictionaryUrl, dictionaryOptions } = this.props;
-            const response = await fetch(`${dictionaryUrl || '/api/dictionary'}/${type}${urlParams || ''}`, {
+            const { apiUrl, dictionaryOptions } = this.props;
+            const response = await fetch(`${apiUrl || ''}/api/dictionary/${type || ''}${urlParams || ''}`, {
                 ...dictionaryOptions,
                 method: 'GET',
             });
 
-            const data = dataPath ? prop(dataPath, await response.json()) : await response.json();
+            const responseData = dataPath ? prop(dataPath, await response.json()) : await response.json();
+            const data = Array.isArray(responseData) ? responseData : [responseData];
 
             this.setState(prev => ({
                 dictionaries: {
@@ -96,7 +99,7 @@ export default class Form extends Component {
     }
 
     renderField = (field, name) => {
-        const { opd, getFileUrl, postFileUrl, dictionaryUrl } = this.props;
+        const { opd, getFileUrl, postFileUrl, apiUrl } = this.props;
 
         return <Field
             name={name || field.field}
@@ -112,7 +115,7 @@ export default class Form extends Component {
             getDictionary={this.getDictionary}
             getFileUrl={getFileUrl}
             postFileUrl={postFileUrl}
-            dictionaryUrl={dictionaryUrl}
+            apiUrl={apiUrl}
             {...field}
         />;
     }
