@@ -6,6 +6,14 @@ import { Field } from 'react-final-form';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/index.module.css';
 
+const customStyle = {
+    control: (provided) => ({
+        ...provided,
+        minHeight: '36px',
+        height: '36px',
+    }),
+};
+
 class Money extends Component {
     componentDidMount() {
         const { getDictionary } = this.props;
@@ -86,6 +94,7 @@ class Money extends Component {
                     >
                         {({ input: { value, onChange } }) => (
                             <ReactSelect
+                                styles={customStyle}
                                 isDisabled={singleCurrency}
                                 inputValue={singleCurrency}
                                 value={find(propEq('code', value), options)}
