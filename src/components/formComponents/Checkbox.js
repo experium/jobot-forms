@@ -88,7 +88,11 @@ export class PersonalDataAgreement extends Component {
     render() {
         return <Checkbox
             {...this.props}
-            label={this.getLabel()} />;
+            options={[{
+                value: true,
+                label: this.getLabel()
+            }]}
+        />;
     }
 }
 
