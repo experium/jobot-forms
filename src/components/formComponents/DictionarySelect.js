@@ -20,7 +20,8 @@ class Select extends Component {
             const urlParams = qs.stringify({
                 filter: {
                     dictionary: dictionaryId,
-                    parent: parentId,
+                    parent: Array.isArray(parentId) ? undefined : parentId,
+                    parents: Array.isArray(parentId) ? parentId : undefined
                 },
                 relations: ['parent']
             }, { addQueryPrefix: true });
@@ -102,7 +103,7 @@ class Select extends Component {
 
         return (
             <ReactSelect
-                value={multiple ? filter(item => contains(item.value, value || []), options) : find(propEq('value', value), options)}
+                value={multiple ? filter(item => contains(item.id, value || []), options) : find(propEq('value', value), options)}
                 options={options}
                 onChange={this.onChange}
                 isMulti={multiple}

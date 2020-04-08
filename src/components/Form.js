@@ -6,7 +6,7 @@ import { FieldArray } from 'react-final-form-arrays';
 import * as yup from 'yup';
 
 import Input from './formComponents/Input';
-import Checkbox, { PersonalDataAgreement } from './formComponents/Checkbox';
+import Checkbox, { PersonalDataAgreement, Boolean } from './formComponents/Checkbox';
 import Select from './formComponents/Select';
 import DictionarySelect from './formComponents/DictionarySelect';
 import { PhoneInput } from './formComponents/MaskedInput';
@@ -29,7 +29,7 @@ const getFieldComponent = (field) => {
             prop('multiple', settings) ? Checkbox : Radio
         ) : Select,
         phone: PhoneInput,
-        boolean: Checkbox,
+        boolean: Boolean,
         choice: Select,
         country: Select,
         city: Select,

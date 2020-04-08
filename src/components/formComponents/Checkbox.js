@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-responsive-modal';
 import RcCheckbox from 'rc-checkbox';
-import { path, isEmpty, contains, filter } from 'ramda';
+import { path, isEmpty, contains, filter, prop } from 'ramda';
 import 'rc-checkbox/assets/index.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
@@ -29,9 +29,11 @@ class CheckboxComponent extends Component {
     }
 
     onChange = ({ target }) => {
-        const { input: { value, onChange } } = this.props;
+        const { input: { value, onChange }, settings } = this.props;
+        const multiple = prop('multiple', settings);
+
         if (target.checked) {
-            onChange([...value, target.value]);
+            multiple ? onChange([...value, target.value]) : onChange(target.value);
         } else {
             const newValue = filter((value) => value !== target.value, value);
 
@@ -93,6 +95,20 @@ export class PersonalDataAgreement extends Component {
                 label: this.getLabel()
             }]}
         />;
+    }
+}
+
+export class Boolean extends Component {
+    render() {
+        return (
+            <Checkbox
+                {...this.props}
+                options={[{
+                    value: true,
+                    label: this.props.label,
+                }]}
+            />
+        );
     }
 }
 
