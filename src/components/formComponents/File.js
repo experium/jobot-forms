@@ -47,6 +47,7 @@ class File extends Component {
         if (file) {
             const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange } = this.props;
             const multiple = prop('multiple', settings);
+            const type = prop('type', settings);
             const fd = new FormData();
 
             fd.append('file', file);
@@ -65,17 +66,24 @@ class File extends Component {
                     const url = getFileUrl ? getFileUrl(data.id) : data.id;
                     this.setState({ loading: false });
 
+                    const fileItem = {
+                        url,
+                        text: fileName,
+                        contentType: file.type,
+                        type,
+                    };
+
                     if (multiple) {
                         const fieldFiles = pathOr([], ['fileNames', name], this.state);
                         this.setState({ fileNames: {
                             [name]: [...fieldFiles, fileName],
                         }});
-                        onChange(append(url, value || []));
+                        onChange(append(fileItem, value || []));
                     } else {
                         this.setState({ fileNames: {
                             [name]: [fileName],
                         }});
-                        onChange(url);
+                        onChange(fileItem);
                     }
                 })
                 .catch(() => this.setState({ error: true }));
@@ -177,7 +185,7 @@ class File extends Component {
     }
 
     render() {
-        const { settings, input: { value, name }} = this.props;
+        const { settings, input: { value, name } } = this.props;
         const { type, multiple } = settings || {};
         const values = value ? (multiple ? value : [value]) : [];
         const ModalContent = MODAL_CONTENT[type];

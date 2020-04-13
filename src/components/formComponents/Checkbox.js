@@ -74,7 +74,10 @@ export class PersonalDataAgreement extends Component {
         opened: false
     };
 
-    open = () => this.setState({ opened: true });
+    open = event => {
+        event.preventDefault();
+        this.setState({ opened: true });
+    }
 
     close = () => this.setState({ opened: false });
 
