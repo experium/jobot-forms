@@ -22,6 +22,7 @@
     "react-select": "^3.0.8",
     "react-text-mask": "^5.4.3",
     "react-webcam": "^5.0.0",
+    "react-window": "^1.8.5",
     "recorder-js": "^1.0.7",
     "yup": "^0.28.1"
   },
