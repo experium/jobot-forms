@@ -1,7 +1,5 @@
 const DICTIONARIES_NAMES = {
     money: 'currency',
-    city: 'TownList',
-    country: 'CountryList',
     sex: 'Sex',
     yesNo: 'YesNoOtherCombo',
     educationLevel: 'PplEduLevel',
@@ -21,6 +19,12 @@ const DICTIONARIES_NAMES = {
     businessTrips: 'PplBusinessTrips',
     callbackType: 'CallbackType',
     languages: 'Languages',
+};
+
+export const GEO_DICTIONARIES = {
+    city: 'city',
+    country: 'country',
+    region: 'region'
 };
 
 export default DICTIONARIES_NAMES;

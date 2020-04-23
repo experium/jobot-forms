@@ -16,7 +16,7 @@ import '../styles/index.css';
 import styles from '../styles/index.module.css';
 import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
-import DICTIONARIES_NAMES from '../constants/dictionaries';
+import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
 
 const getFieldComponent = (field) => {
     const { type, settings = {} } = field;
@@ -32,6 +32,7 @@ const getFieldComponent = (field) => {
         boolean: Boolean,
         choice: Select,
         country: Select,
+        region: Select,
         city: Select,
         date: DateSelect,
         file: File,
@@ -78,7 +79,8 @@ export default class Form extends Component {
         if (!contains(type, this.dictionaryTypes)) {
             this.dictionaryTypes.push(type);
             const { apiUrl, dictionaryOptions } = this.props;
-            const response = await fetch(`${apiUrl || ''}/api/dictionary/${type || ''}${urlParams || ''}`, {
+
+            const response = await fetch(`${apiUrl || ''}/api/${GEO_DICTIONARIES[type] ? type : `dictionary/${type || ''}`}${urlParams || ''}`, {
                 ...dictionaryOptions,
                 method: 'GET',
             });
@@ -91,7 +93,9 @@ export default class Form extends Component {
                     ...prev.dictionaries,
                     [type]: data.map((item) => ({
                         label: propOr(item.name, optionsPaths.labelPath, item),
-                        value: propOr(item.id, optionsPaths.valuePath, item)
+                        value: propOr(item.id, optionsPaths.valuePath, item),
+                        country: item.country,
+                        region: item.region
                     }))
                 }
             }));
@@ -108,6 +112,7 @@ export default class Form extends Component {
             options={
                 this.state.dictionaries[path(['settings', 'dictionary'], field)] ||
                 this.state.dictionaries[DICTIONARIES_NAMES[field.type]] ||
+                this.state.dictionaries[GEO_DICTIONARIES[field.type]] ||
                 pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }))
             }
             opd={opd}
