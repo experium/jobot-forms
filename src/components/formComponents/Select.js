@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import ReactSelect from 'react-select';
 import { path, contains, find, propEq, filter, findIndex, equals, take } from 'ramda';
 import { VariableSizeList as List } from 'react-window';
+import qs from 'qs';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import DICTIONARIES_NAMES from '../../constants/dictionaries';
+import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../../constants/dictionaries';
+import withFormValues from '../hocs/withFormValues';
 
 export const HEIGHT = 33;
 
@@ -23,6 +25,20 @@ class Select extends Component {
 
         if (DICTIONARIES_NAMES[fieldType]) {
             getDictionary(DICTIONARIES_NAMES[fieldType]);
+        }
+
+        if (GEO_DICTIONARIES[fieldType]) {
+            getDictionary(GEO_DICTIONARIES[fieldType], 'items', qs.stringify({ pagination: JSON.stringify({ limit: 0 })}, { addQueryPrefix: true }));
+        }
+    }
+
+    componentDidUpdate(prev) {
+        const { settings, formValues } = this.props;
+
+        if (!equals(formValues[settings.regionField], prev.formValues[prev.settings.regionField]) ||
+            !equals(formValues[settings.countryField], prev.formValues[prev.settings.countryField])
+        ) {
+            this.onChange({ value: undefined });
         }
     }
 
@@ -67,9 +83,27 @@ class Select extends Component {
         </List>;
     }
 
+    getOptions = () => {
+        const { settings, options, formValues } = this.props;
+
+        if (!formValues[settings.regionField] && !formValues[settings.countryField]) {
+            return options;
+        }
+
+        return filter(item => {
+            const regionEqual = formValues[settings.regionField] === item.region;
+            const countryEqual = formValues[settings.countryField] === item.country;
+
+            return formValues[settings.regionField] && formValues[settings.countryField] ? regionEqual && countryEqual :
+                formValues[settings.regionField] ? regionEqual :
+                    formValues[settings.countryField] ? countryEqual : true;
+        }, options);
+    }
+
     render() {
-        const { options, input: { value }, settings, fieldType } = this.props;
+        const { input: { value }, settings, fieldType } = this.props;
         const multiple = path(['multiple'], settings);
+        const options = this.getOptions();
         const MenuList = this.getMenuList(options);
 
         return <ReactSelect
@@ -90,4 +124,4 @@ class Select extends Component {
     }
 }
 
-export default withFieldWrapper(Select);
+export default withFieldWrapper(withFormValues(Select));

@@ -12,7 +12,7 @@ class VacanciesList extends Component {
         return vacancies ? (
             <div className='vacancies-list'>
                 { vacancies.map(({ title, id }) => (
-                    <div className='vacanci-item'>
+                    <div className='vacanci-item' key={id}>
                         <div className='vacanci-item-title'>{ title }</div>
                         <div className='vacanci-item-button'>
                             <Link to={`/form/${id}`}>Перейти</Link>
