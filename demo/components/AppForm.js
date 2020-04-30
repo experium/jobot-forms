@@ -43,6 +43,7 @@ class AppForm extends Component {
                                 opd={vacancy.pda}
                                 postFileUrl={`${POST_FILE}/${vacancy.id}`}
                                 getFileUrl={id => `${GET_FILE}/${id}`}
+                                language='en'
                             />
                         }
                     </Mutation>

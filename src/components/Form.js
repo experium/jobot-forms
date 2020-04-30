@@ -103,7 +103,7 @@ export default class Form extends Component {
     }
 
     renderField = (field, name) => {
-        const { opd, getFileUrl, postFileUrl, apiUrl } = this.props;
+        const { opd, getFileUrl, postFileUrl, apiUrl, language } = this.props;
 
         return <Field
             name={name || field.field}
@@ -122,13 +122,14 @@ export default class Form extends Component {
             postFileUrl={postFileUrl}
             apiUrl={apiUrl}
             {...field}
+            label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
         />;
     }
 
     onSubmit = values => this.props.onSubmit(values, this.formProps);
 
     render() {
-        const { fields } = this.props;
+        const { fields, language } = this.props;
 
         return <div className={styles.formWrapper}>
             <FinalFormForm
@@ -145,7 +146,7 @@ export default class Form extends Component {
                             <div key={field.field}>
                                 { field.type === 'composite' ?
                                     <Fragment>
-                                        <h2>{ field.label }</h2>
+                                        <h2>{ language ? pathOr(field.label, ['translations', 'label', language], field) : field.label }</h2>
                                         { path(['settings', 'multiple'], field) ?
                                             <FieldArray name={field.field}>
                                                 { fieldProps =>

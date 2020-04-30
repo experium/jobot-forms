@@ -11,8 +11,10 @@ export const getVacancy = gql(`
                 type,
                 label,
                 settings,
-                required
-            }
+                required,
+                translations
+            },
+            translations
         }
     }
 `);
