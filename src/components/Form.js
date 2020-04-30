@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr } from 'ramda';
+import { path, pathOr, contains, prop, propOr, is } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
-import * as yup from 'yup';
 
 import Input from './formComponents/Input';
 import Checkbox, { PersonalDataAgreement, Boolean } from './formComponents/Checkbox';
@@ -17,6 +16,13 @@ import styles from '../styles/index.module.css';
 import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
 import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
+import { compositeValidator, validate } from '../utils/validation';
+
+const CompositeError = ({ meta }) => {
+    return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
+        <div className={styles.compositeError}>{ meta.error }</div>
+    ) : null;
+};
 
 const getFieldComponent = (field) => {
     const { type, settings = {} } = field;
@@ -41,25 +47,6 @@ const getFieldComponent = (field) => {
     };
 
     return FIELDS[type];
-};
-
-const validate = (field, value) => {
-    const rules = {
-        email: yup.string().email('Неверный email'),
-        personalDataAgreement: yup.boolean(),
-        boolean: yup.boolean(),
-        choice: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
-        file: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
-    };
-    let rule = rules[field.type] || yup.string();
-    rule = field.required ? rule.nullable().required('Поле обязательно для заполнения') : rule.nullable();
-
-    try {
-        rule.validateSync(value);
-        return undefined;
-    } catch (e) {
-        return e.message;
-    }
 };
 
 export default class Form extends Component {
@@ -135,6 +122,8 @@ export default class Form extends Component {
             <FinalFormForm
                 onSubmit={this.onSubmit}
                 mutators={{ ...arrayMutators }}
+                keepDirtyOnReinitialize={true}
+                subscription={{ values: false, submitFailed: true }}
                 noValidate>
                 { ({ handleSubmit, form }) => {
                     if (!this.formProps) {
@@ -148,9 +137,14 @@ export default class Form extends Component {
                                     <Fragment>
                                         <h2>{ language ? pathOr(field.label, ['translations', 'label', language], field) : field.label }</h2>
                                         { path(['settings', 'multiple'], field) ?
-                                            <FieldArray name={field.field}>
-                                                { fieldProps =>
+                                            <FieldArray
+                                                name={field.field}
+                                                validate={compositeValidator(field)}
+                                                initialValue={[{ }]}
+                                            >
+                                                { (fieldProps) =>
                                                     <div>
+                                                        <CompositeError meta={prop('meta', fieldProps)} />
                                                         { fieldProps.fields.map((name, index) =>
                                                             <div key={name}>
                                                                 { pathOr([], ['settings', 'questions'], field).map(question =>

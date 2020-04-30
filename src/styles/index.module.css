@@ -108,6 +108,11 @@
     margin-top: 5px;
 }
 
+.compositeError {
+    color: #ed0214;
+    margin-bottom: 10px;
+}
+
 .fileInput {
     width: 0.1px;
     height: 0.1px;
