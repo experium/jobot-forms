@@ -1,6 +1,8 @@
+import '../utils/yup';
+
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is } from 'ramda';
+import { path, pathOr, contains, prop, propOr } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 
