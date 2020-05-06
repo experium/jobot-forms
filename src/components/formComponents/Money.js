@@ -60,7 +60,7 @@ class Money extends Component {
 
     onChangeAmount = onChange => event => {
         const value = event.target.value;
-        onChange(Number(value));
+        onChange(value ? Number(value) : undefined);
     }
 
     onChangeCurrency = onChange => ({ value }) => {
