@@ -115,6 +115,7 @@ class DateSelect extends Component {
                     onBlur={this.onBlurDay}
                     mask={DAY_MASK}
                     placeholderChar={'\u2000'}
+                    placeholder='День'
                     keepCharPositions={false}
                     guide />
             }
@@ -138,6 +139,7 @@ class DateSelect extends Component {
                     onBlur={this.onBlurYear}
                     mask={YEAR_MASK}
                     placeholderChar={'\u2000'}
+                    placeholder='Год'
                     keepCharPositions={false}
                     guide />
             }
