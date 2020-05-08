@@ -27,4 +27,6 @@ export const GEO_DICTIONARIES = {
     region: 'region'
 };
 
+export const GEO_DICTIONARIES_TYPES = ['city', 'country', 'region'];
+
 export default DICTIONARIES_NAMES;

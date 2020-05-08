@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ReactSelect from 'react-select';
+import ReactSelect, { components } from 'react-select';
 import { path, contains, find, propEq, filter, findIndex, equals, take } from 'ramda';
 import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../../constants/dictionaries';
+import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
 import withFormValues from '../hocs/withFormValues';
 
 export const HEIGHT = 33;
@@ -16,19 +16,16 @@ class Select extends Component {
     };
 
     componentDidMount() {
-        const { settings, getDictionary, fieldType } = this.props;
-        const dictionary = path(['dictionary'], settings);
+        this.fetchDictionary();
+    }
 
-        if (dictionary) {
-            getDictionary(dictionary);
-        }
+    fetchDictionary = () => {
+        const { dictionaryType, getDictionary } = this.props;
 
-        if (DICTIONARIES_NAMES[fieldType]) {
-            getDictionary(DICTIONARIES_NAMES[fieldType]);
-        }
-
-        if (GEO_DICTIONARIES[fieldType]) {
-            getDictionary(GEO_DICTIONARIES[fieldType], 'items', qs.stringify({ pagination: JSON.stringify({ limit: 0 })}, { addQueryPrefix: true }));
+        if (contains(dictionaryType, GEO_DICTIONARIES_TYPES)) {
+            getDictionary(dictionaryType, 'items', qs.stringify({ pagination: JSON.stringify({ limit: 0 })}, { addQueryPrefix: true }));
+        } else {
+            getDictionary(dictionaryType);
         }
     }
 
@@ -100,11 +97,31 @@ class Select extends Component {
         }, options);
     }
 
+    getDropdownIndicator = (props) => {
+        const { errors, dictionaryType } = this.props;
+        const { getStyles } = props;
+        const isError = errors[dictionaryType];
+
+        return isError ? (
+            <div style={getStyles('dropdownIndicator', props)}>
+                <div
+                    className='error-indicator'
+                    onClick={this.fetchDictionary}
+                >
+                    <div className='error-icon'>!</div>
+                </div>
+            </div>
+        ) : (
+            <components.DropdownIndicator {...props} />
+        );
+    }
+
     render() {
-        const { input: { value }, settings, fieldType } = this.props;
+        const { input: { value }, settings, fieldType, errors, dictionaryType } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions();
         const MenuList = this.getMenuList(options);
+        const isError = errors[dictionaryType];
 
         return <ReactSelect
             classNamePrefix='search-input'
@@ -116,10 +133,12 @@ class Select extends Component {
             placeholder='Выберите значение...'
             classNamePrefix='jobot-forms'
             maxMenuHeight={HEIGHT * 6}
+            noOptionsMessage={() => 'Нет данных'}
+            openMenuOnClick={!isError}
             components={{
                 MenuList,
                 IndicatorSeparator: () => null,
-                NoOptionsMessage: () => <div className='no-options'>Нет данных</div>
+                DropdownIndicator: this.getDropdownIndicator,
             }} />;
     }
 }

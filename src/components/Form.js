@@ -58,7 +58,8 @@ export default class Form extends Component {
     };
 
     state = {
-        dictionaries: {}
+        dictionaries: {},
+        errors: {},
     };
 
     dictionaryTypes = [];
@@ -66,28 +67,59 @@ export default class Form extends Component {
 
     getDictionary = async (type, dataPath, urlParams, optionsPaths = {}) => {
         if (!contains(type, this.dictionaryTypes)) {
-            this.dictionaryTypes.push(type);
             const { apiUrl, dictionaryOptions } = this.props;
 
-            const response = await fetch(`${apiUrl || ''}/api/${GEO_DICTIONARIES[type] ? type : `dictionary/${type || ''}`}${urlParams || ''}`, {
-                ...dictionaryOptions,
-                method: 'GET',
-            });
+            try {
+                const response = await fetch(`${apiUrl || ''}/api/${GEO_DICTIONARIES[type] ? type : `dictionary/${type || ''}`}${urlParams || ''}`, {
+                    ...dictionaryOptions,
+                    method: 'GET',
+                });
 
-            const responseData = dataPath ? prop(dataPath, await response.json()) : await response.json();
-            const data = Array.isArray(responseData) ? responseData : [responseData];
-
-            this.setState(prev => ({
-                dictionaries: {
-                    ...prev.dictionaries,
-                    [type]: data.map((item) => ({
-                        label: propOr(item.name, optionsPaths.labelPath, item),
-                        value: propOr(item.id, optionsPaths.valuePath, item),
-                        country: item.country,
-                        region: item.region
-                    }))
+                if (!response.ok) {
+                    throw new Error();
                 }
-            }));
+
+                const responseData = dataPath ? prop(dataPath, await response.json()) : await response.json();
+                const data = Array.isArray(responseData) ? responseData : [responseData];
+                this.dictionaryTypes.push(type);
+
+                this.setState(prev => ({
+                    dictionaries: {
+                        ...prev.dictionaries,
+                        [type]: data.map((item) => ({
+                            label: propOr(item.name, optionsPaths.labelPath, item),
+                            value: propOr(item.id, optionsPaths.valuePath, item),
+                            country: item.country,
+                            region: item.region
+                        }))
+                    },
+                    errors: {
+                        ...prev.errors,
+                        [type]: false,
+                    },
+                }));
+            } catch {
+                this.setState(prev => ({
+                    dictionaries: {
+                        ...prev.dictionaries,
+                    },
+                    errors: {
+                        ...prev.errors,
+                        [type]: true,
+                    },
+                }));
+            }
+        }
+    }
+
+    getDictionaryType = (field) => {
+        const { settings, type } = field;
+        const dictionary = path(['dictionary'], settings);
+
+        if (dictionary) {
+            return dictionary;
+        } else {
+            return DICTIONARIES_NAMES[type] || GEO_DICTIONARIES[type];
         }
     }
 
@@ -107,11 +139,13 @@ export default class Form extends Component {
             opd={opd}
             validate={value => validate(field, value)}
             getDictionary={this.getDictionary}
+            dictionaryType={this.getDictionaryType(field)}
             getFileUrl={getFileUrl}
             postFileUrl={postFileUrl}
             apiUrl={apiUrl}
             {...field}
             label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
+            errors={this.state.errors}
         />;
     }
 
