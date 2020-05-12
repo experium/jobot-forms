@@ -86,7 +86,15 @@ export class PersonalDataAgreement extends Component {
     getLabel = () => {
         return <span>
             Я даю согласие на <span className={this.props.opd ? styles.formLink : styles.withoutOpd } onClick={this.open}>обработку персональных данных</span>
-            <Modal open={this.state.opened} onClose={this.close} center>
+            <Modal
+                open={this.state.opened}
+                onClose={this.close}
+                classNames={{
+                    modal: 'pda-modal',
+                    closeButton: 'pda-modal-close-button',
+                }}
+                center
+            >
                 <div dangerouslySetInnerHTML={{ __html: this.props.opd }} />
             </Modal>
         </span>;
