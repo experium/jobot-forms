@@ -55,7 +55,7 @@
 }
 
 .withoutOpd {
-    color: initial;
+    color: inherit;
     cursor: default;
     text-decoration: none;
 }

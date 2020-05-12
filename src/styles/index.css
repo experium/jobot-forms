@@ -83,3 +83,36 @@
 .error-indicator .error-icon {
     line-height: 20px;
 }
+
+/* Modal */
+.pda-modal {
+    padding: 60px 24px 24px 24px;
+}
+
+.pda-modal:before {
+    content: '';
+    position: absolute;
+    height: 1px;
+    top: 40px;
+    right: 0;
+    left: 0;
+    background-color: #f0f0f0;
+}
+
+.pda-modal-close-button {
+    right: 18px;
+    top: 6px;
+    cursor: pointer;
+}
+
+.pda-modal-close-button:hover svg {
+    fill: rgba(0, 0, 0, 0.65);
+}
+
+.pda-modal-close-button:focus {
+    outline: none;
+}
+
+.pda-modal-close-button:focus svg {
+    fill: rgba(0, 0, 0, 0.65);
+}
