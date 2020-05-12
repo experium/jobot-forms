@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import Recorder from 'recorder-js';
+import { withTranslation } from 'react-i18next';
 
 import MediaLength from './MediaLength';
 import styles from '../../styles/index.module.css';
 
-export default class AudioFile extends Component {
+class AudioFile extends Component {
     state = {
         recording: false,
         audio: null
@@ -26,7 +27,7 @@ export default class AudioFile extends Component {
     stop = () => this.recorder.stop().then(({ blob }) => this.setState({ recording: false, audio: blob }));
 
     render() {
-        const { available } = this.props;
+        const { available, t } = this.props;
 
         return <div>
             { available ?
@@ -36,21 +37,23 @@ export default class AudioFile extends Component {
                             <source src={URL.createObjectURL(this.state.audio)} />
                         </audio>
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>Отмена</button>
-                            <button className={styles.formBtn} type='button' onClick={this.save}>Сохранить</button>
+                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>{t('cancel')}</button>
+                            <button className={styles.formBtn} type='button' onClick={this.save}>{t('save')}</button>
                         </div>
                     </div> :
                     <Fragment>
                         <MediaLength recording={this.state.recording} data={this.state.data} />
                         <div className={styles.modalButtonGroup}>
                             <button className={styles.formBtn} onClick={this.state.recording ? this.stop : this.start}>
-                                { this.state.recording ? 'Остановить запись' : 'Начать запись' }
+                                { this.state.recording ? t('stopRecording') : t('startRecording') }
                             </button>
                         </div>
                     </Fragment>
                 ) :
-                <div>Доступ к микрофону заблокирован. Разрешите доступ к микрофону в настройках браузера</div>
+                <div>{t('errors.audioPermission')}</div>
             }
         </div>;
     }
 }
+
+export default withTranslation()(AudioFile);

@@ -78,3 +78,18 @@ audio:focus {
 .modal {
     padding-top: 28px;
 }
+
+.form-header {
+    display: flex;
+    align-items: center;
+}
+
+.form-header .vacancy-title {
+    width: calc(100% - 75px);
+    display: inline-block;
+}
+
+.form-header .language-select {
+    width: 75px;
+    display: inline-block;
+}

@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { prop, append, remove, isEmpty, path, pathOr } from 'ramda';
 import Modal from 'react-responsive-modal';
+import { withTranslation } from 'react-i18next';
 import getusermedia from 'getusermedia';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
@@ -19,19 +20,19 @@ const TYPES = {
 const MEDIA = {
     audio: { audio: true },
     video: { audio: true, video: true },
-    image: { video: true }
+    photo: { video: true }
 };
 
 const MODAL_CONTENT = {
     audio: AudioFile,
     video: VideoFile,
-    image: ImageFile
+    photo: ImageFile
 };
 
 const BTN_TEXT = {
-    audio: 'Записать аудио',
-    video: 'Записать видео',
-    image: 'Сделать фото'
+    audio: 'recordAudio',
+    video: 'recordVideo',
+    photo: 'takePhoto'
 };
 
 class File extends Component {
@@ -185,7 +186,7 @@ class File extends Component {
     }
 
     render() {
-        const { settings, input: { value, name } } = this.props;
+        const { settings, input: { value, name }, t } = this.props;
         const { type, multiple } = settings || {};
         const values = value ? (multiple ? value : [value]) : [];
         const ModalContent = MODAL_CONTENT[type];
@@ -204,14 +205,14 @@ class File extends Component {
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
-                                    Скачать
+                                    { t('download') }
                                 </a>
                                 <button
                                     className={styles.dangerBtn}
                                     type='button'
                                     onClick={() => this.onDelete(index)}
                                 >
-                                    Удалить
+                                    { t('remove') }
                                 </button>
                             </div>
                         </div>
@@ -228,18 +229,18 @@ class File extends Component {
                             value=''
                             onChange={this.onChange}
                             accept={TYPES[type]} />
-                        <label htmlFor={name}>Загрузить</label>
+                        <label htmlFor={name}>{t('upload')}</label>
                     </div>
                 }
-                { !multiple && value.length > 1 ? null : (
+                { (!multiple && value.length > 1) || !BTN_TEXT[type] ? null : (
                     type && (
                         <button className={formStyles.formBtn} type='button' onClick={this.openModal}>
-                            { BTN_TEXT[type] }
+                            { t(BTN_TEXT[type]) }
                         </button>
                     )
                 )}
             </div>
-            { this.state.error && <div>Не удалось загрузить файл</div> }
+            { this.state.error && <div>{ t('errors.uploadError') }</div> }
             { type && (
                 <Modal
                     center
@@ -259,4 +260,4 @@ class File extends Component {
     }
 }
 
-export default withFieldWrapper(File);
+export default withFieldWrapper(withTranslation()(File));

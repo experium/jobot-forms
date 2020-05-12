@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { pathOr } from 'ramda';
+import { pathOr, find, propEq } from 'ramda';
+import ReactSelect from 'react-select';
 
 import Form from '../../src/index';
 import { getVacancy } from '../queries/vacancy';
 import { createApplicant } from '../queries/applicants';
 import { API_URL, GET_FILE, POST_FILE } from '../constants/url';
+import { LANGUAGES_OPTIONS } from '../constants/languages';
 
 class AppForm extends Component {
     state = {
-        error: false
+        error: false,
+        language: 'ru',
     };
 
     onCompleted = () => this.props.history.push('/form/success');
@@ -23,7 +26,16 @@ class AppForm extends Component {
         return data.loading ? <div>Загрузка...</div> :
             data.error ? <div>Не удалось загрузить вакансию</div> :
                 <div style={{ width: 'auto', maxWidth: 1000, padding: 15, margin: 'auto' }}>
-                    <h1>{ vacancy.title }</h1>
+                    <div className='form-header'>
+                        <h1 className='vacancy-title'>{ vacancy.title }</h1>
+                        <div className='language-select'>
+                            <ReactSelect
+                                onChange={({ value }) => this.setState({ language: value })}
+                                options={LANGUAGES_OPTIONS}
+                                value={find(propEq('value', this.state.language), LANGUAGES_OPTIONS)}
+                            />
+                        </div>
+                    </div>
                     <Mutation
                         mutation={createApplicant}
                         onCompleted={this.onCompleted}
@@ -43,7 +55,7 @@ class AppForm extends Component {
                                 opd={vacancy.pda}
                                 postFileUrl={`${POST_FILE}/${vacancy.id}`}
                                 getFileUrl={id => `${GET_FILE}/${id}`}
-                                language='en'
+                                language={this.state.language}
                             />
                         }
                     </Mutation>

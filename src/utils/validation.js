@@ -1,5 +1,6 @@
 import { propOr, path } from 'ramda';
 import * as yup from 'yup';
+import i18n from './i18n';
 
 export const compositeValidator = field => (value, allValues) => {
     if (field.required) {
@@ -13,7 +14,7 @@ export const compositeValidator = field => (value, allValues) => {
 
 export const validate = (field, value) => {
     const rules = {
-        email: yup.string().email('Неверный email'),
+        email: yup.string().email(i18n.t('errors.email')),
         personalDataAgreement: yup.boolean(),
         boolean: yup.boolean(),
         choice: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
@@ -23,7 +24,7 @@ export const validate = (field, value) => {
                 yup.number().moreThan(0).required()
             ) : yup.number().moreThan(0),
             currency: yup.string().when('amount', (amount, schema) => {
-                return amount ? schema.required('Необходимо указать валюту') : schema.nullable();
+                return amount ? schema.required(i18n.t('errors.currency')) : schema.nullable();
             }),
         })
     };
