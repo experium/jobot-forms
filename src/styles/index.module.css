@@ -54,6 +54,12 @@
     text-decoration: underline;
 }
 
+.withoutOpd {
+    color: initial;
+    cursor: default;
+    text-decoration: none;
+}
+
 .formLink:hover {
     color: #4487dd;
 }
