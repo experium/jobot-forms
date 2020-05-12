@@ -14,7 +14,12 @@ export const getVacancy = gql(`
                 required,
                 translations
             },
-            translations
+            translations,
+            company {
+                companySettings {
+                    pda
+                }
+            },
         }
     }
 `);

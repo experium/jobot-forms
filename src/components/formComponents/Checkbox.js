@@ -75,15 +75,17 @@ export class PersonalDataAgreement extends Component {
     };
 
     open = event => {
-        event.preventDefault();
-        this.setState({ opened: true });
+        if (this.props.opd) {
+            event.preventDefault();
+            this.setState({ opened: true });
+        }
     }
 
     close = () => this.setState({ opened: false });
 
     getLabel = () => {
         return <span>
-            Я даю согласие на <span className={styles.formLink} onClick={this.open}>обработку персональных данных</span>
+            Я даю согласие на <span className={this.props.opd ? styles.formLink : styles.withoutOpd } onClick={this.open}>обработку персональных данных</span>
             <Modal open={this.state.opened} onClose={this.close} center>
                 <div dangerouslySetInnerHTML={{ __html: this.props.opd }} />
             </Modal>

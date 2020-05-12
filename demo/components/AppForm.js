@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { pathOr, find, propEq } from 'ramda';
+import { pathOr, find, propEq, path } from 'ramda';
 import ReactSelect from 'react-select';
 
 import Form from '../../src/index';
@@ -22,6 +22,7 @@ class AppForm extends Component {
     render() {
         const { data, match } = this.props;
         const vacancy = pathOr({}, ['vacancy'], data);
+        const companyPda = path(['company', 'companySettings', 'pda'], vacancy);
 
         return data.loading ? <div>Загрузка...</div> :
             data.error ? <div>Не удалось загрузить вакансию</div> :
@@ -52,7 +53,7 @@ class AppForm extends Component {
                                         }
                                     });
                                 }}
-                                opd={vacancy.pda}
+                                opd={vacancy.pda || companyPda}
                                 postFileUrl={`${POST_FILE}/${vacancy.id}`}
                                 getFileUrl={id => `${GET_FILE}/${id}`}
                                 language={this.state.language}
