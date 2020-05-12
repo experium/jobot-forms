@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactSelect from 'react-select';
 import { prop, find, propEq, isEmpty } from 'ramda';
 import { Field } from 'react-final-form';
+import { withTranslation } from 'react-i18next';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/index.module.css';
@@ -68,7 +69,7 @@ class Money extends Component {
     }
 
     render() {
-        const { input: { name } } = this.props;
+        const { input: { name }, t } = this.props;
         const options = this.getOptions();
         const singleCurrency = this.getSingleCurrency();
 
@@ -82,6 +83,7 @@ class Money extends Component {
                                 className={styles.formInput}
                                 value={value}
                                 onChange={this.onChangeAmount(onChange)}
+                                placeholder={null}
                             />
                         )}
                     </Field>
@@ -100,8 +102,8 @@ class Money extends Component {
                                 value={find(propEq('code', value), options)}
                                 options={options}
                                 onChange={this.onChangeCurrency(onChange)}
-                                noOptionsMessage={() => 'Нет данных'}
-                                placeholder='Выберите значение...'
+                                noOptionsMessage={() => t('noOptionsMessage')}
+                                placeholder={t('placeholders.salaryCurrency')}
                             />
                         )}
                     </Field>
@@ -111,4 +113,4 @@ class Money extends Component {
     }
 }
 
-export default withFieldWrapper(Money);
+export default withFieldWrapper(withTranslation()(Money));

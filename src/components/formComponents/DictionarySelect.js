@@ -3,6 +3,7 @@ import ReactSelect from 'react-select';
 import { path, contains, find, propEq, filter, prop, propOr, pathOr } from 'ramda';
 import { FormSpy } from 'react-final-form';
 import qs from 'qs';
+import { withTranslation } from 'react-i18next';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 
@@ -97,7 +98,7 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value }, settings } = this.props;
+        const { input: { value }, settings, t } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions();
 
@@ -108,8 +109,8 @@ class Select extends Component {
                 onChange={this.onChange}
                 isMulti={multiple}
                 isSearchable={true}
-                noOptionsMessage={() => 'Нет данных'}
-                placeholder='Выберите значение...'
+                noOptionsMessage={() => t('noOptionsMessage')}
+                placeholder={null}
                 classNamePrefix='jobot-forms'
                 isDisabled={this.getDisableStatus()}
                 getOptionLabel={(option) => option.value}
@@ -140,4 +141,4 @@ const withParentField = WrappedComponent =>
         }
     };
 
-export default withFieldWrapper(withParentField(Select));
+export default withFieldWrapper(withParentField(withTranslation()(Select)));

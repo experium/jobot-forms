@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Masked from 'react-text-mask';
 import Select from 'react-select';
 import { contains, path, isNil, find, propEq } from 'ramda';
+import { withTranslation } from 'react-i18next';
 import moment from 'moment';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
@@ -99,7 +100,7 @@ class DateSelect extends Component {
     }
 
     render() {
-        const { settings } = this.props;
+        const { settings, t } = this.props;
         const format = path(['format'], settings);
         const showDay = format ? contains('dd', format) : true;
         const showMonth = format ? contains('MM', format) : true;
@@ -115,7 +116,7 @@ class DateSelect extends Component {
                     onBlur={this.onBlurDay}
                     mask={DAY_MASK}
                     placeholderChar={'\u2000'}
-                    placeholder='День'
+                    placeholder={t('placeholders.datePicker.day')}
                     keepCharPositions={false}
                     guide />
             }
@@ -123,8 +124,8 @@ class DateSelect extends Component {
                 <Select
                     value={find(propEq('value', month), MONTHS)}
                     onChange={this.onChangeMonth}
-                    options={MONTHS}
-                    placeholder='Месяц'
+                    options={t('MONTHS', { returnObjects: true })}
+                    placeholder={t('placeholders.datePicker.month')}
                     classNamePrefix='jobot-forms'
                     styles={{
                         container: s => ({ ...s, width: 150, marginRight: 10 })
@@ -139,7 +140,7 @@ class DateSelect extends Component {
                     onBlur={this.onBlurYear}
                     mask={YEAR_MASK}
                     placeholderChar={'\u2000'}
-                    placeholder='Год'
+                    placeholder={t('placeholders.datePicker.year')}
                     keepCharPositions={false}
                     guide />
             }
@@ -147,4 +148,4 @@ class DateSelect extends Component {
     }
 }
 
-export default withFieldWrapper(DateSelect);
+export default withFieldWrapper(withTranslation()(DateSelect));

@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import Webcam from 'react-webcam';
+import { withTranslation } from 'react-i18next';
 
 import styles from '../../styles/index.module.css';
 import { dataURItoBlob } from '../../utils/file';
 
-export default class ImageFile extends Component {
+class ImageFile extends Component {
     state = {
         image: null
     };
@@ -18,7 +19,7 @@ export default class ImageFile extends Component {
     }
 
     render() {
-        const { available } = this.props;
+        const { available, t } = this.props;
 
         return <div>
             { available ?
@@ -26,8 +27,8 @@ export default class ImageFile extends Component {
                     <div>
                         <img alt='webcam' src={this.state.image} />
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>Отмена</button>
-                            <button className={styles.formBtn} type='button' onClick={this.save}>Сохранить</button>
+                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>{ t('cancel') }</button>
+                            <button className={styles.formBtn} type='button' onClick={this.save}>{ t('save') }</button>
                         </div>
                     </div> :
                     <Fragment>
@@ -38,14 +39,16 @@ export default class ImageFile extends Component {
                             screenshotQuality={1}
                             screenshotWidth={640} />
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtn} onClick={this.capture}>Сделать фото</button>
+                            <button className={styles.formBtn} onClick={this.capture}>{ t('takePhoto') }</button>
                         </div>
                     </Fragment>
                 ) :
                 <div>
-                    Доступ к камере заблокирован. Разрешите доступ к камере в настройках браузера
+                    { t('errors.cameraPermission') }
                 </div>
             }
         </div>;
     }
 }
+
+export default withTranslation()(ImageFile);

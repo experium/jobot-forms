@@ -1,3 +1,5 @@
+import '../utils/i18n';
+import i18n from '../utils/i18n';
 import '../utils/yup';
 
 import React, { Component, Fragment } from 'react';
@@ -5,6 +7,7 @@ import { Form as FinalFormForm, Field } from 'react-final-form';
 import { path, pathOr, contains, prop, propOr, is } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
+import { withTranslation } from 'react-i18next';
 
 import Input from './formComponents/Input';
 import Checkbox, { PersonalDataAgreement, Boolean } from './formComponents/Checkbox';
@@ -19,6 +22,7 @@ import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
 import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
 import { compositeValidator, validate } from '../utils/validation';
+import { RU } from '../constants/translations';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -51,7 +55,7 @@ const getFieldComponent = (field) => {
     return FIELDS[type];
 };
 
-export default class Form extends Component {
+class Form extends Component {
     static defaultProps = {
         fields: [],
         dictionaryOptions: {}
@@ -60,10 +64,25 @@ export default class Form extends Component {
     state = {
         dictionaries: {},
         errors: {},
+        language: RU,
     };
 
     dictionaryTypes = [];
     formProps = null;
+
+    componentDidMount = () => {
+        const { language } = this.props;
+        this.setState({ language }, () => i18n.changeLanguage(this.state.language));
+    }
+
+    componentDidUpdate = (prevProps) => {
+        const { language } = prevProps;
+        const { language: languageProps } = this.props;
+
+        if (languageProps !== language) {
+            this.setState({ language: languageProps }, () => i18n.changeLanguage(this.state.language));
+        }
+    }
 
     getDictionary = async (type, dataPath, urlParams, optionsPaths = {}) => {
         if (!contains(type, this.dictionaryTypes)) {
@@ -90,7 +109,8 @@ export default class Form extends Component {
                             label: propOr(item.name, optionsPaths.labelPath, item),
                             value: propOr(item.id, optionsPaths.valuePath, item),
                             country: item.country,
-                            region: item.region
+                            region: item.region,
+                            translations: item.translations,
                         }))
                     },
                     errors: {
@@ -123,6 +143,23 @@ export default class Form extends Component {
         }
     }
 
+    getOptions = (field) => {
+        const { language } = this.props;
+        const options = this.state.dictionaries[path(['settings', 'dictionary'], field)] ||
+        this.state.dictionaries[DICTIONARIES_NAMES[field.type]] ||
+        this.state.dictionaries[GEO_DICTIONARIES[field.type]] ||
+        pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }));
+
+        if (language === RU) {
+            return options;
+        } else {
+            return options.map(option => ({
+                ...option,
+                label: pathOr(option.label, ['translations', language], option),
+            }));
+        }
+    }
+
     renderField = (field, name) => {
         const { opd, getFileUrl, postFileUrl, apiUrl, language } = this.props;
 
@@ -130,12 +167,7 @@ export default class Form extends Component {
             name={name || field.field}
             component={getFieldComponent(field) || (() => null)}
             fieldType={field.type}
-            options={
-                this.state.dictionaries[path(['settings', 'dictionary'], field)] ||
-                this.state.dictionaries[DICTIONARIES_NAMES[field.type]] ||
-                this.state.dictionaries[GEO_DICTIONARIES[field.type]] ||
-                pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }))
-            }
+            options={this.getOptions(field)}
             opd={opd}
             validate={value => validate(field, value)}
             getDictionary={this.getDictionary}
@@ -152,7 +184,7 @@ export default class Form extends Component {
     onSubmit = values => this.props.onSubmit(values, this.formProps);
 
     render() {
-        const { fields, language } = this.props;
+        const { fields, language, t } = this.props;
 
         return <div className={styles.formWrapper}>
             <FinalFormForm
@@ -188,10 +220,10 @@ export default class Form extends Component {
                                                                         { this.renderField(question, `${name}.${question.field}`) }
                                                                     </div>
                                                                 )}
-                                                                <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.remove(index)}>Удалить</button>
+                                                                <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.remove(index)}>{t('remove')}</button>
                                                             </div>
                                                         )}
-                                                        <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>Добавить</button>
+                                                        <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
                                                     </div>
 
                                                 }
@@ -208,7 +240,7 @@ export default class Form extends Component {
                             </div>
                         )}
                         <div>
-                            <button className={styles.formBtn} type='submit'>Отправить</button>
+                            <button className={styles.formBtn} type='submit'>{ t('send') }</button>
                         </div>
                     </form>;
                 }}
@@ -216,3 +248,5 @@ export default class Form extends Component {
         </div>;
     }
 }
+
+export default withTranslation()(Form);

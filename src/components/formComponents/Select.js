@@ -3,6 +3,7 @@ import ReactSelect, { components } from 'react-select';
 import { path, contains, find, propEq, filter, findIndex, equals, take } from 'ramda';
 import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
+import { withTranslation } from 'react-i18next';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
@@ -117,7 +118,7 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value }, settings, fieldType, errors, dictionaryType } = this.props;
+        const { input: { value }, settings, fieldType, errors, dictionaryType, t } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions();
         const MenuList = this.getMenuList(options);
@@ -130,7 +131,8 @@ class Select extends Component {
             onChange={this.onChange}
             isMulti={multiple}
             isSearchable={contains(fieldType, ['city', 'country'])}
-            placeholder='Выберите значение...'
+            placeholder={null}
+            noOptionsMessage={() => t('noOptionsMessage')}
             classNamePrefix='jobot-forms'
             maxMenuHeight={HEIGHT * 6}
             noOptionsMessage={() => 'Нет данных'}
@@ -143,4 +145,4 @@ class Select extends Component {
     }
 }
 
-export default withFieldWrapper(withFormValues(Select));
+export default withFieldWrapper(withFormValues(withTranslation()(Select)));
