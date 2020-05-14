@@ -4,7 +4,7 @@ import '../utils/yup';
 
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is } from 'ramda';
+import { path, pathOr, contains, prop, propOr, is, mapObjIndexed } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
@@ -23,6 +23,7 @@ import Money from './formComponents/Money';
 import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
 import { compositeValidator, validate } from '../utils/validation';
 import { RU } from '../constants/translations';
+import withFieldWrapper from './hocs/withFieldWrapper';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -30,10 +31,10 @@ const CompositeError = ({ meta }) => {
     ) : null;
 };
 
-const getFieldComponent = (field) => {
+const getFieldComponent = (field, components) => {
     const { type, settings = {} } = field;
 
-    const FIELDS = {
+    const DEFAULT_FIELDS = {
         text: Input,
         email: Input,
         personalDataAgreement: PersonalDataAgreement,
@@ -51,14 +52,16 @@ const getFieldComponent = (field) => {
         money: Money,
         company_dictionary: DictionarySelect,
     };
+    const fields = mapObjIndexed((component, key) => components[key] ? withFieldWrapper(components[key]) : component, DEFAULT_FIELDS);
 
-    return FIELDS[type];
+    return fields[type];
 };
 
 class Form extends Component {
     static defaultProps = {
         fields: [],
-        dictionaryOptions: {}
+        dictionaryOptions: {},
+        components: {}
     };
 
     state = {
@@ -161,11 +164,11 @@ class Form extends Component {
     }
 
     renderField = (field, name) => {
-        const { opd, getFileUrl, postFileUrl, apiUrl, language } = this.props;
+        const { opd, getFileUrl, postFileUrl, apiUrl, language, components } = this.props;
 
         return <Field
             name={name || field.field}
-            component={getFieldComponent(field) || (() => null)}
+            component={getFieldComponent(field, components) || (() => null)}
             fieldType={field.type}
             options={this.getOptions(field)}
             opd={opd}
