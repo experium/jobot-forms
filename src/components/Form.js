@@ -61,7 +61,8 @@ class Form extends Component {
     static defaultProps = {
         fields: [],
         dictionaryOptions: {},
-        components: {}
+        components: {},
+        language: RU,
     };
 
     state = {

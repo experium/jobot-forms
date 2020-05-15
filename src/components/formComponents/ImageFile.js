@@ -37,7 +37,7 @@ class ImageFile extends Component {
                             ref={node => this.webcam = node}
                             screenshotFormat='image/jpeg'
                             screenshotQuality={1}
-                            screenshotWidth={640} />
+                            minScreenshotWidth={640} />
                         <div className={styles.modalButtonGroup}>
                             <button className={styles.formBtn} onClick={this.capture}>{ t('takePhoto') }</button>
                         </div>
