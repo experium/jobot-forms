@@ -93,7 +93,6 @@ export class PersonalDataAgreement extends Component {
                     modal: 'pda-modal',
                     closeButton: 'pda-modal-close-button',
                 }}
-                center
             >
                 <div dangerouslySetInnerHTML={{ __html: this.props.opd }} />
             </Modal>

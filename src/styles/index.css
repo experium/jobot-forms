@@ -87,6 +87,7 @@
 /* Modal */
 .pda-modal {
     padding: 60px 24px 24px 24px;
+    width: 800px;
 }
 
 .pda-modal:before {
