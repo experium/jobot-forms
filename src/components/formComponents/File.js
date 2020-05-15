@@ -132,7 +132,9 @@ class File extends Component {
     }
 
     closeModal = () => {
-        this.stream.getTracks().forEach(track => track.stop());
+        if (this.stream) {
+            this.stream.getTracks().forEach(track => track.stop());
+        }
         this.setState({ visibleModal: false });
     }
 
@@ -241,7 +243,7 @@ class File extends Component {
                 )}
             </div>
             { this.state.error && <div>{ t('errors.uploadError') }</div> }
-            { type && (
+            { MODAL_CONTENT[type] && (
                 <Modal
                     center
                     open={this.state.visibleModal}
