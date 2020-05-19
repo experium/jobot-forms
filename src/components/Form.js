@@ -187,6 +187,14 @@ class Form extends Component {
 
     onSubmit = values => this.props.onSubmit(values, this.formProps);
 
+    renderCompositeRemoveButton = (field, index) => {
+        if (field.required) {
+            return index !== 0;
+        } else {
+            return true;
+        }
+    }
+
     render() {
         const { fields, language, t } = this.props;
 
@@ -224,7 +232,15 @@ class Form extends Component {
                                                                         { this.renderField(question, `${name}.${question.field}`) }
                                                                     </div>
                                                                 )}
-                                                                <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.remove(index)}>{t('remove')}</button>
+                                                                { this.renderCompositeRemoveButton(field, index) && (
+                                                                    <button
+                                                                        className={styles.formSectionBtn}
+                                                                        type='button'
+                                                                        onClick={() => fieldProps.fields.remove(index)}
+                                                                    >
+                                                                        { t('remove') }
+                                                                    </button>
+                                                                )}
                                                             </div>
                                                         )}
                                                         <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
