@@ -110,7 +110,7 @@ class Form extends Component {
                     dictionaries: {
                         ...prev.dictionaries,
                         [type]: data.map((item) => ({
-                            label: propOr(item.name, optionsPaths.labelPath, item),
+                            label: propOr(propOr('', 'name', item), optionsPaths.labelPath, item),
                             value: propOr(item.id, optionsPaths.valuePath, item),
                             country: item.country,
                             region: item.region,
