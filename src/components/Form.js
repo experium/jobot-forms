@@ -165,7 +165,7 @@ class Form extends Component {
     }
 
     renderField = (field, name) => {
-        const { opd, getFileUrl, postFileUrl, apiUrl, language, components } = this.props;
+        const { opd, getFileUrl, postFileUrl, apiUrl, language, components, htmlOpd } = this.props;
 
         return <Field
             name={name || field.field}
@@ -173,7 +173,7 @@ class Form extends Component {
             fieldType={field.type}
             options={this.getOptions(field)}
             opd={opd}
-            validate={value => validate(field, value)}
+            validate={value => validate(field, value, this.props)}
             getDictionary={this.getDictionary}
             dictionaryType={this.getDictionaryType(field)}
             getFileUrl={getFileUrl}
@@ -182,6 +182,7 @@ class Form extends Component {
             {...field}
             label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
             errors={this.state.errors}
+            htmlOpd={htmlOpd}
         />;
     }
 

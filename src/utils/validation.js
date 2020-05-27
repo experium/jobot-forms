@@ -12,10 +12,10 @@ export const compositeValidator = field => (value, allValues) => {
     }
 };
 
-export const validate = (field, value) => {
+export const validate = (field, value, { htmlOpd }) => {
     const rules = {
         email: yup.string().email(i18n.t('errors.email')),
-        personalDataAgreement: yup.boolean(),
+        personalDataAgreement: htmlOpd ? yup.string() : yup.boolean(),
         boolean: yup.boolean(),
         choice: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
         file: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
