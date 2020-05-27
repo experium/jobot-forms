@@ -82,7 +82,11 @@ class Select extends Component {
     }
 
     getOptions = () => {
-        const { settings, options, formValues } = this.props;
+        const { settings, formValues, i18n: { language }} = this.props;
+        const options = this.props.options.map(option => ({
+            ...option,
+            label: path(['translations', 'value', language], option) || option.label
+        }));
 
         if (!formValues[settings.regionField] && !formValues[settings.countryField]) {
             return options;
