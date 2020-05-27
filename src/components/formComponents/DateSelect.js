@@ -128,7 +128,7 @@ class DateSelect extends Component {
                     placeholder={t('placeholders.datePicker.month')}
                     classNamePrefix='jobot-forms'
                     styles={{
-                        container: s => ({ ...s, width: 150, marginRight: 10 })
+                        container: s => ({ ...s, width: 150, minWidth: 150, marginRight: 10 })
                     }}
                 />
             }
