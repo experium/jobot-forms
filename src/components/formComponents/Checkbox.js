@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-responsive-modal';
 import RcCheckbox from 'rc-checkbox';
@@ -7,6 +7,7 @@ import 'rc-checkbox/assets/index.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/index.module.css';
+import HtmlOpdForm from './HtmlOpdForm';
 
 class CheckboxComponent extends Component {
     static propTypes = {
@@ -29,8 +30,13 @@ class CheckboxComponent extends Component {
     }
 
     onChange = ({ target }) => {
-        const { input: { value, onChange }, settings } = this.props;
+        const { input: { value, onChange }, settings, onValueChange } = this.props;
         const multiple = prop('multiple', settings);
+
+        if (onValueChange) {
+            onValueChange(target.checked);
+            return;
+        }
 
         if (target.checked) {
             multiple ? onChange([...value, target.value]) : onChange(target.value);
@@ -42,7 +48,7 @@ class CheckboxComponent extends Component {
     }
 
     render() {
-        const { input: { value = [] }, options, disabled } = this.props;
+        const { input: { value = [] }, options, disabled, settings } = this.props;
 
         return options && !isEmpty(options) ? (
             <div className='checkbox-block'>
@@ -53,6 +59,7 @@ class CheckboxComponent extends Component {
                                 onChange={this.onChange}
                                 className='checkbox'
                                 defaultChecked={contains(checkboxValue, value)}
+                                checked={prop('multiple', settings) ? contains(checkboxValue, value) : !!value}
                                 value={checkboxValue}
                                 disabled={disabled}
                             />
@@ -71,7 +78,8 @@ const Checkbox = withFieldWrapper(CheckboxComponent);
 
 export class PersonalDataAgreement extends Component {
     state = {
-        opened: false
+        opened: false,
+        openedHtml: false
     };
 
     open = event => {
@@ -82,6 +90,8 @@ export class PersonalDataAgreement extends Component {
     }
 
     close = () => this.setState({ opened: false });
+
+    closeHtml = () => this.setState({ openedHtml: false });
 
     getLabel = () => {
         return <span>
@@ -99,14 +109,42 @@ export class PersonalDataAgreement extends Component {
         </span>;
     }
 
+    onChange = () => {
+        this.setState({ openedHtml: true });
+    }
+
+    onSubmitHtml = html => {
+        this.props.input.onChange(html);
+        this.setState({ openedHtml: false });
+    }
+
     render() {
-        return <Checkbox
-            {...this.props}
-            options={[{
-                value: true,
-                label: this.getLabel()
-            }]}
-        />;
+        return <Fragment>
+            <Checkbox
+                {...this.props}
+                onValueChange={this.props.htmlOpd ? this.onChange : null}
+                options={[{
+                    value: true,
+                    label: this.getLabel()
+                }]}
+            />
+            { this.props.htmlOpd &&
+                <Modal
+                    open={this.state.openedHtml}
+                    onClose={this.closeHtml}
+                    classNames={{
+                        modal: 'pda-modal',
+                        closeButton: 'pda-modal-close-button',
+                    }}
+                    destroyOnClose
+                >
+                    <HtmlOpdForm
+                        onSubmit={this.onSubmitHtml}
+                        value={this.props.input.value}
+                        html={this.props.htmlOpd} />
+                </Modal>
+            }
+        </Fragment>;
     }
 }
 
