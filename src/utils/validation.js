@@ -1,6 +1,5 @@
 import { propOr, path } from 'ramda';
 import * as yup from 'yup';
-import { path } from 'ramda';
 
 import i18n from './i18n';
 

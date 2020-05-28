@@ -82,8 +82,9 @@ class AppForm extends Component {
         const { data, match, history: { location: { search }}} = this.props;
         const vacancy = pathOr({}, ['vacancy'], data);
         const companyPda = path(['company', 'companySettings', 'pda'], vacancy);
-        const components = has('custom', qs.parse(search, { ignoreQueryPrefix: true })) ? customComponents : {};
-        const htmlOpd = has('htmlOpd', qs.parse(search, { ignoreQueryPrefix: true })) ? htmlOpdText : null;
+        const searchPath = qs.parse(search, { ignoreQueryPrefix: true });
+        const components = has('custom', searchPath) ? customComponents : {};
+        const htmlOpd = has('htmlOpd', searchPath) ? htmlOpdText : null;
 
         return data.loading ? <div>Загрузка...</div> :
             data.error ? <div>Не удалось загрузить вакансию</div> :
