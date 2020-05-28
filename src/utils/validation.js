@@ -1,5 +1,7 @@
 import { propOr, path } from 'ramda';
 import * as yup from 'yup';
+import { path } from 'ramda';
+
 import i18n from './i18n';
 
 export const compositeValidator = field => (value, allValues) => {
@@ -12,7 +14,9 @@ export const compositeValidator = field => (value, allValues) => {
     }
 };
 
-export const validate = (field, value, { htmlOpd }) => {
+export const validate = (field, value, props) => {
+    const htmlOpd = path(['htmlOpd'], props);
+
     const rules = {
         email: yup.string().email(i18n.t('errors.email')),
         personalDataAgreement: htmlOpd ? yup.string() : yup.boolean(),
