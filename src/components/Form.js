@@ -4,7 +4,7 @@ import '../utils/yup';
 
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is, mapObjIndexed } from 'ramda';
+import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
@@ -65,14 +65,19 @@ class Form extends Component {
         language: RU,
     };
 
-    state = {
-        dictionaries: {},
-        errors: {},
-        language: RU,
-    };
+    constructor(props) {
+        super(props);
 
-    dictionaryTypes = [];
-    formProps = null;
+        this.state = {
+            dictionaries: {},
+            errors: {},
+            language: RU,
+            initialValues: props.initialValues
+        };
+
+        this.dictionaryTypes = [];
+        this.formProps = null;
+    }
 
     componentDidMount = () => {
         const { language } = this.props;
@@ -81,10 +86,14 @@ class Form extends Component {
 
     componentDidUpdate = (prevProps) => {
         const { language } = prevProps;
-        const { language: languageProps } = this.props;
+        const { language: languageProps, initialValues } = this.props;
 
         if (languageProps !== language) {
             this.setState({ language: languageProps }, () => i18n.changeLanguage(this.state.language));
+        }
+
+        if (!equals(initialValues, prevProps.initialValues)) {
+            this.setState({ initialValues });
         }
     }
 
@@ -205,6 +214,7 @@ class Form extends Component {
                 mutators={{ ...arrayMutators }}
                 keepDirtyOnReinitialize={true}
                 subscription={{ values: false, submitFailed: true }}
+                initialValues={this.state.initialValues}
                 noValidate>
                 { ({ handleSubmit, form }) => {
                     if (!this.formProps) {
