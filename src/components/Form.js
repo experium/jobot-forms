@@ -168,7 +168,9 @@ class Form extends Component {
         } else {
             return options.map(option => ({
                 ...option,
-                label: pathOr(option.label, ['translations', 'value', language], option),
+                label: path(['translations', 'value'], option) ? pathOr(option.label, ['translations', 'value', language], option) : (
+                    pathOr(option.label, ['translations', language], option)
+                ),
             }));
         }
     }
