@@ -32,6 +32,48 @@ const htmlOpdText =
         <p>Согласие вступает в силу в день его подписания и действует в течение семи календарных лет. Согласие может быть отозвано мною в любое время на основании моего письменного заявления.</p>
     </div>`;
 
+const htmlOpdText2 =
+    `<div>
+        <strong>
+            <div style="text-align: center;">СОГЛАСИЕ КАНДИДАТА</div>
+            <div style="text-align: center;">на обработку персоных данных</div>
+        </strong>
+        <p>Я, <input name="name" type="text" placeholder="ФИО" style="width: 400px;" required />, гражданин <input name="country" type="text" placeholder="страна" required />, личный емейл <input name="email" type="email" placeholder="личный email" required /> (далее «Кандидат»), даю согласие <strong>Обществу с ограниченной ответственностью «АКСЕНЧЕР»</strong>, ИНН 7705476338 ОГРН 1027705028405, находящемуся по адресу РФ, 115054, г. Москва, Павелецкая площадь д. 2, строение 2 (далее «<strong>Компания</strong>»), на обработку моих персональных данных, указанных в таблице ниже, в соответствии с Федеральным законом от 27.07.2006 N 152-ФЗ «О персональных данных» и иного применимого законодательства.</p>
+        <table style="border-collapse: collapse; border: 1px solid black;">
+            <tr style="border: 1px solid black;">
+                <th style="padding: 5px;">Перечень обрабатываемых персональных данных</th>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td style="padding: 5px;">Фамилия, имя, отчество</td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td style="padding: 5px;">Реквизиты документа, удостоверяющего личность (для кандидатов, в отношении которых будет проведена проверка и/или дальнейшее трудоустройство)</td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td style="padding: 5px;">Пол</td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td style="padding: 5px;">Гражданство</td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td style="padding: 5px;">Место регистрации и фактического проживания</td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td style="padding: 5px;">Номера телефонов (мобильный, домашний)</td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td style="padding: 5px;">Адрес электронной почты</td>
+            </tr>
+        </table>
+        <p>Для вышеуказанных целей разрешаю осуществлять следующие действия как автоматизированным, так и неавтоматизированным способом: сбор, запись, хранение, систематизация, накопление, уточнение (обновление, изменение), использования, копирование, обезличивание, комбинирование, блокирование, уничтожение и иные способы обработки, а также осуществлять трансграничную передачу аффилированным лицам Компании (список и адреса компаний доступны по ссылке <a href="https://www.sec.gov/Archives/edgar/data/1467373/000146737318000318/acn831201810-kexhibit211.htm" target="_blank">https://www.sec.gov/Archives/edgar/data/1467373/000146737318000318/acn831201810-kexhibit211.htm</a>), а также передачу в организацию, осуществляющую обработку персональных данных по поручению Компании: ООО «Аксор» (191186, г. Санкт-Петербург, проспект Невский, д. 10 литера. А) для подготовки и оформления трудового договора с Кандидатом и проверки достоверности предоставленных данных.</p>
+        <p>Срок обработки персональных данных Кандидатов, включенных в кадровый резерв, составляет 6 лет. Настоящее согласие может быть отозвано путем подачи письменного заявления.</p>
+        <p>Условия обработки Компанией персональных данных и иные применимые положения закреплены в Положении Компании о персональных данных (электронная версия доступна по ссылке <a href="https://www.accenture.com/_acnmedia/Accenture/ru-ru/PDF/Position_of_personal_data.pdf" target="_blank">https://www.accenture.com/_acnmedia/Accenture/ru-ru/PDF/Position_of_personal_data.pdf</a>) и Положении Компании о кадровом резерве (электронная версия доступна по ссылке <a href="https://www.accenture.com/_acnmedia/Accenture/Redesign-Assets/DotCom/Documents/Local/1/Accenture-Terms-of-Personnel-Reserve.pdf" target="_blank">https://www.accenture.com/_acnmedia/Accenture/Redesign-Assets/DotCom/Documents/Local/1/Accenture-Terms-of-Personnel-Reserve.pdf</a>).</p>
+        <p><label><input name="opdPurpose" type="checkbox" data-separate-field="opdPurpose" required />я выражаю согласие на обработку персональных данных для цели рассмотрения вопроса о моем трудоустройстве в Компании и включения в кадровый резерв Компании</label></p>
+        <p><label><input name="opdAccept" type="checkbox" data-separate-field="opdAccept" required />я выражаю согласие на передачу моих персональных данных в организацию, осуществляющую обработку персональных данных по поручению Компании: ООО «Аксор» (191186, г. Санкт-Петербург, проспект Невский, д. 10 литера. А) для подготовки и оформления трудового договора с Кандидатом и проверки достоверности предоставленных данных</label></p>
+        <p><label><input name="transmission" type="checkbox" data-separate-field="transmission" required />я выражаю согласие на трансграничную передачу моих персональных данных в другие компании группы Аксенчер</label></p>
+        <p><label><input name="mailing" type="checkbox" data-separate-field="mailing" />я выражаю согласие на получение рассылки материалов рекламного и/или информационного характера посредством SMS-сервисов, Viber, WhatsApp, Telegram, Skype и других месcенджеров, электронной почты и т.д.</label></p>
+    </div>`;
+
 const customComponents = {
     personalDataAgreement: props => {
         const [opened, setOpened] = useState(false);
@@ -84,7 +126,7 @@ class AppForm extends Component {
         const companyPda = path(['company', 'companySettings', 'pda'], vacancy);
         const searchPath = qs.parse(search, { ignoreQueryPrefix: true });
         const components = has('custom', searchPath) ? customComponents : {};
-        const htmlOpd = has('htmlOpd', searchPath) ? htmlOpdText : null;
+        const htmlOpd = has('htmlOpd', searchPath) ? htmlOpdText2 : null;
 
         return data.loading ? <div>Загрузка...</div> :
             data.error ? <div>Не удалось загрузить вакансию</div> :
