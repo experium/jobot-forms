@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { all, forEach, is } from 'ramda';
 import cx from 'classnames';
+import { FormSpy } from 'react-final-form';
 
 import styles from '../../styles/index.module.css';
 
@@ -14,11 +15,25 @@ const commonStyle = `
         font-size: 16px;
         pointer-events: auto;
     }
+    .opd-html-form label {
+        pointer-events: auto;
+    }
     .opd-html-form input:focus {
         outline: none;
     }
     .opd-html-form.submitted input:invalid {
         border-bottom: 1px solid red;
+    }
+    .opd-html-form input[type="checkbox"] {
+        position: relative;
+        margin-right: 10px;
+    }
+    .opd-html-form input[type="checkbox"]:required::after {
+        content: "*";
+        color: red;
+        top: -6px;
+        right: -8px;
+        position: absolute;
     }
 `;
 
@@ -35,8 +50,12 @@ const getHtml = body => `
                     font-family: Arial;
                     font-size: 16px;
                 }
-                .opd-html-form input {
+                .opd-html-form input,
+                .opd-html-form label {
                     pointer-events: none;
+                }
+                .opd-html-form input[type="checkbox"]:required::after {
+                    content: "";
                 }
             </style>
         </head>
@@ -64,7 +83,7 @@ class HtmlOpdForm extends Component {
         }
     }
 
-    onSubmit = () => {
+    onSubmit = ({ form }) => {
         const inputs = this.form.querySelectorAll('input');
         const valid = all(input => input.validity.valid, inputs);
 
@@ -72,7 +91,17 @@ class HtmlOpdForm extends Component {
 
         if (valid) {
             forEach(input => {
-                input.setAttribute('value', input.value);
+                if (input.type === 'checkbox') {
+                    input.setAttribute('checked', input.checked);
+                } else {
+                    input.setAttribute('value', input.value);
+                }
+
+                const separateField = input.getAttribute('data-separate-field');
+
+                if (separateField) {
+                    form.change(separateField, input.type === 'checkbox' ? input.checked : input.value);
+                }
             }, inputs);
 
             this.props.onSubmit(getHtml(this.form.innerHTML));
@@ -88,7 +117,9 @@ class HtmlOpdForm extends Component {
             <form ref={node => this.form = node}>
                 <div className={cx('opd-html-form', { submitted: this.state.submitted })} dangerouslySetInnerHTML={{ __html: html }} />
             </form>
-            <button className={styles.formBtn} type='button' onClick={this.onSubmit}>Согласен</button>
+            <FormSpy>
+                { formProps => <button className={styles.formBtn} type='button' onClick={() => this.onSubmit(formProps)}>Согласен</button> }
+            </FormSpy>
         </div>;
     }
 }

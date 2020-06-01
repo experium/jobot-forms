@@ -93,3 +93,8 @@ audio:focus {
     width: 75px;
     display: inline-block;
 }
+
+.vacancies-params {
+    margin: 24px;
+    margin-bottom: 0;
+}
