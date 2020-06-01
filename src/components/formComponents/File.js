@@ -150,7 +150,7 @@ class File extends Component {
         const isBlob = fileName === 'blob';
 
         switch (type) {
-            case 'image':
+            case 'photo':
                 return (
                     <div>
                         { isBlob ? (
@@ -196,7 +196,7 @@ class File extends Component {
         return <div>
             { !isEmpty(value) && (
                 <div className={styles.fileList}>
-                    { values.map((url, index) =>
+                    { values.map(({ url }, index) =>
                         <div className={styles.fileItem} key={`file-${index}`}>
                             { this.renderPreview(url, index) }
                             <div className={styles.fileButtonGroup}>
