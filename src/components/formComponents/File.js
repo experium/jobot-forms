@@ -62,6 +62,10 @@ class File extends Component {
             })
                 .then(response => response.json())
                 .then(data => {
+                    if (!data.id) {
+                        return this.setState({ error: true, loading: false });
+                    }
+
                     const { input: { name } } = this.props;
                     const fileName = data.filename;
                     const url = getFileUrl ? getFileUrl(data.id) : data.id;
