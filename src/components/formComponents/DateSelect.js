@@ -11,11 +11,40 @@ import { MONTHS } from '../../constants/dates';
 import styles from '../../styles/index.module.css';
 
 class DateSelect extends Component {
-    state = {
-        day: undefined,
-        month: undefined,
-        year: undefined
-    };
+    constructor(props) {
+        super(props);
+
+        let day = undefined;
+        let month = undefined;
+        let year = undefined;
+
+        const { settings: { format }, input: { value }} = props;
+
+        if (value) {
+            if (format === 'dd.MM.y') {
+                const date = moment(value, 'DD.MM.YYYY');
+
+                day = date.date();
+                month = date.month();
+                year = date.year();
+            } else if (format === 'MM.y') {
+                const date = moment(value, 'MM.YYYY');
+
+                month = date.month();
+                year = date.year();
+            } else if (format === 'y') {
+                const date = moment(value, 'YYYY');
+
+                year = date.year();
+            }
+        }
+
+        this.state = {
+            day,
+            month,
+            year
+        };
+    }
 
     onChange = (day, month, year) => {
         const format = path(['settings', 'format'], this.props);
