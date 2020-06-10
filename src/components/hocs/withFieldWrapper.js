@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { contains } from 'ramda';
-import { Translation } from 'react-i18next';
 
 import styles from '../../styles/index.module.css';
 
@@ -22,14 +21,8 @@ export default WrappedComponent =>
 
             return <div style={{ marginBottom: 20 }}>
                 { !this.hideLabel() &&
-                    <label className={styles.formLabel}>
-                        { label }{ !required && (
-                            <span className={styles.formLabelOptional}>
-                                <Translation>
-                                    { (t) => t('optional') }
-                                </Translation>
-                            </span>
-                        )}
+                    <label className={required ? styles.formLabelRequired : styles.formLabel}>
+                        { label }
                     </label>
                 }
                 <div>
