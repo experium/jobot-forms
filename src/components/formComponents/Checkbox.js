@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'react-responsive-modal';
 import RcCheckbox from 'rc-checkbox';
 import { path, isEmpty, contains, filter, prop } from 'ramda';
+import cx from 'classnames';
 import 'rc-checkbox/assets/index.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
@@ -48,13 +49,13 @@ class CheckboxComponent extends Component {
     }
 
     render() {
-        const { input: { value = [] }, options, disabled, settings } = this.props;
+        const { input: { value = [] }, options, disabled, settings, required } = this.props;
 
         return options && !isEmpty(options) ? (
             <div className='checkbox-block'>
                 { options.map(({ value: checkboxValue, label }) => {
                     return (
-                        <label className='checkbox-wrapper' key={label}>
+                        <label className={cx('checkbox-wrapper', { 'checkbox-wrapper-required': required })} key={label}>
                             <RcCheckbox
                                 onChange={this.onChange}
                                 className='checkbox'

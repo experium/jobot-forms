@@ -69,6 +69,19 @@
     display: inline-block;
 }
 
+.formLabelRequired {
+    margin-bottom: 10px;
+    display: inline-block;
+    position: relative;
+}
+
+.formLabelRequired::before {
+    content: "*";
+    color: red;
+    position: absolute;
+    left: -10px;
+}
+
 .formLabelOptional {
     color: #aaa;
 }
