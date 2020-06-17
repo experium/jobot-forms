@@ -49,13 +49,15 @@ class CheckboxComponent extends Component {
     }
 
     render() {
-        const { input: { value = [] }, options, disabled, settings, required } = this.props;
+        const { input: { value = [] }, options, disabled, settings, required, fieldType } = this.props;
 
         return options && !isEmpty(options) ? (
             <div className='checkbox-block'>
                 { options.map(({ value: checkboxValue, label }) => {
                     return (
-                        <label className={cx('checkbox-wrapper', { 'checkbox-wrapper-required': required })} key={label}>
+                        <label
+                            className={cx('checkbox-wrapper', { 'checkbox-wrapper-required': required || fieldType === 'personalDataAgreement' })}
+                            key={label}>
                             <RcCheckbox
                                 onChange={this.onChange}
                                 className='checkbox'
