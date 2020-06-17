@@ -32,7 +32,7 @@ export const validate = (field, value, props) => {
         })
     };
     let rule = rules[field.type] || yup.string();
-    rule = field.required ? rule.nullable().required() : rule.nullable();
+    rule = (field.required || field.type === 'personalDataAgreement') ? rule.nullable().required() : rule.nullable();
 
     try {
         rule.validateSync(value);

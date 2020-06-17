@@ -28,6 +28,11 @@
     background: #4487dd;
 }
 
+.formBtn:disabled {
+    cursor: not-allowed;
+    background: #ccc;
+}
+
 .formBtnCancel {
     color: white;
     background: #ffffff;

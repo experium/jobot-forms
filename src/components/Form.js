@@ -215,10 +215,10 @@ class Form extends Component {
                 onSubmit={this.onSubmit}
                 mutators={{ ...arrayMutators }}
                 keepDirtyOnReinitialize={true}
-                subscription={{ values: false, submitFailed: true }}
+                subscription={{ values: false, submitFailed: true, invalid: true }}
                 initialValues={this.state.initialValues}
                 noValidate>
-                { ({ handleSubmit, form }) => {
+                { ({ handleSubmit, form, invalid }) => {
                     if (!this.formProps) {
                         this.formProps = form;
                     }
@@ -273,7 +273,7 @@ class Form extends Component {
                             </div>
                         )}
                         <div>
-                            <button className={styles.formBtn} type='submit'>{ t('send') }</button>
+                            <button className={styles.formBtn} type='submit' disabled={invalid}>{ t('send') }</button>
                         </div>
                     </form>;
                 }}
