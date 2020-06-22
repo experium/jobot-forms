@@ -4,7 +4,7 @@ import '../utils/yup';
 
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals } from 'ramda';
+import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals, isEmpty } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
@@ -24,6 +24,7 @@ import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries'
 import { compositeValidator, validate } from '../utils/validation';
 import { RU } from '../constants/translations';
 import withFieldWrapper from './hocs/withFieldWrapper';
+import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -72,11 +73,21 @@ class Form extends Component {
             dictionaries: {},
             errors: {},
             language: RU,
-            initialValues: props.initialValues
+            initialValues: props.initialValues,
+            fieldsWithoutValidation: {},
         };
 
         this.dictionaryTypes = [];
         this.formProps = null;
+    }
+
+    changeFieldValidation = (fieldName, validate) => {
+        this.setState(state => ({
+            fieldsWithoutValidation: {
+                ...state.fieldsWithoutValidation,
+                [fieldName]: validate
+            },
+        }));
     }
 
     componentDidMount = () => {
@@ -175,8 +186,34 @@ class Form extends Component {
         }
     }
 
-    renderField = (field, name) => {
+    getChildQuestions = (fieldName) => {
+
+    }
+
+    onChangeQuestion = (field) => (value, form) => {
+        const { batch, change, getState } = form;
+
+        const { fields } = this.props;
+        const { fieldType, field: name } = field;
+        const isLinked  = isLinkedQuestion(field);
+        const formValues = prop('values', getState());
+
+        if (isLinked && formValues[name] !== value) {
+            const geoQuestions = findChildGeoQuestionsNames(fields, fieldType, formValues);
+
+            !isEmpty(geoQuestions) && (
+                batch(() => {
+                    return geoQuestions.forEach(fieldName => {
+                        change(fieldName, undefined);
+                    });
+                })
+            );
+        }
+    };
+
+    renderField = (field, name, form) => {
         const { opd, getFileUrl, postFileUrl, apiUrl, language, components, htmlOpd } = this.props;
+        const { fieldsWithoutValidation, errors } = this.state;
 
         return <Field
             name={name || field.field}
@@ -184,7 +221,7 @@ class Form extends Component {
             fieldType={field.type}
             options={this.getOptions(field)}
             opd={opd}
-            validate={value => validate(field, value, this.props)}
+            validate={value => validate(field, value, this.props, fieldsWithoutValidation)}
             getDictionary={this.getDictionary}
             dictionaryType={this.getDictionaryType(field)}
             getFileUrl={getFileUrl}
@@ -192,8 +229,13 @@ class Form extends Component {
             apiUrl={apiUrl}
             {...field}
             label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
-            errors={this.state.errors}
+            errors={errors}
             htmlOpd={htmlOpd}
+            form={form}
+            onChange={this.onChangeQuestion(field)}
+            initialRequired={field.required}
+            fieldsWithoutValidation={fieldsWithoutValidation}
+            changeFieldValidation={this.changeFieldValidation}
         />;
     }
 
@@ -215,7 +257,7 @@ class Form extends Component {
                 onSubmit={this.onSubmit}
                 mutators={{ ...arrayMutators }}
                 keepDirtyOnReinitialize={true}
-                subscription={{ values: false, submitFailed: true, invalid: true }}
+                subscription={{ values: false, submitFailed: true, invalid: true, modified: true }}
                 initialValues={this.state.initialValues}
                 noValidate>
                 { ({ handleSubmit, form, invalid }) => {
@@ -242,7 +284,7 @@ class Form extends Component {
                                                             <div key={name}>
                                                                 { pathOr([], ['settings', 'questions'], field).map(question =>
                                                                     <div key={`${name}-${question.field}`}>
-                                                                        { this.renderField(question, `${name}.${question.field}`) }
+                                                                        { this.renderField(question, `${name}.${question.field}`, form) }
                                                                     </div>
                                                                 )}
                                                                 { this.renderCompositeRemoveButton(field, index) && (
@@ -263,12 +305,12 @@ class Form extends Component {
                                             </FieldArray> :
                                             pathOr([], ['settings', 'questions'], field).map(question =>
                                                 <div key={`${field.field}-${question.field}`}>
-                                                    { this.renderField(question, `${field.field}.${question.field}`) }
+                                                    { this.renderField(question, `${field.field}.${question.field}`, form) }
                                                 </div>
                                             )
                                         }
                                     </Fragment> :
-                                    this.renderField(field)
+                                    this.renderField(field, null, form)
                                 }
                             </div>
                         )}

@@ -5,8 +5,25 @@ import styles from '../../styles/index.module.css';
 
 export default WrappedComponent =>
     class FieldWrapper extends Component {
+        constructor(props) {
+            super(props);
+
+            this.state = {
+                required: this.props.required,
+            };
+        }
+
+        toggleRequired = (required) => {
+            const { initialRequired } = this.props;
+
+            this.setState({ required: required ? initialRequired || required : false });
+        }
+
         onChange = value => {
+            const { onChange, form } = this.props;
             this.props.input.onChange(value);
+
+            onChange && onChange(value, form);
         }
 
         hideLabel = () => {
@@ -17,7 +34,8 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, required, meta: { submitFailed, error }} = this.props;
+            const { label, meta: { submitFailed, error }, input: { value }} = this.props;
+            const { required } = this.state;
 
             return <div style={{ marginBottom: 20 }}>
                 { !this.hideLabel() &&
@@ -26,7 +44,12 @@ export default WrappedComponent =>
                     </label>
                 }
                 <div>
-                    <WrappedComponent {...this.props} onChange={this.onChange} />
+                    <WrappedComponent
+                        {...this.props}
+                        onChange={this.onChange}
+                        toggleRequired={this.toggleRequired}
+                        required={required}
+                    />
                 </div>
                 { submitFailed && error && <div className={styles.error}>{ error }</div> }
             </div>;

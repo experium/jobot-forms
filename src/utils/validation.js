@@ -13,7 +13,7 @@ export const compositeValidator = field => (value, allValues) => {
     }
 };
 
-export const validate = (field, value, props) => {
+export const validate = (field, value, props, fieldsWithoutValidation) => {
     const htmlOpd = path(['htmlOpd'], props);
 
     const rules = {
@@ -32,7 +32,9 @@ export const validate = (field, value, props) => {
         })
     };
     let rule = rules[field.type] || yup.string();
-    rule = (field.required || field.type === 'personalDataAgreement') ? rule.nullable().required() : rule.nullable();
+    rule = (field.type === 'personalDataAgreement') ? rule.nullable().required() : (
+        field.required && !fieldsWithoutValidation[field.field] ? rule.nullable().required() : rule.nullable()
+    );
 
     try {
         rule.validateSync(value);
