@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactSelect, { components } from 'react-select';
-import { path, contains, find, propEq, filter, findIndex, equals, take } from 'ramda';
+import { path, contains, find, propEq, filter, findIndex, equals, take, isEmpty } from 'ramda';
 import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -31,12 +31,34 @@ class Select extends Component {
     }
 
     componentDidUpdate(prev) {
-        const { settings, formValues } = this.props;
+        const {
+            settings,
+            formValues,
+            required,
+            toggleRequired,
+            fieldsWithoutValidation,
+            changeFieldValidation,
+            input: {
+                name
+            },
+            options: propsOptions
+        } = this.props;
+        const options = this.getOptions();
 
         if (!equals(formValues[settings.regionField], prev.formValues[prev.settings.regionField]) ||
             !equals(formValues[settings.countryField], prev.formValues[prev.settings.countryField])
         ) {
             this.onChange({ value: undefined });
+        }
+
+        const newRequiredStatus = !isEmpty(options);
+
+        if (newRequiredStatus !== required) {
+            toggleRequired(newRequiredStatus);
+        }
+
+        if (fieldsWithoutValidation[name] !== isEmpty(options) && !isEmpty(propsOptions)) {
+            changeFieldValidation(name, isEmpty(options));
         }
     }
 
@@ -84,18 +106,28 @@ class Select extends Component {
     getOptions = () => {
         const { settings, options, formValues } = this.props;
 
-        if (!formValues[settings.regionField] && !formValues[settings.countryField]) {
+        if (!formValues[settings.regionField] && !formValues[settings.countryField] && !formValues.country) {
             return options;
         }
 
-        return filter(item => {
+        const filteredOptions =  filter(item => {
             const regionEqual = formValues[settings.regionField] === item.region;
             const countryEqual = formValues[settings.countryField] === item.country;
 
-            return formValues[settings.regionField] && formValues[settings.countryField] ? regionEqual && countryEqual :
-                formValues[settings.regionField] ? regionEqual :
-                    formValues[settings.countryField] ? countryEqual : true;
+            if (formValues[settings.regionField] && formValues[settings.countryField]) {
+                return regionEqual && countryEqual;
+            } else if (formValues[settings.regionField]) {
+                return regionEqual;
+            } else if (formValues[settings.countryField]) {
+                return countryEqual;
+            } else if (settings.regionField && formValues.country) {
+                return formValues.country === item.country;
+            } else {
+                return true;
+            }
         }, options);
+
+        return filteredOptions;
     }
 
     getDropdownIndicator = (props) => {
@@ -125,6 +157,7 @@ class Select extends Component {
         const isError = errors[dictionaryType];
 
         return <ReactSelect
+            key={value}
             classNamePrefix='search-input'
             value={multiple ? filter(item => contains(item.value, value || []), options) : find(propEq('value', value), options)}
             options={options}
