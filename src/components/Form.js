@@ -212,7 +212,7 @@ class Form extends Component {
     };
 
     renderField = (field, name, form) => {
-        const { opd, getFileUrl, postFileUrl, apiUrl, language, components, htmlOpd } = this.props;
+        const { opd, getFileUrl, postFileUrl, apiUrl, language, components, htmlOpd, serverErrors } = this.props;
         const { fieldsWithoutValidation, errors } = this.state;
 
         return <Field
@@ -236,6 +236,7 @@ class Form extends Component {
             initialRequired={field.required}
             fieldsWithoutValidation={fieldsWithoutValidation}
             changeFieldValidation={this.changeFieldValidation}
+            serverErrors={serverErrors}
         />;
     }
 
