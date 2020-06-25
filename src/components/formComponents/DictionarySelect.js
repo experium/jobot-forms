@@ -108,7 +108,7 @@ class Select extends Component {
                 options={options}
                 onChange={this.onChange}
                 isMulti={multiple}
-                isSearchable={true}
+                isSearchable={options.length > 10}
                 noOptionsMessage={() => t('noOptionsMessage')}
                 placeholder={null}
                 classNamePrefix='jobot-forms'
