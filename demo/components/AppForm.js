@@ -145,7 +145,7 @@ class AppForm extends Component {
                         mutation={createApplicant}
                         onCompleted={this.onCompleted}
                         onError={this.onError}>
-                        { mutation =>
+                        { (mutation, { error }) =>
                             <Form
                                 apiUrl={API_URL}
                                 fields={vacancy.questions || []}
@@ -163,6 +163,7 @@ class AppForm extends Component {
                                 language={this.state.language}
                                 components={components}
                                 htmlOpd={htmlOpd}
+                                serverErrors={error}
                             />
                         }
                     </Mutation>

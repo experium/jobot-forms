@@ -14,7 +14,8 @@ import formStyles from '../../styles/index.module.css';
 const TYPES = {
     audio: 'audio/*',
     video: 'video/*',
-    image: 'image/*'
+    image: 'image/jpeg, image/tiff, image/png',
+    document: 'text/plain, application/msword, application/rtf, application/pdf, text/html, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.oasis.opendocument.text',
 };
 
 const MEDIA = {
@@ -234,7 +235,8 @@ class File extends Component {
                             type='file'
                             value=''
                             onChange={this.onChange}
-                            accept={TYPES[type]} />
+                            accept={TYPES[type]}
+                        />
                         <label htmlFor={name}>{t('upload')}</label>
                     </div>
                 }
