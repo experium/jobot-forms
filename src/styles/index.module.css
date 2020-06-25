@@ -122,6 +122,14 @@
     margin-right: 10px;
 }
 
+.formSection {
+    margin-bottom: 30px;
+}
+
+.formSectionRow {
+    margin-bottom: 30px;
+}
+
 .formSectionBtn {
     color: white;
     background: #3a70bb;
@@ -129,7 +137,6 @@
     border: none;
     font-size: inherit;
     cursor: pointer;
-    margin-bottom: 15px;
 }
 
 .formSectionBtn:focus {

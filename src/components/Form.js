@@ -258,9 +258,10 @@ class Form extends Component {
                 onSubmit={this.onSubmit}
                 mutators={{ ...arrayMutators }}
                 keepDirtyOnReinitialize={true}
-                subscription={{ values: false, submitFailed: true, invalid: true, modified: true }}
+                subscription={{ values: false, submitFailed: true, invalid: true }}
                 initialValues={this.state.initialValues}
-                noValidate>
+                noValidate
+            >
                 { ({ handleSubmit, form, invalid }) => {
                     if (!this.formProps) {
                         this.formProps = form;
@@ -275,14 +276,14 @@ class Form extends Component {
                                         { path(['settings', 'multiple'], field) ?
                                             <FieldArray
                                                 name={field.field}
-                                                validate={compositeValidator(field)}
+                                                validate={field.required ? compositeValidator : undefined}
                                                 initialValue={[{ }]}
                                             >
                                                 { (fieldProps) =>
-                                                    <div>
+                                                    <div className={styles.formSection}>
                                                         <CompositeError meta={prop('meta', fieldProps)} />
                                                         { fieldProps.fields.map((name, index) =>
-                                                            <div key={name}>
+                                                            <div key={name} className={styles.formSectionRow}>
                                                                 { pathOr([], ['settings', 'questions'], field).map(question =>
                                                                     <div key={`${name}-${question.field}`}>
                                                                         { this.renderField(question, `${name}.${question.field}`, form) }

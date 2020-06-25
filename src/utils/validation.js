@@ -3,14 +3,8 @@ import * as yup from 'yup';
 
 import i18n from './i18n';
 
-export const compositeValidator = field => (value, allValues) => {
-    if (field.required) {
-        const blockValue = propOr([], field.field, allValues);
-
-        return blockValue.length > 0 ? undefined : 'Блок обязателен для заполнения';
-    } else {
-        return undefined;
-    }
+export const compositeValidator = (value) => {
+    return value && (value.length > 0) ? undefined : 'Блок обязателен для заполнения';
 };
 
 export const validate = (field, value, props, fieldsWithoutValidation) => {
