@@ -150,7 +150,7 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value }, settings, fieldType, errors, dictionaryType, t } = this.props;
+        const { input: { value }, settings, errors, dictionaryType, t } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions();
         const MenuList = this.getMenuList(options);
@@ -163,7 +163,7 @@ class Select extends Component {
             options={options}
             onChange={this.onChange}
             isMulti={multiple}
-            isSearchable={contains(fieldType, ['city', 'country'])}
+            isSearchable={options.length > 10}
             placeholder={null}
             noOptionsMessage={() => t('noOptionsMessage')}
             classNamePrefix='jobot-forms'
