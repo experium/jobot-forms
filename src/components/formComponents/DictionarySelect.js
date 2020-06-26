@@ -66,7 +66,7 @@ class Select extends Component {
         if (multiple) {
             onChange(data && data.length ? data.map(({ id }) => id) : undefined);
         } else {
-            onChange(data.id || undefined);
+            onChange(path(['id'], data) || undefined);
         }
     }
 
@@ -116,6 +116,7 @@ class Select extends Component {
                 getOptionLabel={(option) => option.value}
                 getOptionValue={(option) => option.id}
                 isLoading={this.state.loading}
+                isClearable
             />
         );
     }

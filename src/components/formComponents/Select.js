@@ -69,7 +69,7 @@ class Select extends Component {
         if (multiple) {
             onChange(data && data.length ? data.map(({ value }) => value) : undefined);
         } else {
-            onChange(data.value || undefined);
+            onChange(path(['value'], data) || undefined);
         }
     }
 
@@ -174,7 +174,8 @@ class Select extends Component {
                 MenuList,
                 IndicatorSeparator: () => null,
                 DropdownIndicator: this.getDropdownIndicator,
-            }} />;
+            }}
+            isClearable />;
     }
 }
 
