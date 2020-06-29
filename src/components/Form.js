@@ -25,6 +25,7 @@ import { compositeValidator, validate } from '../utils/validation';
 import { RU } from '../constants/translations';
 import withFieldWrapper from './hocs/withFieldWrapper';
 import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
+import { fieldArrayInitialValues } from '../constants/form';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -73,7 +74,7 @@ class Form extends Component {
             dictionaries: {},
             errors: {},
             language: RU,
-            initialValues: props.initialValues,
+            initialValues: props.initialValues || {},
             fieldsWithoutValidation: {},
         };
 
@@ -277,7 +278,7 @@ class Form extends Component {
                                             <FieldArray
                                                 name={field.field}
                                                 validate={field.required ? compositeValidator : undefined}
-                                                initialValue={[{ }]}
+                                                initialValue={fieldArrayInitialValues}
                                             >
                                                 { (fieldProps) =>
                                                     <div className={styles.formSection}>
