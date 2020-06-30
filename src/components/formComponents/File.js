@@ -103,7 +103,7 @@ class File extends Component {
     }
 
     onDelete = (index) => {
-        const { input: { value, onChange, name }} = this.props;
+        const { input: { value, name }, onChange } = this.props;
         const fieldFiles = path(['fileNames', name], this.state);
 
         this.setState({
