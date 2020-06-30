@@ -114,6 +114,7 @@ class File extends Component {
 
         if (Array.isArray(value)) {
             const newFieldValue = remove(index, 1, value);
+
             onChange(isEmpty(newFieldValue) ? undefined : newFieldValue);
         } else {
             onChange(undefined);
