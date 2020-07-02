@@ -4,6 +4,8 @@ import Modal from 'react-responsive-modal';
 import RcCheckbox from 'rc-checkbox';
 import { path, isEmpty, contains, filter, prop } from 'ramda';
 import cx from 'classnames';
+import { withTranslation } from 'react-i18next';
+
 import 'rc-checkbox/assets/index.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
