@@ -20,10 +20,15 @@ export default WrappedComponent =>
         }
 
         onChange = value => {
-            const { onChange, form } = this.props;
+            const { onChange, field, form, form: { resetFieldState }, meta: { modified } } = this.props;
+            const serverError = this.getServerError();
             this.props.input.onChange(value);
 
             onChange && onChange(value, form);
+
+            if (serverError && modified) {
+                resetFieldState(field);
+            }
         }
 
         hideLabel = () => {
@@ -56,7 +61,7 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, meta: { submitFailed, error } } = this.props;
+            const { label, meta: { submitFailed, error, modified, dirtySinceLastSubmit }, input } = this.props;
             const { required } = this.state;
             const serverError = this.getServerError();
 
@@ -75,7 +80,7 @@ export default WrappedComponent =>
                     />
                 </div>
                 { submitFailed && error && <div className={styles.error}>{ error }</div> }
-                { serverError && <div className={styles.error}>{ serverError }</div> }
+                { (modified || !dirtySinceLastSubmit) && serverError && <div className={styles.error}>{ serverError }</div> }
             </div>;
         }
     };
