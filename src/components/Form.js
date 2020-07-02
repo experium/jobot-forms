@@ -261,7 +261,7 @@ class Form extends Component {
                 input.focus();
             }
 
-            window.scrollTo({
+            (this.props.scrollContainer || window).scrollTo({
                 top: invalidField.getBoundingClientRect().top + window.scrollY - 15,
                 behavior: 'smooth'
             });
