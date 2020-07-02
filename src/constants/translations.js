@@ -15,6 +15,8 @@ export const TRANSLATIONS = {
             'recordAudio': 'Record audio',
             'recordVideo': 'Record video',
             'takePhoto': 'Take a photo',
+            'opdLabel': 'I am agree with',
+            'opdLink': 'personal data processing',
             'MONTHS': [
                 { value: 0, label: 'January' },
                 { value: 1, label: 'February' },
@@ -64,6 +66,8 @@ export const TRANSLATIONS = {
             'recordAudio': 'Записать аудио',
             'recordVideo': 'Записать видео',
             'takePhoto': 'Сделать фото',
+            'opdLabel': 'Я даю согласие на',
+            'opdLink': 'обработку персональных данных',
             'MONTHS': [
                 { value: 0, label: 'Январь' },
                 { value: 1, label: 'Февраль' },

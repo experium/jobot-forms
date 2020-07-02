@@ -79,7 +79,7 @@ class CheckboxComponent extends Component {
 
 const Checkbox = withFieldWrapper(CheckboxComponent);
 
-export class PersonalDataAgreement extends Component {
+class PersonalDataAgreementComponent extends Component {
     state = {
         opened: false,
         openedHtml: false
@@ -97,8 +97,10 @@ export class PersonalDataAgreement extends Component {
     closeHtml = () => this.setState({ openedHtml: false });
 
     getLabel = () => {
+        const { t } = this.props;
+
         return <span>
-            Я даю согласие на <span className={this.props.opd ? styles.formLink : styles.withoutOpd } onClick={this.open}>обработку персональных данных</span>
+            {t('opdLabel')} <span className={this.props.opd ? styles.formLink : styles.withoutOpd } onClick={this.open}>{t('opdLink')}</span>
             <Modal
                 open={this.state.opened}
                 onClose={this.close}
@@ -150,6 +152,8 @@ export class PersonalDataAgreement extends Component {
         </Fragment>;
     }
 }
+
+export const PersonalDataAgreement = withTranslation()(PersonalDataAgreementComponent);
 
 export class Boolean extends Component {
     render() {
