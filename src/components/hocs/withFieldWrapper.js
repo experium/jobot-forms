@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { contains, find, propEq, propOr, path, prop } from 'ramda';
+import cx from 'classnames';
 
 import styles from '../../styles/index.module.css';
 
@@ -65,7 +66,7 @@ export default WrappedComponent =>
             const { required } = this.state;
             const serverError = this.getServerError();
 
-            return <div style={{ marginBottom: 20 }}>
+            return <div style={{ marginBottom: 20 }} className={cx({ 'jobot-form-invalid': !!error })}>
                 { !this.hideLabel() &&
                     <label className={required ? styles.formLabelRequired : styles.formLabel}>
                         { label }

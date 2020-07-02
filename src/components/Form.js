@@ -251,10 +251,29 @@ class Form extends Component {
         }
     }
 
+    handleSubmit = (e, handleSubmit) => {
+        const invalidField = this.container.querySelector('.jobot-form-invalid');
+
+        if (invalidField) {
+            const input = invalidField.querySelector('input');
+
+            if (input) {
+                input.focus();
+            }
+
+            window.scrollTo({
+                top: invalidField.getBoundingClientRect().top + window.scrollY - 15,
+                behavior: 'smooth'
+            });
+        }
+
+        handleSubmit(e);
+    }
+
     render() {
         const { fields, language, t } = this.props;
 
-        return <div className={styles.formWrapper}>
+        return <div className={styles.formWrapper} ref={node => this.container = node}>
             <FinalFormForm
                 onSubmit={this.onSubmit}
                 mutators={{ ...arrayMutators }}
@@ -268,7 +287,7 @@ class Form extends Component {
                         this.formProps = form;
                     }
 
-                    return <form onSubmit={handleSubmit}>
+                    return <form onSubmit={e => this.handleSubmit(e, handleSubmit)}>
                         { fields.map((field) =>
                             <div key={field.field}>
                                 { field.type === 'composite' ?
@@ -318,7 +337,7 @@ class Form extends Component {
                             </div>
                         )}
                         <div>
-                            <button className={styles.formBtn} type='submit' disabled={invalid}>{ t('send') }</button>
+                            <button className={styles.formBtn} type='submit'>{ t('send') }</button>
                         </div>
                     </form>;
                 }}
