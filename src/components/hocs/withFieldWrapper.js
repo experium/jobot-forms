@@ -62,7 +62,7 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, meta: { submitFailed, error, modified, dirtySinceLastSubmit }, input } = this.props;
+            const { label, meta: { submitFailed, error, modified, dirtySinceLastSubmit } } = this.props;
             const { required } = this.state;
             const serverError = this.getServerError();
 
