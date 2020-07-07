@@ -28,7 +28,7 @@ class Select extends Component {
                         dictionary: dictionaryId,
                         parent,
                     },
-                    pagination: { limit: 0 },
+                    pagination: JSON.stringify({ limit: 0 }),
                     relations: ['parent']
                 }, { addQueryPrefix: true })
             ) : (
@@ -38,7 +38,7 @@ class Select extends Component {
                         parent: Array.isArray(parentId) ? undefined : parentId,
                         parents: Array.isArray(parentId) ? parentId : undefined
                     },
-                    pagination: { limit: 0 },
+                    pagination: JSON.stringify({ limit: 0 }),
                     relations: ['parent']
                 }, { addQueryPrefix: true })
             );
@@ -208,16 +208,12 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value }, settings, t, fields } = this.props;
+        const { input: { value }, settings, t } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions();
 
         return (
             <div>
-                <button onClick={ () => {
-                    const { mutators: { mutateValue } } = this.props.form;
-                    mutateValue(this.props.field);
-                }}>asdasdasd</button>
                 <ReactSelect
                     key={value}
                     value={multiple ? filter(item => contains(item.id, value || []), options) : find(propEq('id', value), options)}
