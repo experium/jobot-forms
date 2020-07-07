@@ -28,6 +28,7 @@ class Select extends Component {
                         dictionary: dictionaryId,
                         parent,
                     },
+                    pagination: { limit: 0 },
                     relations: ['parent']
                 }, { addQueryPrefix: true })
             ) : (
@@ -37,6 +38,7 @@ class Select extends Component {
                         parent: Array.isArray(parentId) ? undefined : parentId,
                         parents: Array.isArray(parentId) ? parentId : undefined
                     },
+                    pagination: { limit: 0 },
                     relations: ['parent']
                 }, { addQueryPrefix: true })
             );
