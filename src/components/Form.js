@@ -188,6 +188,10 @@ class Form extends Component {
         this.state.dictionaries[GEO_DICTIONARIES[field.type]] ||
         pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }));
 
+        if (isEmpty(options)) {
+            return undefined;
+        }
+
         if (language === RU) {
             return options;
         } else {

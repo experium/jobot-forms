@@ -17,7 +17,7 @@ export default WrappedComponent =>
         toggleRequired = (required) => {
             const { initialRequired } = this.props;
 
-            this.setState({ required: required ? initialRequired || required : false });
+            initialRequired && this.setState({ required: required ? initialRequired || required : false });
         }
 
         onChange = value => {

@@ -12,10 +12,6 @@ import withFormValues from '../hocs/withFormValues';
 export const HEIGHT = 33;
 
 class Select extends Component {
-    static defaultProps = {
-        options: []
-    };
-
     componentDidMount() {
         this.fetchDictionary();
     }
@@ -152,7 +148,7 @@ class Select extends Component {
     render() {
         const { input: { value }, settings, errors, dictionaryType, t } = this.props;
         const multiple = path(['multiple'], settings);
-        const options = this.getOptions();
+        const options = this.getOptions() || [];
         const MenuList = this.getMenuList(options);
         const isError = errors[dictionaryType];
 
