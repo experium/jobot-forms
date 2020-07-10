@@ -14,7 +14,7 @@ import Input from './formComponents/Input';
 import Checkbox, { PersonalDataAgreement, Boolean } from './formComponents/Checkbox';
 import Select from './formComponents/Select';
 import DictionarySelect from './formComponents/DictionarySelect';
-import MaskedInput, { PhoneInput } from './formComponents/MaskedInput';
+import { PhoneInput } from './formComponents/MaskedInput';
 import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
 import '../styles/index.css';
@@ -37,10 +37,9 @@ const CompositeError = ({ meta }) => {
 
 const getFieldComponent = (field, components) => {
     const { type, settings = {} } = field;
-    const mask = prop('mask', settings);
 
     const DEFAULT_FIELDS = {
-        text: mask ? MaskedInput : Input,
+        text: Input,
         email: Input,
         personalDataAgreement: PersonalDataAgreement,
         dictionary: prop('checkboxes', settings) ? (
