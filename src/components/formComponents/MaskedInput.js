@@ -8,14 +8,13 @@ import { prop } from 'ramda';
 
 class MaskedInputComponent extends Component {
     render() {
-        const { input: { value }, onChange, mask, settings = {} } = this.props;
-        const fieldSettingsMask = prop('mask', settings);
+        const { input: { value }, onChange, mask } = this.props;
 
         return <Masked
             className={styles.formInput}
             value={value}
             onChange={onChange}
-            mask={mask || fieldSettingsMask}
+            mask={mask}
             placeholderChar={'\u2000'}
             keepCharPositions={false}
             guide />;
@@ -25,4 +24,3 @@ class MaskedInputComponent extends Component {
 const MaskedInput = withFieldWrapper(MaskedInputComponent);
 
 export const PhoneInput = props => <MaskedInput {...props} mask={value => value && value[0] === '8' ? PHONE_MASK_EIGHT : PHONE_MASK} />;
-export default MaskedInput;
