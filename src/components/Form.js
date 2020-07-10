@@ -62,6 +62,8 @@ const getFieldComponent = (field, components) => {
     return fields[type];
 };
 
+const defaultFormRender = ({ fields, renderField }) => fields.map(renderField);
+
 class Form extends Component {
     static defaultProps = {
         fields: [],
@@ -287,11 +289,13 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, t } = this.props;
+        const { fields, language, formRender, t } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
         };
+
+        const FormRender = formRender || defaultFormRender;
 
         return <div className={styles.formWrapper} ref={node => this.container = node}>
             <CompanyDictionaryContext.Provider value={contextValue}>
@@ -309,54 +313,57 @@ class Form extends Component {
                         }
 
                         return <form onSubmit={e => this.handleSubmit(e, handleSubmit)}>
-                            { fields.map((field) =>
-                                <div key={field.field}>
-                                    { field.type === 'composite' ?
-                                        <Fragment>
-                                            <h2>{ language ? pathOr(field.label, ['translations', 'label', language], field) : field.label }</h2>
-                                            { path(['settings', 'multiple'], field) ?
-                                                <FieldArray
-                                                    name={field.field}
-                                                    validate={field.required ? compositeValidator : undefined}
-                                                    initialValue={fieldArrayInitialValues}
-                                                >
-                                                    { (fieldProps) =>
-                                                        <div className={styles.formSection}>
-                                                            <CompositeError meta={prop('meta', fieldProps)} />
-                                                            { fieldProps.fields.map((name, index) =>
-                                                                <div key={name} className={styles.formSectionRow}>
-                                                                    { pathOr([], ['settings', 'questions'], field).map(question =>
-                                                                        <div key={`${name}-${question.field}`}>
-                                                                            { this.renderField(question, `${name}.${question.field}`, form) }
-                                                                        </div>
-                                                                    )}
-                                                                    { this.renderCompositeRemoveButton(field, index) && (
-                                                                        <button
-                                                                            className={styles.formSectionBtn}
-                                                                            type='button'
-                                                                            onClick={() => fieldProps.fields.remove(index)}
-                                                                        >
-                                                                            { t('remove') }
-                                                                        </button>
-                                                                    )}
-                                                                </div>
-                                                            )}
-                                                            <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
-                                                        </div>
+                            <FormRender
+                                fields={fields}
+                                renderField={field =>
+                                    <div key={field.field}>
+                                        { field.type === 'composite' ?
+                                            <Fragment>
+                                                <h2>{ language ? pathOr(field.label, ['translations', 'label', language], field) : field.label }</h2>
+                                                { path(['settings', 'multiple'], field) ?
+                                                    <FieldArray
+                                                        name={field.field}
+                                                        validate={field.required ? compositeValidator : undefined}
+                                                        initialValue={fieldArrayInitialValues}
+                                                    >
+                                                        { (fieldProps) =>
+                                                            <div className={styles.formSection}>
+                                                                <CompositeError meta={prop('meta', fieldProps)} />
+                                                                { fieldProps.fields.map((name, index) =>
+                                                                    <div key={name} className={styles.formSectionRow}>
+                                                                        { pathOr([], ['settings', 'questions'], field).map(question =>
+                                                                            <div key={`${name}-${question.field}`}>
+                                                                                { this.renderField(question, `${name}.${question.field}`, form) }
+                                                                            </div>
+                                                                        )}
+                                                                        { this.renderCompositeRemoveButton(field, index) && (
+                                                                            <button
+                                                                                className={styles.formSectionBtn}
+                                                                                type='button'
+                                                                                onClick={() => fieldProps.fields.remove(index)}
+                                                                            >
+                                                                                { t('remove') }
+                                                                            </button>
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                                <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
+                                                            </div>
 
-                                                    }
-                                                </FieldArray> :
-                                                pathOr([], ['settings', 'questions'], field).map(question =>
-                                                    <div key={`${field.field}-${question.field}`}>
-                                                        { this.renderField(question, `${field.field}.${question.field}`, form) }
-                                                    </div>
-                                                )
-                                            }
-                                        </Fragment> :
-                                        this.renderField(field, null, form)
-                                    }
-                                </div>
-                            )}
+                                                        }
+                                                    </FieldArray> :
+                                                    pathOr([], ['settings', 'questions'], field).map(question =>
+                                                        <div key={`${field.field}-${question.field}`}>
+                                                            { this.renderField(question, `${field.field}.${question.field}`, form) }
+                                                        </div>
+                                                    )
+                                                }
+                                            </Fragment> :
+                                            this.renderField(field, null, form)
+                                        }
+                                    </div>
+                                }
+                            />
                             <div>
                                 <button className={styles.formBtn} type='submit'>{ t('send') }</button>
                             </div>

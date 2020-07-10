@@ -21,6 +21,7 @@ Form components
 ### Props
 
 - `fields`: form fields array
+- `formRender`: custom form fields array renderer
 - `onSubmit`: `onSubmit` handler will be called when form will be submitted
 - `opd`: personal data agreement text
 - `postFileUrl`: post file url
