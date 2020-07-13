@@ -62,7 +62,7 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, meta: { submitFailed, error, modified, dirtySinceLastSubmit } } = this.props;
+            const { label, extra = '', meta: { submitFailed, error, modified, dirtySinceLastSubmit } } = this.props;
             const { required } = this.state;
             const serverError = this.getServerError();
 
@@ -70,6 +70,7 @@ export default WrappedComponent =>
                 { !this.hideLabel() &&
                     <label className={required ? styles.formLabelRequired : styles.formLabel}>
                         { label }
+                        { extra }
                     </label>
                 }
                 <div>

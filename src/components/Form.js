@@ -246,6 +246,7 @@ class Form extends Component {
             apiUrl={apiUrl}
             {...field}
             label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
+            extra={path(['extra'], field)}
             errors={errors}
             htmlOpd={htmlOpd}
             form={form}
