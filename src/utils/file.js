@@ -1,4 +1,5 @@
-import File from '../components/formComponents/File';
+import i18n from './i18n';
+import { test } from 'ramda';
 
 export function dataURItoBlob(dataURI, fileName) {
     let byteString;
@@ -21,3 +22,17 @@ export function dataURItoBlob(dataURI, fileName) {
 
     return blob;
 }
+
+export const getFileErrorText = (error) => {
+    const sizeErrorregExp = /^The uploaded file exceeds the (\d*) bytes$/;
+    const sizeError = test(sizeErrorregExp, error);
+
+    if (sizeError) {
+        const bytes = sizeErrorregExp.exec(error)[1];
+        const maximumSize = bytes / 1024 / 1024;
+
+        return i18n.t('errors.maximumFileSize', { count: maximumSize });
+    } else {
+        return i18n.t('errors.uploadError');
+    }
+};

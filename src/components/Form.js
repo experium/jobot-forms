@@ -19,6 +19,7 @@ import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
 import '../styles/index.css';
 import styles from '../styles/index.module.css';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
 import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
@@ -28,6 +29,7 @@ import withFieldWrapper from './hocs/withFieldWrapper';
 import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
 import { fieldArrayInitialValues } from '../constants/form';
 import { CompanyDictionaryContext } from '../context/CompanyDictionary';
+import Spinner from './formComponents/Spinner';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -302,11 +304,11 @@ class Form extends Component {
                     onSubmit={this.onSubmit}
                     mutators={{ ...arrayMutators }}
                     keepDirtyOnReinitialize={false}
-                    subscription={{ values: false, submitFailed: true, invalid: true }}
+                    subscription={{ values: false, submitFailed: true, invalid: true, submitting: true }}
                     initialValues={this.state.initialValues}
                     noValidate
                 >
-                    { ({ handleSubmit, form }) => {
+                    { ({ handleSubmit, form, submitting }) => {
                         if (!this.formProps) {
                             this.formProps = form;
                         }
@@ -364,7 +366,12 @@ class Form extends Component {
                                 }
                             />
                             <div>
-                                <button className={styles.formBtn} type='submit'>{ t('send') }</button>
+                                <button className={styles.formBtn} type='submit'>
+                                    { submitting && <Spinner />}
+                                    <span className='button-text'>
+                                        { t('send') }
+                                    </span>
+                                </button>
                             </div>
                         </form>;
                     }}

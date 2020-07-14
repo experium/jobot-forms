@@ -48,6 +48,8 @@ export const TRANSLATIONS = {
                 'audioPermission': 'Access to the microphone is blocked. Allow access to the microphone in the browser settings',
                 'cameraPermission': 'Access to the camera is blocked. Allow access to the camera in the browser settings',
                 'uploadError': 'Failed to upload file.',
+                'maximumFileSize': 'Maximum file size: {{count}} megabyte',
+                'maximumFileSize_plural': 'Maximum file size: {{count}} megabytes',
             }
         },
     },
@@ -99,6 +101,9 @@ export const TRANSLATIONS = {
                 'audioPermission': 'Доступ к микрофону заблокирован. Разрешите доступ к микрофону в настройках браузера',
                 'cameraPermission': 'Доступ к камере заблокирован. Разрешите доступ к камере в настройках браузера',
                 'uploadError': 'Не удалось загрузить файл',
+                'maximumFileSize_0': 'Максимальный размер загружаемого файла: {{count}} мегабайт',
+                'maximumFileSize_1': 'Максимальный размер загружаемого файла: {{count}} мегабайта',
+                'maximumFileSize_2': 'Максимальный размер загружаемого файла: {{count}} мегабайт',
             }
         },
     },

@@ -151,7 +151,7 @@ class AppForm extends Component {
                                 fields={vacancy.questions || []}
                                 onSubmit={form => {
                                     this.state.error && this.setState({ error: false });
-                                    mutation({
+                                    return mutation({
                                         variables: {
                                             form, vacancy: match.params.id
                                         }
