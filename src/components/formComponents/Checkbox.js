@@ -33,8 +33,12 @@ class CheckboxComponent extends Component {
     }
 
     onChange = ({ target }) => {
-        const { input: { value, onChange }, settings, onValueChange } = this.props;
+        const { input: { value, onChange }, settings, onValueChange, meta: { submitting }} = this.props;
         const multiple = prop('multiple', settings);
+
+        if (submitting) {
+            return;
+        }
 
         if (onValueChange) {
             onValueChange(target.checked);
@@ -117,7 +121,9 @@ class PersonalDataAgreementComponent extends Component {
     }
 
     onChange = () => {
-        this.setState({ openedHtml: true });
+        const { meta: { submitting } } = this.props;
+
+        !submitting && this.setState({ openedHtml: true });
     }
 
     onSubmitHtml = html => {

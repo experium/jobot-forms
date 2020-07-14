@@ -10,6 +10,8 @@ import VideoFile from './VideoFile';
 import AudioFile from './AudioFile';
 import styles from '../../styles/index.module.css';
 import formStyles from '../../styles/index.module.css';
+import Spinner from './Spinner';
+import { getFileErrorText } from '../../utils/file';
 
 const TYPES = {
     audio: 'audio/*',
@@ -47,7 +49,7 @@ class File extends Component {
 
     onSave = file => {
         if (file) {
-            const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange } = this.props;
+            const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange, t } = this.props;
             const multiple = prop('multiple', settings);
             const type = prop('type', settings);
             const fd = new FormData();
@@ -63,6 +65,10 @@ class File extends Component {
             })
                 .then(response => response.json())
                 .then(data => {
+                    if (data.statusCode === 400) {
+                        return this.setState({ error: data.message || true, loading: false });
+                    }
+
                     if (!data.id) {
                         return this.setState({ error: true, loading: false });
                     }
@@ -198,6 +204,7 @@ class File extends Component {
         const { type, multiple } = settings || {};
         const values = value ? (multiple ? value : [value]) : [];
         const ModalContent = MODAL_CONTENT[type];
+        const { loading, error } = this.state;
 
         return <div>
             { !isEmpty(value) && (
@@ -237,19 +244,25 @@ class File extends Component {
                             value=''
                             onChange={this.onChange}
                             accept={TYPES[type]}
+                            disabled={loading && !error}
                         />
-                        <label htmlFor={name}>{t('upload')}</label>
+                        <label htmlFor={name}>
+                            { loading && !error && <Spinner /> }
+                            <span className='button-text'>
+                                {t('upload')}
+                            </span>
+                        </label>
                     </div>
                 }
                 { (!multiple && value.length > 1) || !BTN_TEXT[type] ? null : (
                     type && (
-                        <button className={formStyles.formBtn} type='button' onClick={this.openModal}>
+                        <button disabled={loading && !error} className={formStyles.formBtn} type='button' onClick={this.openModal}>
                             { t(BTN_TEXT[type]) }
                         </button>
                     )
                 )}
             </div>
-            { this.state.error && <div>{ t('errors.uploadError') }</div> }
+            { this.state.error && <div className={styles.error}>{ getFileErrorText(this.state.error) }</div> }
             { MODAL_CONTENT[type] && (
                 <Modal
                     center
