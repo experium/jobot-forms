@@ -27,9 +27,11 @@ import { compositeValidator, validate } from '../utils/validation';
 import { RU } from '../constants/translations';
 import withFieldWrapper from './hocs/withFieldWrapper';
 import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
+import { isLinkedField } from '../utils/field';
 import { fieldArrayInitialValues } from '../constants/form';
 import { CompanyDictionaryContext } from '../context/CompanyDictionary';
 import Spinner from './formComponents/Spinner';
+import LinkedFieldWrapper from './formComponents/LinkedFieldWrapper';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -233,32 +235,44 @@ class Form extends Component {
         const { opd, getFileUrl, postFileUrl, apiUrl, language, components, htmlOpd, serverErrors, fields } = this.props;
         const { fieldsWithoutValidation, errors } = this.state;
         const fieldName = name || field.field;
+        const isLinked = isLinkedField(field);
 
-        return <Field
-            name={fieldName}
-            component={getFieldComponent(field, components) || (() => null)}
-            fieldType={field.type}
-            options={this.getOptions(field)}
-            opd={opd}
-            validate={value => validate(field, value, this.props, fieldsWithoutValidation)}
-            getDictionary={this.getDictionary}
-            dictionaryType={this.getDictionaryType(field)}
-            getFileUrl={getFileUrl}
-            postFileUrl={postFileUrl}
-            apiUrl={apiUrl}
-            {...field}
-            label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
-            extra={path(['extra'], field)}
-            errors={errors}
-            htmlOpd={htmlOpd}
-            form={form}
-            onChange={this.onChangeQuestion(field)}
-            initialRequired={field.required}
-            fieldsWithoutValidation={fieldsWithoutValidation}
-            changeFieldValidation={this.changeFieldValidation}
-            serverErrors={serverErrors}
-            fields={fields}
-        />;
+        const renderField = (props = {}) => (
+            <Field
+                name={fieldName}
+                component={getFieldComponent(field, components) || (() => null)}
+                fieldType={field.type}
+                options={this.getOptions(field)}
+                opd={opd}
+                validate={value => validate({ ...field, ...props }, value, this.props, fieldsWithoutValidation)}
+                getDictionary={this.getDictionary}
+                dictionaryType={this.getDictionaryType(field)}
+                getFileUrl={getFileUrl}
+                postFileUrl={postFileUrl}
+                apiUrl={apiUrl}
+                {...field}
+                label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
+                extra={path(['extra'], field)}
+                errors={errors}
+                htmlOpd={htmlOpd}
+                form={form}
+                onChange={this.onChangeQuestion(field)}
+                initialRequired={field.required}
+                fieldsWithoutValidation={fieldsWithoutValidation}
+                changeFieldValidation={this.changeFieldValidation}
+                serverErrors={serverErrors}
+                fields={fields}
+                {...props}
+            />
+        );
+
+        return isLinked ? (
+            <LinkedFieldWrapper field={field}>
+                { renderField }
+            </LinkedFieldWrapper>
+        ) : (
+            renderField()
+        );
     }
 
     onSubmit = values => this.props.onSubmit(values, this.formProps);
