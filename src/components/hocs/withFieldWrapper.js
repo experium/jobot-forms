@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { contains, find, propEq, propOr, path, prop } from 'ramda';
 import cx from 'classnames';
+import { isLinkedField } from '../../utils/field';
 
 import styles from '../../styles/index.module.css';
 
@@ -15,9 +16,10 @@ export default WrappedComponent =>
         }
 
         toggleRequired = (required) => {
-            const { initialRequired } = this.props;
+            const { initialRequired, settings } = this.props;
+            const isLinked = isLinkedField({ settings });
 
-            initialRequired && this.setState({ required: required ? initialRequired || required : false });
+            !isLinked && initialRequired && this.setState({ required: required ? initialRequired || required : false });
         }
 
         onChange = value => {
@@ -64,9 +66,10 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, extra = '', meta: { submitFailed, error, modified, dirtySinceLastSubmit } } = this.props;
-            const { required } = this.state;
+            const { label, extra = '', meta: { submitFailed, error, modified, dirtySinceLastSubmit }, settings } = this.props;
             const serverError = this.getServerError();
+            const isLinked = isLinkedField({ settings });
+            const required = isLinked ? this.props.required : this.state.required;
 
             return <div style={{ marginBottom: 20 }} className={cx({ 'jobot-form-invalid': !!error })}>
                 { !this.hideLabel() &&
