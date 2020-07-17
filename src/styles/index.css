@@ -133,11 +133,24 @@
 
 .spinner {
     display: inline-block;
+    width: 18px;
+    height: 18px;
     vertical-align: middle;
-    line-height: 10px;
     margin-right: 5px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+    animation:spin 1.2s linear infinite;
 }
 
 .button-text {
     vertical-align: middle;
+}
+
+@keyframes spin {
+    100% {
+        transform:rotate(360deg);
+    }
 }

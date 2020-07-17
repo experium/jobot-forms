@@ -10,7 +10,7 @@ class LinkedFieldWrapper extends Component {
         const linkValue = path(['settings', 'linkValue'], field);
 
         return (
-            <Field name={linkField}>
+            <Field name={linkField} subscription={{ value: true }}>
                 { ({ input: { value } }) => {
                     if (linkType === 'hide') {
                         return value === linkValue ? children({ required: true }) : null;

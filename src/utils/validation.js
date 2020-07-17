@@ -7,7 +7,7 @@ export const compositeValidator = (value) => {
     return value && (value.length > 0) ? undefined : 'Блок обязателен для заполнения';
 };
 
-export const validate = (field, value, props, fieldsWithoutValidation) => {
+export const validate = async (field, value, props, fieldsWithoutValidation) => {
     const htmlOpd = path(['htmlOpd'], props);
 
     const rules = {
@@ -25,6 +25,7 @@ export const validate = (field, value, props, fieldsWithoutValidation) => {
             }),
         })
     };
+
     let rule = rules[field.type] || yup.string();
     rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
         field.required && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
