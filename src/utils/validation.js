@@ -18,16 +18,16 @@ export const validate = (field, value, props, fieldsWithoutValidation) => {
         file: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
         money: yup.object().shape({
             amount: field.required ? (
-                yup.number().moreThan(0).required()
-            ) : yup.number().moreThan(0),
+                yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })).required(() => i18n.t('errors.required'))
+            ) : yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })),
             currency: yup.string().when('amount', (amount, schema) => {
                 return amount ? schema.required(i18n.t('errors.currency')) : schema.nullable();
             }),
         })
     };
     let rule = rules[field.type] || yup.string();
-    rule = (field.type === 'personalDataAgreement') ? rule.nullable().required() : (
-        field.required && !fieldsWithoutValidation[field.field] ? rule.nullable().required() : rule.nullable()
+    rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
+        field.required && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
     );
 
     try {

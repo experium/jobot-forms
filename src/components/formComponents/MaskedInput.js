@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Masked from 'react-text-mask';
 
+import styles from '../../styles/index.module.css';
+
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { PHONE_MASK, PHONE_MASK_EIGHT } from '../../constants/masks';
-import styles from '../../styles/index.module.css';
-import { prop } from 'ramda';
 
 class MaskedInputComponent extends Component {
     render() {

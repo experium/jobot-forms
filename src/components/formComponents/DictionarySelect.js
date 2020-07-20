@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ReactSelect from 'react-select';
 import { path, contains, find, propEq, filter, prop, propOr, pathOr, isEmpty, pathEq } from 'ramda';
-import { FormSpy } from 'react-final-form';
+import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 
-import withFieldWrapper from '../hocs/withFieldWrapper';
 import { CompanyDictionaryContext } from '../../context/CompanyDictionary';
+import withFieldWrapper from '../hocs/withFieldWrapper';
 
 class Select extends Component {
     state = {
@@ -69,6 +69,7 @@ class Select extends Component {
                 parentType
             },
             parentField,
+            parentFieldValue,
             contextOptions,
             field,
             fieldsWithoutValidation,
@@ -80,7 +81,6 @@ class Select extends Component {
         const isDictionaryLink = parentType === 'parent';
 
         if (parentField && !loading) {
-            const parentFieldValue = this.getParentFieldValue();
             const dictionaryId = prop('dictionary', settings);
             const options = parentFieldValue ? path(['options', parentFieldValue], this.state) : path(['options', dictionaryId], this.state);
             const parentFieldOptions = prop(parentField, contextOptions);
@@ -147,23 +147,17 @@ class Select extends Component {
     }
 
     getOptions = () => {
-        const { parentField, contextOptions } = this.props;
+        const { parentField, parentFieldValue, contextOptions } = this.props;
         const parentFieldOptions = prop(parentField, contextOptions);
 
         if (parentField && !isEmpty(parentFieldOptions)) {
-            return pathOr([], ['options', this.getParentFieldValue()], this.state);
+            return pathOr([], ['options', parentFieldValue], this.state);
         } else {
             const { settings } = this.props;
             const dictionaryKey = settings.parent || settings.dictionary;
 
             return pathOr([], ['options', dictionaryKey], this.state);
         }
-    }
-
-    getParentFieldValue = () => {
-        const { parentField, formValues } = this.props;
-
-        return prop(parentField, formValues);
     }
 
     getParentOptions = () => {
@@ -176,7 +170,7 @@ class Select extends Component {
         const parentOptions = this.getParentOptions();
 
         if (this.props.parentField) {
-            return (parentOptions && isEmpty(parentOptions)) ? false : !this.getParentFieldValue();
+            return (parentOptions && isEmpty(parentOptions)) ? false : !this.props.parentFieldValue;
         } else {
             return false;
         }
@@ -244,19 +238,21 @@ const withParentField = WrappedComponent =>
             return (
                 <CompanyDictionaryContext.Consumer>
                     { ({ options, changeOptions }) => {
-                        return (
-                            <FormSpy>
-                                {({ values }) => (
-                                    <WrappedComponent
-                                        formValues={values}
-                                        parentField={parentField}
-                                        contextOptions={options}
-                                        changeContextOptions={changeOptions}
-                                        {...this.props}
-                                    />
-                                )}
-                            </FormSpy>
+                        const renderComponent = value => (
+                            <WrappedComponent
+                                parentField={parentField}
+                                parentFieldValue={value}
+                                contextOptions={options}
+                                changeContextOptions={changeOptions}
+                                {...this.props}
+                            />
                         );
+
+                        return parentField ? (
+                            <Field name={parentField} subscription={{ value: true }}>
+                                {({ input: { value } }) => renderComponent(value)}
+                            </Field>
+                        ) : renderComponent();
                     }}
                 </CompanyDictionaryContext.Consumer>
             );

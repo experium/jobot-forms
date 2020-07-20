@@ -5,8 +5,8 @@ import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 
-import withFieldWrapper from '../hocs/withFieldWrapper';
 import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
+import withFieldWrapper from '../hocs/withFieldWrapper';
 import withFormValues from '../hocs/withFormValues';
 
 export const HEIGHT = 33;
@@ -41,9 +41,10 @@ class Select extends Component {
         } = this.props;
         const options = this.getOptions();
 
-        if (!equals(formValues[settings.regionField], prev.formValues[prev.settings.regionField]) ||
+        if (formValues && (
+            !equals(formValues[settings.regionField], prev.formValues[prev.settings.regionField]) ||
             !equals(formValues[settings.countryField], prev.formValues[prev.settings.countryField])
-        ) {
+        )) {
             this.onChange({ value: undefined });
         }
 
@@ -102,7 +103,7 @@ class Select extends Component {
     getOptions = () => {
         const { settings, options, formValues } = this.props;
 
-        if (!formValues[settings.regionField] && !formValues[settings.countryField] && !formValues.country) {
+        if (formValues && !formValues[settings.regionField] && !formValues[settings.countryField] && !formValues.country || !formValues) {
             return options;
         }
 
@@ -110,13 +111,13 @@ class Select extends Component {
             const regionEqual = formValues[settings.regionField] === item.region;
             const countryEqual = formValues[settings.countryField] === item.country;
 
-            if (formValues[settings.regionField] && formValues[settings.countryField]) {
+            if (formValues && formValues[settings.regionField] && formValues[settings.countryField]) {
                 return regionEqual && countryEqual;
-            } else if (formValues[settings.regionField]) {
+            } else if (formValues && formValues[settings.regionField]) {
                 return regionEqual;
-            } else if (formValues[settings.countryField]) {
+            } else if (formValues && formValues[settings.countryField]) {
                 return countryEqual;
-            } else if (settings.regionField && formValues.country) {
+            } else if (formValues && settings.regionField && formValues.country) {
                 return formValues.country === item.country;
             } else {
                 return true;
@@ -164,7 +165,6 @@ class Select extends Component {
             noOptionsMessage={() => t('noOptionsMessage')}
             classNamePrefix='jobot-forms'
             maxMenuHeight={HEIGHT * 6}
-            noOptionsMessage={() => 'Нет данных'}
             openMenuOnClick={!isError}
             components={{
                 MenuList,
@@ -175,4 +175,8 @@ class Select extends Component {
     }
 }
 
-export default withFieldWrapper(withFormValues(withTranslation()(Select)));
+const SelectComponent = withFieldWrapper(withTranslation()(Select));
+
+export default SelectComponent;
+
+export const LocationSelect = withFormValues(SelectComponent);

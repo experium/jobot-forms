@@ -31,6 +31,7 @@ export const TRANSLATIONS = {
                 { value: 10, label: 'November' },
                 { value: 11, label: 'December' }
             ],
+            'loading': 'Loading...',
             'noOptionsMessage': 'There is no data',
             'placeholders': {
                 'datePicker': {
@@ -84,6 +85,7 @@ export const TRANSLATIONS = {
                 { value: 10, label: 'Ноябрь' },
                 { value: 11, label: 'Декабрь' }
             ],
+            'loading': 'Загрузка...',
             'noOptionsMessage': 'Нет данных',
             'placeholders': {
                 'datePicker': {

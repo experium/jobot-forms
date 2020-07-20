@@ -1,7 +1,8 @@
 /* eslint-disable no-mixed-operators */
 import '../utils/i18n';
 import i18n from '../utils/i18n';
-import '../utils/yup';
+/* eslint-disable no-template-curly-in-string */
+import * as yup from 'yup';
 
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
@@ -12,8 +13,9 @@ import { withTranslation } from 'react-i18next';
 
 import Input from './formComponents/Input';
 import Checkbox, { PersonalDataAgreement, Boolean } from './formComponents/Checkbox';
-import Select from './formComponents/Select';
+import Select, { LocationSelect } from './formComponents/Select';
 import DictionarySelect from './formComponents/DictionarySelect';
+import TreeSelect from './formComponents/TreeSelect';
 import { PhoneInput } from './formComponents/MaskedInput';
 import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
@@ -52,13 +54,13 @@ const getFieldComponent = (field, components) => {
         phone: PhoneInput,
         boolean: Boolean,
         choice: Select,
-        country: Select,
-        region: Select,
-        city: Select,
+        country: LocationSelect,
+        region: LocationSelect,
+        city: LocationSelect,
         date: DateSelect,
         file: File,
         money: Money,
-        company_dictionary: DictionarySelect,
+        company_dictionary: prop('tree', settings) ? TreeSelect : DictionarySelect,
     };
     const fields = mapObjIndexed((component, key) => components[key] ? withFieldWrapper(components[key]) : component, DEFAULT_FIELDS);
 
@@ -78,10 +80,12 @@ class Form extends Component {
     constructor(props) {
         super(props);
 
+        const language = props.language || RU;
+
         this.state = {
+            language,
             dictionaries: {},
             errors: {},
-            language: RU,
             initialValues: props.initialValues || {},
             fieldsWithoutValidation: {},
             options: {}
@@ -89,6 +93,8 @@ class Form extends Component {
 
         this.dictionaryTypes = [];
         this.formProps = null;
+
+        i18n.changeLanguage(language);
     }
 
     changeOptions = (field, options) => {
@@ -108,11 +114,6 @@ class Form extends Component {
                 [fieldName]: validate
             },
         }));
-    }
-
-    componentDidMount = () => {
-        const { language } = this.props;
-        this.setState({ language }, () => i18n.changeLanguage(this.state.language));
     }
 
     componentDidUpdate = (prevProps) => {

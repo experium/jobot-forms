@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { pathOr, find, propEq, path, has } from 'ramda';
+import { assocPath, compose, pathOr, find, propEq, path, has } from 'ramda';
 import ReactSelect from 'react-select';
 import qs from 'qs';
 import Modal from 'react-responsive-modal';
@@ -113,7 +113,7 @@ const customComponents = {
 class AppForm extends Component {
     state = {
         error: false,
-        language: 'ru',
+        language: 'en',
     };
 
     onCompleted = () => this.props.history.push('/form/success');
@@ -148,7 +148,9 @@ class AppForm extends Component {
                         { (mutation, { error }) =>
                             <Form
                                 apiUrl={API_URL}
-                                fields={vacancy.questions || []}
+                                fields={compose(
+                                    pathOr([], ['questions']),
+                                )(vacancy)}
                                 onSubmit={form => {
                                     this.state.error && this.setState({ error: false });
                                     return mutation({
