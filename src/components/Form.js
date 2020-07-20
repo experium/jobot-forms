@@ -21,7 +21,6 @@ import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
 import '../styles/index.css';
 import styles from '../styles/index.module.css';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
 import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
