@@ -2,7 +2,7 @@
 export const TRANSLATIONS = {
     en: {
         translation: {
-            'send': 'Send',
+            'send': 'Submit',
             'addQuestionBlock': 'Add',
             'remove': 'Remove',
             'optional': ' (optional)',
