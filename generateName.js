@@ -6,10 +6,10 @@ const name = (className, filePath) => {
     if (isModule) {
         const moduleName = fileName.split('.')[0];
 
-        return `${moduleName}__${className}`
+        return `${moduleName}__${className}`;
     } else {
         return className;
     }
-}
+};
 
 module.exports = name;

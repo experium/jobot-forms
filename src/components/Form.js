@@ -2,7 +2,6 @@
 import '../utils/i18n';
 import i18n from '../utils/i18n';
 /* eslint-disable no-template-curly-in-string */
-import * as yup from 'yup';
 
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field } from 'react-final-form';
@@ -237,14 +236,15 @@ class Form extends Component {
         const fieldName = name || field.field;
         const isLinked = isLinkedField(field);
 
-        const renderField = (props = {}) => (
+        const renderLinkedField = (props = {}) => (
             <Field
+                key={props.required}
                 name={fieldName}
                 component={getFieldComponent(field, components) || (() => null)}
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
-                validate={value => validate({ ...field, ...props }, value, this.props, fieldsWithoutValidation)}
+                validate={value => validate({ ...field, required: props.required }, value, this.props, fieldsWithoutValidation)}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}
                 getFileUrl={getFileUrl}
@@ -268,10 +268,34 @@ class Form extends Component {
 
         return isLinked ? (
             <LinkedFieldWrapper field={field}>
-                { renderField }
+                { renderLinkedField }
             </LinkedFieldWrapper>
         ) : (
-            renderField()
+            <Field
+                name={fieldName}
+                component={getFieldComponent(field, components) || (() => null)}
+                fieldType={field.type}
+                options={this.getOptions(field)}
+                opd={opd}
+                validate={value => validate(field, value, this.props, fieldsWithoutValidation)}
+                getDictionary={this.getDictionary}
+                dictionaryType={this.getDictionaryType(field)}
+                getFileUrl={getFileUrl}
+                postFileUrl={postFileUrl}
+                apiUrl={apiUrl}
+                {...field}
+                label={language ? pathOr(field.label, ['translations', 'label', language], field) : field.label}
+                extra={path(['extra'], field)}
+                errors={errors}
+                htmlOpd={htmlOpd}
+                form={form}
+                onChange={this.onChangeQuestion(field)}
+                initialRequired={field.required}
+                fieldsWithoutValidation={fieldsWithoutValidation}
+                changeFieldValidation={this.changeFieldValidation}
+                serverErrors={serverErrors}
+                fields={fields}
+            />
         );
     }
 
