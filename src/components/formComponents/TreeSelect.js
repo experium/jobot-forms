@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReactSelect from 'react-select';
-import { assocPath, path, head, concat, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys } from 'ramda';
+import { assocPath, path, head, concat, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys, last, split } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -170,7 +169,7 @@ class TreeSelectComponent extends Component {
     }
 
     onChange = (value) => {
-        this.props.onChange(value);
+        this.props.onChange(compose(last, slpit('_'))(value));
     }
 
     onSelect = (value, option) => {
@@ -198,11 +197,12 @@ class TreeSelectComponent extends Component {
         const { loading } = this.state;
         const { input: { value }, settings, t } = this.props;
         const multiple = path(['multiple'], settings);
+        const dictionary = path(['dictionary'], settings);
 
         return (
             <TreeSelect
                 dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 8] }}
-                value={value}
+                value={value ? `${dictionary}_${value}` : value}
                 treeData={this.state.treeData}
                 treeNodeFilterProp="label"
                 notFoundContent={loading ? t('loading') : t('noOptionsMessage')}
