@@ -90,9 +90,13 @@ class HtmlOpdForm extends Component {
         this.setState({ submitted: true });
 
         if (valid) {
+            const values = {};
+
             forEach(input => {
                 if (input.type === 'checkbox') {
-                    input.setAttribute('checked', input.checked);
+                    if (input.checked) {
+                        input.setAttribute('checked', input.checked);
+                    }
                 } else {
                     input.setAttribute('value', input.value);
                 }
@@ -100,11 +104,13 @@ class HtmlOpdForm extends Component {
                 const separateField = input.getAttribute('data-separate-field');
 
                 if (separateField) {
-                    form.change(separateField, input.type === 'checkbox' ? input.checked : input.value);
+                    const value = input.type === 'checkbox' ? input.checked : input.value;
+                    values[separateField] = value;
+                    form.change(separateField, value);
                 }
             }, inputs);
 
-            this.props.onSubmit(getHtml(this.form.innerHTML));
+            this.props.onSubmit(getHtml(this.form.innerHTML), values);
         }
     }
 

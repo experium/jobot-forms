@@ -126,8 +126,12 @@ class PersonalDataAgreementComponent extends Component {
         !submitting && this.setState({ openedHtml: true });
     }
 
-    onSubmitHtml = html => {
-        this.props.input.onChange(html);
+    onSubmitHtml = (html, data) => {
+        this.props.input.onChange({
+            value: !!html,
+            htmlContent: html,
+            data,
+        });
         this.setState({ openedHtml: false });
     }
 
