@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { assocPath, path, head, concat, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys, last, split } from 'ramda';
+import { assocPath, path, head, compose, concat, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys, last, split } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -169,7 +169,7 @@ class TreeSelectComponent extends Component {
     }
 
     onChange = (value) => {
-        this.props.onChange(compose(last, slpit('_'))(value));
+        this.props.onChange(compose(last, split('_'))(value));
     }
 
     onSelect = (value, option) => {
