@@ -7,7 +7,7 @@ export const compositeValidator = (value) => {
     return value && (value.length > 0) ? undefined : 'Блок обязателен для заполнения';
 };
 
-export const validate = async (field, value, props, fieldsWithoutValidation) => {
+export const validate = (field, value, props, fieldsWithoutValidation) => {
     const htmlOpd = path(['htmlOpd'], props);
 
     const rules = {

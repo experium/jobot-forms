@@ -238,7 +238,6 @@ class Form extends Component {
 
         const renderLinkedField = (props = {}) => (
             <Field
-                key={props.required}
                 name={fieldName}
                 component={getFieldComponent(field, components) || (() => null)}
                 fieldType={field.type}
@@ -343,7 +342,7 @@ class Form extends Component {
                     onSubmit={this.onSubmit}
                     mutators={{ ...arrayMutators }}
                     keepDirtyOnReinitialize={false}
-                    subscription={{ values: false, submitFailed: true, invalid: true, submitting: true }}
+                    subscription={{ values: false, submitFailed: true, submitting: true }}
                     initialValues={this.state.initialValues}
                     noValidate
                 >
