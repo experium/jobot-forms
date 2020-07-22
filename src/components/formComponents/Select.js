@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next';
 
 import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import withFormValues from '../hocs/withFormValues';
+import withLocationValues from '../hocs/withLocationValues';
 
 export const HEIGHT = 33;
 
@@ -147,6 +147,7 @@ class Select extends Component {
     }
 
     render() {
+        console.log('render select');
         const { input: { value }, settings, errors, dictionaryType, t } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions() || [];

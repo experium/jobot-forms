@@ -328,7 +328,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, formRender, t } = this.props;
+        const { fields, language, formRender, t, submitting: externalSubmitting } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -388,7 +388,6 @@ class Form extends Component {
                                                                 )}
                                                                 <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
                                                             </div>
-
                                                         }
                                                     </FieldArray> :
                                                     pathOr([], ['settings', 'questions'], field).map(question =>
@@ -405,7 +404,7 @@ class Form extends Component {
                             />
                             <div>
                                 <button className={styles.formBtn} type='submit'>
-                                    { submitting && <Spinner />}
+                                    { (submitting || !!externalSubmitting) && <Spinner />}
                                     <span className='button-text'>
                                         { t('send') }
                                     </span>
