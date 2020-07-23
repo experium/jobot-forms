@@ -147,7 +147,6 @@ class Select extends Component {
     }
 
     render() {
-        console.log('render select');
         const { input: { value }, settings, errors, dictionaryType, t } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions() || [];
@@ -180,4 +179,4 @@ const SelectComponent = withFieldWrapper(withTranslation()(Select));
 
 export default SelectComponent;
 
-export const LocationSelect = withFormValues(SelectComponent);
+export const LocationSelect = withLocationValues(SelectComponent);
