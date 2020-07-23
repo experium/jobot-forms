@@ -51,6 +51,8 @@ export default WrappedComponent =>
                 return undefined;
             }
 
+            const errors = Array.isArray(serverErrors) ? serverErrors : path(['data', 'errors'], serverErrors);
+
             if (gqlErrors) {
                 const validationErrors = find(propEq('message', 'Validation failed'), gqlErrors);
                 const errors = propOr({}, 'errors', validationErrors);
@@ -58,15 +60,15 @@ export default WrappedComponent =>
                 return path([name, 0, 'message'], errors);
             }
 
-            if (Array.isArray(serverErrors)) {
-                const fieldErrorObj = find(propEq('field', name), serverErrors);
+            if (Array.isArray(errors)) {
+                const fieldErrorObj = find(propEq('field', name), errors);
 
                 return prop('message', fieldErrorObj);
             }
         }
 
         render() {
-            const { label, extra = '', meta: { submitFailed, error, modified, dirtySinceLastSubmit }, settings } = this.props;
+            const { label, extra = '', meta: { submitFailed, error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { value } } = this.props;
             const serverError = this.getServerError();
             const isLinked = isLinkedField({ settings });
             const required = isLinked ? this.props.required : this.state.required;
@@ -87,7 +89,7 @@ export default WrappedComponent =>
                     />
                 </div>
                 { submitFailed && error && <div className={styles.error}>{ error }</div> }
-                { (modified || !dirtySinceLastSubmit) && serverError && <div className={styles.error}>{ serverError }</div> }
+                { !modifiedSinceLastSubmit && !dirtySinceLastSubmit && serverError && <div className={styles.error}>{ serverError }</div> }
             </div>;
         }
     };
