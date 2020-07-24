@@ -148,12 +148,7 @@ class AppForm extends Component {
                         { (mutation, { error }) =>
                             <Form
                                 apiUrl={API_URL}
-                                fields={compose(
-                                    assocPath([1, 'settings', 'linkType'], 'required'),
-                                    assocPath([1, 'settings', 'linkField'], pathOr('', ['questions', 0, 'field'], vacancy)),
-                                    assocPath([1, 'settings', 'linkValue'], '1'),
-                                    pathOr([], ['questions']),
-                                )(vacancy)}
+                                fields={pathOr([], ['questions'], vacancy)}
                                 onSubmit={form => {
                                     this.state.error && this.setState({ error: false });
                                     mutation({
