@@ -10,6 +10,9 @@ import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
 
+import '../styles/index.css';
+import styles from '../styles/index.module.css';
+
 import Input from './formComponents/Input';
 import Checkbox, { PersonalDataAgreement, Boolean } from './formComponents/Checkbox';
 import Select, { LocationSelect } from './formComponents/Select';
@@ -18,8 +21,6 @@ import TreeSelect from './formComponents/TreeSelect';
 import { PhoneInput } from './formComponents/MaskedInput';
 import DateSelect from './formComponents/DateSelect';
 import File from './formComponents/File';
-import '../styles/index.css';
-import styles from '../styles/index.module.css';
 import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
 import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
@@ -238,6 +239,7 @@ class Form extends Component {
 
         const renderLinkedField = (props = {}) => (
             <Field
+                key={`${props.required}`}
                 name={fieldName}
                 component={getFieldComponent(field, components) || (() => null)}
                 fieldType={field.type}

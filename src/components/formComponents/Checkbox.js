@@ -7,6 +7,7 @@ import cx from 'classnames';
 import { withTranslation } from 'react-i18next';
 
 import 'rc-checkbox/assets/index.css';
+import 'react-responsive-modal/styles.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/index.module.css';

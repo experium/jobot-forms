@@ -148,7 +148,9 @@ class AppForm extends Component {
                         { (mutation, { error }) =>
                             <Form
                                 apiUrl={API_URL}
-                                fields={pathOr([], ['questions'], vacancy)}
+                                fields={compose(
+                                    pathOr([], ['questions']),
+                                )(vacancy)}
                                 onSubmit={form => {
                                     this.state.error && this.setState({ error: false });
                                     mutation({
