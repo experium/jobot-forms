@@ -4,7 +4,7 @@ import i18n from '../utils/i18n';
 /* eslint-disable no-template-curly-in-string */
 
 import React, { Component, Fragment } from 'react';
-import { Form as FinalFormForm, Field } from 'react-final-form';
+import { Form as FinalFormForm, Field, FormSpy } from 'react-final-form';
 import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals, isEmpty } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
@@ -310,6 +310,12 @@ class Form extends Component {
         }
     }
 
+    onChangeSubmitFailed = ({ submitFailed }) => {
+        if (submitFailed && this.props.onSubmitFail) {
+            this.props.onSubmitFail();
+        }
+    }
+
     handleSubmit = (e, handleSubmit) => {
         const invalidField = this.container.querySelector('.jobot-form-invalid');
 
@@ -361,6 +367,9 @@ class Form extends Component {
                         }
 
                         return <form onSubmit={e => this.handleSubmit(e, handleSubmit)}>
+                            <FormSpy
+                                subscription={{ submitFailed: true }}
+                                onChange={this.onChangeSubmitFailed} />
                             <FormRender
                                 fields={fields}
                                 renderField={field =>
