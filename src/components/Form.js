@@ -318,10 +318,17 @@ class Form extends Component {
                 input.focus();
             }
 
-            (this.props.scrollContainer || window).scrollTo({
-                top: invalidField.getBoundingClientRect().top + window.scrollY - 15,
-                behavior: 'smooth'
-            });
+            if (this.props.scrollContainer) {
+                this.props.scrollContainer.scrollTo({
+                    top: invalidField.getBoundingClientRect().top + this.props.scrollContainer.scrollTop - 15,
+                    behavior: 'smooth'
+                });
+            } else {
+                window.scrollTo({
+                    top: invalidField.getBoundingClientRect().top + window.scrollY - 15,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         handleSubmit(e);
