@@ -27,12 +27,12 @@ import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries'
 import { compositeValidator, validate } from '../utils/validation';
 import { RU } from '../constants/translations';
 import withFieldWrapper from './hocs/withFieldWrapper';
+import LinkedFieldWrapper from './hocs/LinkedFieldWrapper';
 import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
 import { isLinkedField } from '../utils/field';
 import { fieldArrayInitialValues } from '../constants/form';
 import { CompanyDictionaryContext } from '../context/CompanyDictionary';
 import Spinner from './formComponents/Spinner';
-import LinkedFieldWrapper from './formComponents/LinkedFieldWrapper';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -239,13 +239,12 @@ class Form extends Component {
 
         const renderLinkedField = (props = {}) => (
             <Field
-                key={`${props.required}`}
                 name={fieldName}
                 component={getFieldComponent(field, components) || (() => null)}
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
-                validate={value => validate({ ...field, required: props.required }, value, this.props, fieldsWithoutValidation)}
+                validate={(value, form) => validate(value, form, field, this.props, fieldsWithoutValidation)}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}
                 getFileUrl={getFileUrl}
@@ -278,7 +277,7 @@ class Form extends Component {
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
-                validate={value => validate(field, value, this.props, fieldsWithoutValidation)}
+                validate={(value, form) => validate(value, form, field, this.props, fieldsWithoutValidation)}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}
                 getFileUrl={getFileUrl}

@@ -1,4 +1,4 @@
-import { path } from 'ramda';
+import { path, split } from 'ramda';
 import * as yup from 'yup';
 
 import i18n from './i18n';
@@ -7,7 +7,20 @@ export const compositeValidator = (value) => {
     return value && (value.length > 0) ? undefined : 'Блок обязателен для заполнения';
 };
 
-export const validate = (field, value, props, fieldsWithoutValidation) => {
+export const validateLink = (field, values) => {
+    const linkField = path(['settings', 'linkField'], field);
+    const linkValue = path(['settings', 'linkValue'], field);
+
+    if (!linkField) {
+        return false;
+    } else {
+        const linkedValue = path(split('.', `${linkField}`), values);
+
+        return linkValue === linkedValue;
+    }
+};
+
+export const validate = (value, form, field, props, fieldsWithoutValidation) => {
     const htmlOpd = path(['htmlOpd'], props);
 
     const rules = {
@@ -28,7 +41,7 @@ export const validate = (field, value, props, fieldsWithoutValidation) => {
 
     let rule = rules[field.type] || yup.string();
     rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
-        field.required && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
+        (field.required || validateLink(field, form)) && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
     );
 
     try {
