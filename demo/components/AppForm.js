@@ -127,6 +127,7 @@ class AppForm extends Component {
         const searchPath = qs.parse(search, { ignoreQueryPrefix: true });
         const components = has('custom', searchPath) ? customComponents : {};
         const htmlOpd = has('htmlOpd', searchPath) ? htmlOpdText2 : null;
+        const allowFileExtensions = path(['vacancy', 'company', 'companySettings', 'allowFileExtensions'], data);
 
         return data.loading ? <div>Загрузка...</div> :
             data.error ? <div>Не удалось загрузить вакансию</div> :
@@ -166,6 +167,7 @@ class AppForm extends Component {
                                 components={components}
                                 htmlOpd={htmlOpd}
                                 serverErrors={error}
+                                allowFileExtensions={allowFileExtensions}
                             />
                         }
                     </Mutation>

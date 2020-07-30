@@ -17,7 +17,8 @@ export const getVacancy = gql(`
             translations,
             company {
                 companySettings {
-                    pda
+                    pda,
+                    allowFileExtensions
                 }
             },
         }
