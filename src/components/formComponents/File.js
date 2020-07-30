@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { prop, append, remove, isEmpty, path, pathOr } from 'ramda';
+import { prop, append, remove, isEmpty, path, pathOr, join, values } from 'ramda';
 import Modal from 'react-responsive-modal';
 import { withTranslation } from 'react-i18next';
 import getusermedia from 'getusermedia';
@@ -199,6 +199,18 @@ class File extends Component {
         }
     }
 
+    getAccept = (type) => {
+        const { allowFileExtensions } = this.props;
+
+        if (allowFileExtensions) {
+            return allowFileExtensions[type] ? (
+                join(',', values(allowFileExtensions[type]))
+            ) : TYPES[type];
+        } else {
+            return TYPES[type];
+        }
+    }
+
     render() {
         const { settings, input: { value, name }, t } = this.props;
         const { type, multiple } = settings || {};
@@ -243,7 +255,7 @@ class File extends Component {
                             type='file'
                             value=''
                             onChange={this.onChange}
-                            accept={TYPES[type]}
+                            accept={this.getAccept(type)}
                             disabled={loading && !error}
                         />
                         <label htmlFor={name}>
