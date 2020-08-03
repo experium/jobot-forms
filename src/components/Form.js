@@ -318,18 +318,16 @@ class Form extends Component {
     }
 
     handleSubmit = (e, handleSubmit) => {
+        const { scrollContainerClassName, scrollContainer } = this.props;
         const invalidField = this.container.querySelector('.jobot-form-invalid');
+        const scrollContainerElement = scrollContainer || scrollContainerClassName ? document.querySelector(scrollContainerClassName) : null;
 
         if (invalidField) {
             const input = invalidField.querySelector('input');
 
-            if (input) {
-                input.focus();
-            }
-
-            if (this.props.scrollContainer) {
-                this.props.scrollContainer.scrollTo({
-                    top: invalidField.getBoundingClientRect().top + this.props.scrollContainer.scrollTop - 15,
+            if (scrollContainerElement) {
+                scrollContainerElement.scrollTo({
+                    top: invalidField.getBoundingClientRect().top + scrollContainerElement.scrollTop - 15,
                     behavior: 'smooth'
                 });
             } else {
@@ -337,6 +335,10 @@ class Form extends Component {
                     top: invalidField.getBoundingClientRect().top + window.scrollY - 15,
                     behavior: 'smooth'
                 });
+            }
+
+            if (input) {
+                input.focus();
             }
         }
 
