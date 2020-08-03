@@ -14,6 +14,7 @@ i18n
         react: {
             useSuspense: false
         },
+        lng: 'ru',
         whitelist: ['ru', 'en'],
     });
 
