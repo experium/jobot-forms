@@ -74,6 +74,7 @@ class HtmlOpdForm extends Component {
 
     componentDidMount() {
         const { value } = this.props;
+
         if (value && is(String, value.htmlContent)) {
             const el = this.valueHtml.querySelector('.opd-html-form');
 
@@ -111,6 +112,8 @@ class HtmlOpdForm extends Component {
                 if (input.type === 'checkbox') {
                     if (input.checked) {
                         input.setAttribute('checked', input.checked);
+                    } else {
+                        input.removeAttribute('checked');
                     }
                 } else {
                     input.setAttribute('value', input.value);
