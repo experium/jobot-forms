@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { assocPath, path, head, compose, concat, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys, last, split } from 'ramda';
+import { assocPath, path, head, compose, concat, join, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys, last, map, split } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -124,6 +124,10 @@ class TreeSelectComponent extends Component {
                             value: `${item.dictionary}_${item.id}`,
                             pId: item.parent ? `${parentDict}_${item.parent}` : 0,
                             label: item.value,
+                            fullLabel: join(
+                                ' - ',
+                                concat(map(prop('label'), parentValues[`${parentDict}_${item.parent}`]), [item.value])
+                            ),
                             data: {
                                 ...item,
                                 values: parentValues[`${parentDict}_${item.parent}`],
@@ -138,6 +142,7 @@ class TreeSelectComponent extends Component {
                     parentValues[`${item.dictionary}_${item.id}`] = concat(parentValues[`${parentDict}_${item.parent}`] || [], [{
                         name: parentKeys[index],
                         value: item.id,
+                        label: item.value,
                     }]);
                     parentIndex[`${parentDict}_${item.parent}`] = childrenIndex + 1;
                 });
@@ -196,6 +201,7 @@ class TreeSelectComponent extends Component {
     render() {
         const { loading } = this.state;
         const { input: { value }, settings, t } = this.props;
+        const showFullPath = path(['showFullPath'], settings) || true;
         const multiple = path(['multiple'], settings);
         const dictionary = path(['dictionary'], settings);
 
@@ -205,6 +211,7 @@ class TreeSelectComponent extends Component {
                 value={value ? `${dictionary}_${value}` : value}
                 treeData={this.state.treeData}
                 treeNodeFilterProp="label"
+                treeNodeLabelProp={showFullPath ? 'fullLabel' : undefined}
                 notFoundContent={loading ? t('loading') : t('noOptionsMessage')}
                 onChange={this.onChange}
                 onSelect={this.onSelect}
