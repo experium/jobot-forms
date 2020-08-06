@@ -16,12 +16,14 @@ module.exports = {
             }
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new CopyWebpackPlugin([
-            {
-                from: 'demo/indexDev.html',
-                to: 'index.html'
-            }
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'demo/indexDev.html',
+                    to: 'index.html'
+                }
+            ]
+        }),
     ],
     devServer: {
         publicPath: '/',
