@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { all, forEach, is } from 'ramda';
+import { all, forEach, is, path } from 'ramda';
 import cx from 'classnames';
-import { FormSpy } from 'react-final-form';
 
 import styles from '../../styles/index.module.css';
 
@@ -75,15 +74,31 @@ class HtmlOpdForm extends Component {
 
     componentDidMount() {
         const { value } = this.props;
-
-        if (is(String, value) && value) {
+        if (value && is(String, value.htmlContent)) {
             const el = this.valueHtml.querySelector('.opd-html-form');
 
             this.setState({ value: el ? el.innerHTML : null });
+        } else {
+            this.setValues();
         }
     }
 
-    onSubmit = ({ form }) => {
+    setValues = () => {
+        if (this.props.getOpdValues) {
+            const values = this.props.getOpdValues();
+            const inputs = this.form.querySelectorAll('input');
+
+            forEach(input => {
+                const value = path([input.name], values);
+                if (value) {
+                    input.setAttribute('value', value);
+                }
+            }, inputs);
+        }
+    }
+
+    onSubmit = formProps => {
+        const form = path(['form'], formProps);
         const inputs = this.form.querySelectorAll('input');
         const valid = all(input => input.validity.valid, inputs);
 
@@ -115,17 +130,16 @@ class HtmlOpdForm extends Component {
     }
 
     render() {
+        const { formProps } = this.props;
         const html = this.state.value || this.props.html;
 
         return <div>
-            <div ref={node => this.valueHtml = node} style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: this.props.value }} />
+            <div ref={node => this.valueHtml = node} style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: path(['value', 'htmlContent'], this.props) }} />
             <style>{commonStyle}</style>
             <form ref={node => this.form = node}>
                 <div className={cx('opd-html-form', { submitted: this.state.submitted })} dangerouslySetInnerHTML={{ __html: html }} />
             </form>
-            <FormSpy>
-                { formProps => <button className={styles.formBtn} type='button' onClick={() => this.onSubmit(formProps)}>Согласен</button> }
-            </FormSpy>
+            <button className={styles.formBtn} type='button' onClick={() => this.onSubmit(formProps)}>Согласен</button>
         </div>;
     }
 }

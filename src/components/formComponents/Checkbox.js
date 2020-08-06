@@ -5,6 +5,7 @@ import RcCheckbox from 'rc-checkbox';
 import { path, isEmpty, contains, filter, prop } from 'ramda';
 import cx from 'classnames';
 import { withTranslation } from 'react-i18next';
+import { FormSpy } from 'react-final-form';
 
 import 'rc-checkbox/assets/index.css';
 import 'react-responsive-modal/styles.css';
@@ -156,10 +157,16 @@ class PersonalDataAgreementComponent extends Component {
                     }}
                     destroyOnClose
                 >
-                    <HtmlOpdForm
-                        onSubmit={this.onSubmitHtml}
-                        value={this.props.input.value}
-                        html={this.props.htmlOpd} />
+                    <FormSpy>
+                        { formProps => (
+                            <HtmlOpdForm
+                                onSubmit={this.onSubmitHtml}
+                                value={this.props.input.value}
+                                formProps={formProps}
+                                getOpdValues={() => this.props.getOpdValues && this.props.getOpdValues(formProps)}
+                                html={this.props.htmlOpd} />
+                        )}
+                    </FormSpy>
                 </Modal>
             }
         </Fragment>;

@@ -74,6 +74,13 @@ const htmlOpdText2 =
         <p><label><input name="mailing" type="checkbox" data-separate-field="mailing" />я выражаю согласие на получение рассылки материалов рекламного и/или информационного характера посредством SMS-сервисов, Viber, WhatsApp, Telegram, Skype и других месcенджеров, электронной почты и т.д.</label></p>
     </div>`;
 
+const getOpdValues = ({ values }) => {
+    return {
+        name: `${values.firstName || ''} ${values.lastName || ''}`,
+        email: values.email,
+    };
+};
+
 const customComponents = {
     personalDataAgreement: props => {
         const [opened, setOpened] = useState(false);
@@ -166,6 +173,7 @@ class AppForm extends Component {
                                 language={this.state.language}
                                 components={components}
                                 htmlOpd={htmlOpd}
+                                getOpdValues={htmlOpd ? getOpdValues : undefined}
                                 serverErrors={error}
                                 allowFileExtensions={allowFileExtensions}
                             />
