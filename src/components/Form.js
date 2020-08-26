@@ -371,7 +371,7 @@ class Form extends Component {
                             this.formProps = form;
                         }
 
-                        return <form onSubmit={e => this.handleSubmit(e, handleSubmit)}>
+                        return <form onSubmit={e => this.handleSubmit(e, handleSubmit)} noValidate>
                             <FormSpy
                                 subscription={{ submitFailed: true }}
                                 onChange={this.onChangeSubmitFailed} />
