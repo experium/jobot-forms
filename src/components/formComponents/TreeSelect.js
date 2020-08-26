@@ -12,7 +12,6 @@ import CloseCircleFilled from '@ant-design/icons/CloseCircleFilled';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 
-import '../../styles/select.css';
 import '../../styles/tree.css';
 import '../../styles/tree-select.css';
 

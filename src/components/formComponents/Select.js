@@ -5,6 +5,8 @@ import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 
+import '../../styles/select.css';
+
 import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import withLocationValues from '../hocs/withLocationValues';
@@ -72,7 +74,7 @@ class Select extends Component {
 
     getOptionsHeight = childrens => {
         if (Array.isArray(childrens)) {
-            return childrens.length * HEIGHT;
+            return (childrens.length * HEIGHT) + 1;
         }
 
         return HEIGHT;
@@ -155,7 +157,6 @@ class Select extends Component {
 
         return <ReactSelect
             key={value}
-            classNamePrefix='search-input'
             value={multiple ? filter(item => contains(item.value, value || []), options) : find(propEq('value', value), options)}
             options={options}
             onChange={this.onChange}
