@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { all, forEach, is, path } from 'ramda';
 import cx from 'classnames';
 
@@ -133,7 +134,7 @@ class HtmlOpdForm extends Component {
     }
 
     render() {
-        const { formProps } = this.props;
+        const { formProps, t } = this.props;
         const html = this.state.value || this.props.html;
 
         return <div>
@@ -142,9 +143,11 @@ class HtmlOpdForm extends Component {
             <form ref={node => this.form = node}>
                 <div className={cx('opd-html-form', { submitted: this.state.submitted })} dangerouslySetInnerHTML={{ __html: html }} />
             </form>
-            <button className={styles.formBtn} type='button' onClick={() => this.onSubmit(formProps)}>Согласен</button>
+            <button className={styles.formBtn} type='button' onClick={() => this.onSubmit(formProps)}>
+                {t('opdFormAccept')}
+            </button>
         </div>;
     }
 }
 
-export default HtmlOpdForm;
+export default withTranslation(HtmlOpdForm);

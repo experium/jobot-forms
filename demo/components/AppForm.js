@@ -176,6 +176,18 @@ class AppForm extends Component {
                                 getOpdValues={htmlOpd ? getOpdValues : undefined}
                                 serverErrors={error}
                                 allowFileExtensions={allowFileExtensions}
+                                translations={{
+                                    en: {
+                                        translation: {
+                                            'send': 'OK'
+                                        }
+                                    },
+                                    ru: {
+                                        translation: {
+                                            'send': 'OK'
+                                        }
+                                    }
+                                }}
                             />
                         }
                     </Mutation>

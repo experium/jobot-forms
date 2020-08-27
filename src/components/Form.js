@@ -94,6 +94,11 @@ class Form extends Component {
         this.formProps = null;
 
         i18n.changeLanguage(language);
+
+        if (props.translations) {
+            i18n.addResources('ru', 'translation', pathOr({}, ['ru', 'translation'], props.translations));
+            i18n.addResources('en', 'translation', pathOr({}, ['en', 'translation'], props.translations));
+        }
     }
 
     changeOptions = (field, options) => {

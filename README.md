@@ -26,6 +26,7 @@ Form components
 - `opd`: personal data agreement text
 - `postFileUrl`: post file url
 - `getFileUrl`: get file url function
+- `translations`: i18n translation object expand or replace
 
 ### Form fields
 

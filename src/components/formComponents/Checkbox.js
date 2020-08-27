@@ -107,8 +107,16 @@ class PersonalDataAgreementComponent extends Component {
     getLabel = () => {
         const { t } = this.props;
 
+        const label = t('opdLabelCustom');
+
         return <span>
-            {t('opdLabel')} <span className={this.props.opd ? styles.formLink : styles.withoutOpd } onClick={this.open}>{t('opdLink')}</span>
+            { label !== 'opdLabelCustom' ? (
+                label
+            ) : (
+                <Fragment>
+                    {t('opdLabel')} <span className={this.props.opd ? styles.formLink : styles.withoutOpd } onClick={this.open}>{t('opdLink')}</span>
+                </Fragment>
+            )}
             <Modal
                 open={this.state.opened}
                 onClose={this.close}
