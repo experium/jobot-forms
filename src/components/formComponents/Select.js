@@ -11,7 +11,7 @@ import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import withLocationValues from '../hocs/withLocationValues';
 
-export const HEIGHT = 33;
+export const HEIGHT = 34;
 
 class Select extends Component {
     componentDidMount() {
@@ -172,6 +172,7 @@ class Select extends Component {
                 IndicatorSeparator: () => null,
                 DropdownIndicator: this.getDropdownIndicator,
             }}
+            menuIsOpen={true}
             isClearable />;
     }
 }

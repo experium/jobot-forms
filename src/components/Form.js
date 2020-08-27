@@ -366,16 +366,19 @@ class Form extends Component {
                     initialValues={this.state.initialValues}
                     noValidate
                 >
-                    { ({ handleSubmit, form, submitting }) => {
+                    { (formProps) => {
+                        const { handleSubmit, form, submitting, submitFailed } = formProps;
+
                         if (!this.formProps) {
                             this.formProps = form;
                         }
 
-                        return <form onSubmit={e => this.handleSubmit(e, handleSubmit)} noValidate>
+                        return <form onSubmit={e => this.handleSubmit(e, handleSubmit)} noValidate className={submitFailed ? 'jobot-form-submit-failed' : ''}>
                             <FormSpy
                                 subscription={{ submitFailed: true }}
                                 onChange={this.onChangeSubmitFailed} />
                             <FormRender
+                                {...formProps}
                                 fields={fields}
                                 renderField={field =>
                                     <div key={field.field}>
