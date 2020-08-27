@@ -22,14 +22,14 @@ class Input extends Component {
 
         return path(['textarea'], settings) ? (
             <AutosizeTextarea
-                className={styles.formTextarea}
+                className={`textarea ${styles.formTextarea}`}
                 minRows={3}
                 onChange={this.onChange}
                 value={value}
             />
         ) : inputMask ? (
             <Masked
-                className={styles.formInput}
+                className={`input ${styles.formInput}`}
                 value={value}
                 type={fieldType}
                 onChange={this.onChange}
@@ -40,7 +40,7 @@ class Input extends Component {
             />
         ) : (
             <input
-                className={styles.formInput}
+                className={`input ${styles.formInput}`}
                 value={value}
                 type={fieldType}
                 onChange={this.onChange}

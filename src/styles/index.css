@@ -97,8 +97,8 @@
     line-height: 20px;
 }
 
-.jobot-form-submit-failed .jobot-form-invalid .index__formInput,
-.jobot-form-submit-failed .jobot-form-invalid .index__formTextarea,
+.jobot-form-submit-failed .jobot-form-invalid .input,
+.jobot-form-submit-failed .jobot-form-invalid .textarea,
 .jobot-form-submit-failed .jobot-form-invalid .rc-tree-select.rc-tree-select .rc-tree-select-selector,
 .jobot-form-submit-failed .jobot-form-invalid .jobot-forms__control {
     border-color: red;

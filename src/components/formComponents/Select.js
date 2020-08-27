@@ -172,7 +172,6 @@ class Select extends Component {
                 IndicatorSeparator: () => null,
                 DropdownIndicator: this.getDropdownIndicator,
             }}
-            menuIsOpen={true}
             isClearable />;
     }
 }
