@@ -150,4 +150,4 @@ class HtmlOpdForm extends Component {
     }
 }
 
-export default withTranslation(HtmlOpdForm);
+export default withTranslation()(HtmlOpdForm);
