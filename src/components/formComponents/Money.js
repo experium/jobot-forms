@@ -80,7 +80,7 @@ class Money extends Component {
                         {({ input: { value, onChange } }) => (
                             <input
                                 type='number'
-                                className={styles.formInput}
+                                className={`${input} {styles.formInput}`}
                                 value={value}
                                 onChange={this.onChangeAmount(onChange)}
                                 placeholder={null}

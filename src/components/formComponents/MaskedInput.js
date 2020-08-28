@@ -11,7 +11,7 @@ class MaskedInputComponent extends Component {
         const { input: { value }, onChange, mask } = this.props;
 
         return <Masked
-            className={styles.formInput}
+            className={`${styles.formInput} input`}
             value={value}
             onChange={onChange}
             mask={mask}

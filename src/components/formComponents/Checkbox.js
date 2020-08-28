@@ -124,6 +124,7 @@ class PersonalDataAgreementComponent extends Component {
                     modal: 'pda-modal',
                     closeButton: 'pda-modal-close-button',
                 }}
+                center
             >
                 <div dangerouslySetInnerHTML={{ __html: this.props.opd }} />
             </Modal>
@@ -164,6 +165,7 @@ class PersonalDataAgreementComponent extends Component {
                         closeButton: 'pda-modal-close-button',
                     }}
                     destroyOnClose
+                    center
                 >
                     <FormSpy>
                         { formProps => (

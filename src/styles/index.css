@@ -105,19 +105,13 @@
 }
 
 /* Modal */
-.pda-modal {
-    padding: 60px 24px 24px 24px;
-    width: 800px;
+.pda-modal a {
+    word-break: break-all;
 }
-
-.pda-modal:before {
-    content: '';
-    position: absolute;
-    height: 1px;
-    top: 40px;
-    right: 0;
-    left: 0;
-    background-color: #f0f0f0;
+@media screen and (max-width: 991px) {
+    .pda-modal input.text {
+        width: 90%;
+    }
 }
 
 .pda-modal-close-button {

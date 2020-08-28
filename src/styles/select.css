@@ -1,3 +1,11 @@
+.jobot-forms__control .jobot-forms__indicators *, .jobot-forms__control .jobot-forms__menu * {
+  cursor: pointer;
+}
+
 .jobot-forms__control.jobot-forms__control--is-focused {
   box-shadow: none;
+}
+
+.jobot-forms__control .jobot-forms__clear-indicator {
+    padding-right: 0;
 }

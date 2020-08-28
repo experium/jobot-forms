@@ -34,11 +34,16 @@ const htmlOpdText =
 
 const htmlOpdText2 =
     `<div>
+        <style>
+            .name, .email {
+                width: 400px;
+            }
+        </style>
         <strong>
             <div style="text-align: center;">СОГЛАСИЕ КАНДИДАТА</div>
             <div style="text-align: center;">на обработку персоных данных</div>
         </strong>
-        <p>Я, <input name="name" type="text" placeholder="ФИО" style="width: 400px;" required />, гражданин <input name="country" type="text" placeholder="страна" required />, личный емейл <input name="email" type="email" placeholder="личный email" required /> (далее «Кандидат»), даю согласие <strong>Обществу с ограниченной ответственностью «АКСЕНЧЕР»</strong>, ИНН 7705476338 ОГРН 1027705028405, находящемуся по адресу РФ, 115054, г. Москва, Павелецкая площадь д. 2, строение 2 (далее «<strong>Компания</strong>»), на обработку моих персональных данных, указанных в таблице ниже, в соответствии с Федеральным законом от 27.07.2006 N 152-ФЗ «О персональных данных» и иного применимого законодательства.</p>
+        <p>Я, <input class='name text' name="name" type="text" placeholder="ФИО" required />, гражданин <input class='text' name="country" type="text" placeholder="страна" required />, личный емейл <input class='text email' name="email" type="email" placeholder="личный email" required /> (далее «Кандидат»), даю согласие <strong>Обществу с ограниченной ответственностью «АКСЕНЧЕР»</strong>, ИНН 7705476338 ОГРН 1027705028405, находящемуся по адресу РФ, 115054, г. Москва, Павелецкая площадь д. 2, строение 2 (далее «<strong>Компания</strong>»), на обработку моих персональных данных, указанных в таблице ниже, в соответствии с Федеральным законом от 27.07.2006 N 152-ФЗ «О персональных данных» и иного применимого законодательства.</p>
         <table style="border-collapse: collapse; border: 1px solid black;">
             <tr style="border: 1px solid black;">
                 <th style="padding: 5px;">Перечень обрабатываемых персональных данных</th>
