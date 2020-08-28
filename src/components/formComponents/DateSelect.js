@@ -135,6 +135,7 @@ class DateSelect extends Component {
         const showMonth = format ? contains('MM', format) : true;
         const showYear = format ? contains('y', format) : true;
         const { day, month, year } = this.state;
+        const options = t('MONTHS', { returnObjects: true });
 
         return <div className={styles.formDateSelect}>
             { showDay &&
@@ -151,9 +152,9 @@ class DateSelect extends Component {
             }
             { showMonth &&
                 <Select
-                    value={find(propEq('value', month), MONTHS)}
+                    value={find(propEq('value', month), options)}
                     onChange={this.onChangeMonth}
-                    options={t('MONTHS', { returnObjects: true })}
+                    options={options}
                     placeholder={t('placeholders.datePicker.month')}
                     classNamePrefix='jobot-forms'
                     styles={{
