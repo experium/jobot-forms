@@ -72,8 +72,9 @@ export default WrappedComponent =>
             const serverError = this.getServerError();
             const isLinked = isLinkedField({ settings });
             const required = isLinked ? this.props.required : this.state.required;
+            const showServerError = !modifiedSinceLastSubmit && !dirtySinceLastSubmit && serverError;
 
-            return <div style={{ marginBottom: 20 }} className={cx({ 'jobot-form-invalid': !!error })}>
+            return <div style={{ marginBottom: 20 }} className={cx({ 'jobot-form-invalid': !!error || showServerError })}>
                 { !this.hideLabel() &&
                     <label className={required ? styles.formLabelRequired : styles.formLabel}>
                         { label }
@@ -89,7 +90,7 @@ export default WrappedComponent =>
                     />
                 </div>
                 { submitFailed && error && <div className={styles.error}>{ error }</div> }
-                { !modifiedSinceLastSubmit && !dirtySinceLastSubmit && serverError && <div className={styles.error}>{ serverError }</div> }
+                { showServerError && <div className={styles.error}>{ serverError }</div> }
             </div>;
         }
     };

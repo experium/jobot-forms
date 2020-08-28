@@ -123,7 +123,10 @@ class AppForm extends Component {
         language: 'en',
     };
 
-    onCompleted = () => this.props.history.push('/form/success');
+    onCompleted = () => {
+        this.state.error && this.setState({ error: false });
+        this.props.history.push('/form/success');
+    };
 
     onError = () => this.setState({ error: true });
 
@@ -160,7 +163,6 @@ class AppForm extends Component {
                                     pathOr([], ['questions']),
                                 )(vacancy)}
                                 onSubmit={form => {
-                                    this.state.error && this.setState({ error: false });
                                     mutation({
                                         variables: {
                                             form, vacancy: match.params.id
