@@ -12,13 +12,8 @@ import styles from '../../styles/index.module.css';
 import formStyles from '../../styles/index.module.css';
 import Spinner from './Spinner';
 import { getFileErrorText } from '../../utils/file';
-
-const TYPES = {
-    audio: 'audio/*',
-    video: 'video/*',
-    image: 'image/jpeg, image/tiff, image/png',
-    document: '.doc, .docx, .xls, .xlsx, .odt, .rtf, text/plain, application/msword, application/rtf, application/pdf, text/html, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.oasis.opendocument.text',
-};
+import { TYPES } from '../../constants/allowFileExtensions';
+import { checkFileType } from '../../utils/validation';
 
 const MEDIA = {
     audio: { audio: true },
@@ -54,51 +49,74 @@ class File extends Component {
             const type = prop('type', settings);
             const fd = new FormData();
 
+            const validFileType = checkFileType(type, file.type);
+
             fd.append('file', file);
             fd.append('name', file.name);
 
-            this.setState({ loading: true, error: false });
+            if (validFileType) {
+                this.setState({ loading: true, error: false });
 
-            fetch(postFileUrl, {
-                method: 'POST',
-                body: fd
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.statusCode === 400) {
-                        return this.setState({ error: data.message || true, loading: false });
-                    }
-
-                    if (!data.id) {
-                        return this.setState({ error: true, loading: false });
-                    }
-
-                    const { input: { name } } = this.props;
-                    const fileName = data.filename;
-                    const url = getFileUrl ? getFileUrl(data.id) : data.id;
-                    this.setState({ loading: false });
-
-                    const fileItem = {
-                        url,
-                        text: fileName,
-                        contentType: file.type,
-                        type,
-                    };
-
-                    if (multiple) {
-                        const fieldFiles = pathOr([], ['fileNames', name], this.state);
-                        this.setState({ fileNames: {
-                            [name]: [...fieldFiles, fileName],
-                        }});
-                        onChange(append(fileItem, value || []));
-                    } else {
-                        this.setState({ fileNames: {
-                            [name]: [fileName],
-                        }});
-                        onChange(fileItem);
-                    }
+                fetch(postFileUrl, {
+                    method: 'POST',
+                    body: fd
                 })
-                .catch(() => this.setState({ error: true }));
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.statusCode === 400) {
+                            return this.setState({ error: data.message || true, loading: false });
+                        }
+
+                        if (!data.id) {
+                            return this.setState({ error: true, loading: false });
+                        }
+
+                        const { input: { name } } = this.props;
+                        const fileName = data.filename;
+                        const url = getFileUrl ? getFileUrl(data.id) : data.id;
+                        this.setState({ loading: false });
+
+                        const fileItem = {
+                            url,
+                            text: fileName,
+                            contentType: file.type,
+                            type,
+                        };
+
+                        if (multiple) {
+                            const fieldFiles = pathOr([], ['fileNames', name], this.state);
+                            this.setState({ fileNames: {
+                                [name]: [...fieldFiles, fileName],
+                            }});
+                            onChange(append(fileItem, value || []));
+                        } else {
+                            this.setState({ fileNames: {
+                                [name]: [fileName],
+                            }});
+                            onChange(fileItem);
+                        }
+                    })
+                    .catch(() => this.setState({ error: true }));
+            } else {
+                const fileItem = {
+                    text: file.name,
+                    contentType: file.type,
+                    type,
+                };
+
+                if (multiple) {
+                    const fieldFiles = pathOr([], ['fileNames', name], this.state);
+                    this.setState({ fileNames: {
+                        [name]: [...fieldFiles, fileItem.text],
+                    }});
+                    onChange(append(fileItem, value || []));
+                } else {
+                    this.setState({ fileNames: {
+                        [name]: [fileItem.text],
+                    }});
+                    onChange(fileItem);
+                }
+            }
         }
     }
 

@@ -52,6 +52,7 @@ export const TRANSLATIONS = {
                 'uploadError': 'Failed to upload file.',
                 'maximumFileSize': 'Maximum file size: {{count}} megabyte',
                 'maximumFileSize_plural': 'Maximum file size: {{count}} megabytes',
+                'fileType': 'Invalid type, available types: {{types}}',
             }
         },
     },
@@ -108,6 +109,7 @@ export const TRANSLATIONS = {
                 'maximumFileSize_0': 'Максимальный размер загружаемого файла: {{count}} мегабайт',
                 'maximumFileSize_1': 'Максимальный размер загружаемого файла: {{count}} мегабайта',
                 'maximumFileSize_2': 'Максимальный размер загружаемого файла: {{count}} мегабайт',
+                'fileType': 'Неверный тип файла, доступные типы: {{types}}',
             }
         },
     },
