@@ -142,8 +142,14 @@
 .formSectionBtn:focus {
     outline: none;
 }
+
 .formSectionBtn:hover {
     background: #4487dd;
+}
+
+.formSectionBtn:disabled {
+    cursor: not-allowed;
+    background: #ccc;
 }
 
 .error {
@@ -202,12 +208,14 @@
 }
 
 .amountField {
+    vertical-align: top;
     margin-right: 10px;
     width: calc(100% - 225px);
     display: inline-block;
 }
 
 .currencyField {
+    vertical-align: top;
     width: 215px;
     display: inline-block;
 }

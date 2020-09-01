@@ -27,7 +27,7 @@ class AudioFile extends Component {
     stop = () => this.recorder.stop().then(({ blob }) => this.setState({ recording: false, audio: blob }));
 
     render() {
-        const { available, t } = this.props;
+        const { available, t, disabled } = this.props;
 
         return <div>
             { available ?
@@ -37,14 +37,14 @@ class AudioFile extends Component {
                             <source src={URL.createObjectURL(this.state.audio)} />
                         </audio>
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>{t('cancel')}</button>
-                            <button className={styles.formBtn} type='button' onClick={this.save}>{t('save')}</button>
+                            <button disabled={disabled} className={styles.formBtnCancel} type='button' onClick={this.cancel}>{t('cancel')}</button>
+                            <button disabled={disabled} className={styles.formBtn} type='button' onClick={this.save}>{t('save')}</button>
                         </div>
                     </div> :
                     <Fragment>
                         <MediaLength recording={this.state.recording} data={this.state.data} />
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtn} onClick={this.state.recording ? this.stop : this.start}>
+                            <button disabled={disabled} className={styles.formBtn} onClick={this.state.recording ? this.stop : this.start}>
                                 { this.state.recording ? t('stopRecording') : t('startRecording') }
                             </button>
                         </div>

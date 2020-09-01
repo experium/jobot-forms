@@ -129,7 +129,7 @@ class DateSelect extends Component {
     }
 
     render() {
-        const { settings, t } = this.props;
+        const { settings, t, disabled } = this.props;
         const format = path(['format'], settings);
         const showDay = format ? contains('dd', format) : true;
         const showMonth = format ? contains('MM', format) : true;
@@ -148,10 +148,12 @@ class DateSelect extends Component {
                     placeholderChar={'\u2000'}
                     placeholder={t('placeholders.datePicker.day')}
                     keepCharPositions={false}
+                    disabled={disabled}
                     guide />
             }
             { showMonth &&
                 <Select
+                    isDisabled={disabled}
                     value={find(propEq('value', month), options)}
                     onChange={this.onChangeMonth}
                     options={options}
@@ -164,6 +166,7 @@ class DateSelect extends Component {
             }
             { showYear &&
                 <Masked
+                    disabled={disabled}
                     className={styles.formInput}
                     value={year}
                     onChange={this.onChangeYear}

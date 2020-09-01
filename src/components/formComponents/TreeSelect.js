@@ -199,13 +199,14 @@ class TreeSelectComponent extends Component {
 
     render() {
         const { loading } = this.state;
-        const { input: { value }, settings, t } = this.props;
+        const { input: { value }, settings, t, disabled } = this.props;
         const showFullPath = path(['showFullPath'], settings) || true;
         const multiple = path(['multiple'], settings);
         const dictionary = path(['dictionary'], settings);
 
         return (
             <TreeSelect
+                disabled={disabled}
                 dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 8] }}
                 value={value ? `${dictionary}_${value}` : value}
                 treeData={this.state.treeData}

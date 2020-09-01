@@ -230,7 +230,7 @@ class File extends Component {
     }
 
     render() {
-        const { settings, input: { value, name }, t } = this.props;
+        const { settings, input: { value, name }, t, disabled } = this.props;
         const { type, multiple } = settings || {};
         const values = value ? (multiple ? value : [value]) : [];
         const ModalContent = MODAL_CONTENT[type];
@@ -274,9 +274,9 @@ class File extends Component {
                             value=''
                             onChange={this.onChange}
                             accept={this.getAccept(type)}
-                            disabled={loading && !error}
+                            disabled={disabled || loading && !error}
                         />
-                        <label htmlFor={name}>
+                        <label htmlFor={name} className={`${disabled ? 'disabled' : ''}`}>
                             { loading && !error && <Spinner /> }
                             <span className='button-text'>
                                 {t('upload')}
