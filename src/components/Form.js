@@ -441,7 +441,7 @@ class Form extends Component {
                                 }
                             />
                             <div>
-                                <button className={styles.formBtn} type='submit'>
+                                <button className={styles.formBtn} type='submit' disabled={submitting || !!externalSubmitting}>
                                     { (submitting || !!externalSubmitting) && <Spinner />}
                                     <span className='button-text'>
                                         { t('send') }
