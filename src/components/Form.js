@@ -122,7 +122,7 @@ class Form extends Component {
 
     componentDidUpdate = (prevProps) => {
         const { language } = prevProps;
-        const { language: languageProps, initialValues } = this.props;
+        const { language: languageProps, initialValues, serverErrors } = this.props;
 
         if (languageProps !== language) {
             this.setState({ language: languageProps }, () => i18n.changeLanguage(this.state.language));
@@ -130,6 +130,10 @@ class Form extends Component {
 
         if (!equals(initialValues, prevProps.initialValues)) {
             this.setState({ initialValues });
+        }
+
+        if (!prevProps.serverErrors && serverErrors) {
+            this.scrollToInvalidField();
         }
     }
 
@@ -324,7 +328,7 @@ class Form extends Component {
         }
     }
 
-    handleSubmit = (e, handleSubmit) => {
+    scrollToInvalidField = () => {
         const { scrollContainerClassName, scrollContainer } = this.props;
         const invalidField = this.container.querySelector('.jobot-form-invalid');
         const scrollContainerElement = scrollContainer || scrollContainerClassName ? document.querySelector(scrollContainerClassName) : null;
@@ -345,10 +349,13 @@ class Form extends Component {
             }
 
             if (input) {
-                input.focus();
+                setTimeout(() => input.focus(), 1000);
             }
         }
+    }
 
+    handleSubmit = (e, handleSubmit) => {
+        this.scrollToInvalidField();
         handleSubmit(e);
     }
 
