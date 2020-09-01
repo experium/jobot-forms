@@ -53,6 +53,8 @@ export const TRANSLATIONS = {
                 'maximumFileSize': 'Maximum file size: {{count}} megabyte',
                 'maximumFileSize_plural': 'Maximum file size: {{count}} megabytes',
                 'fileType': 'Invalid type, available types: {{types}}',
+                'fileTypeAudio': 'Invalid type, select audio file',
+                'fileTypeVideo': 'Invalid type, select video file',
             }
         },
     },
@@ -110,6 +112,8 @@ export const TRANSLATIONS = {
                 'maximumFileSize_1': 'Максимальный размер загружаемого файла: {{count}} мегабайта',
                 'maximumFileSize_2': 'Максимальный размер загружаемого файла: {{count}} мегабайт',
                 'fileType': 'Неверный тип файла, доступные типы: {{types}}',
+                'fileTypeAudio': 'Неверный тип файла, выберите аудиофайл',
+                'fileTypeVideo': 'Неверный тип файла, выберите видеофайл',
             }
         },
     },

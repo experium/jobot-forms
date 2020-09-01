@@ -44,12 +44,12 @@ class File extends Component {
 
     onSave = file => {
         if (file) {
-            const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange, t } = this.props;
+            const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange, t, allowFileExtensions } = this.props;
             const multiple = prop('multiple', settings);
             const type = prop('type', settings);
             const fd = new FormData();
 
-            const validFileType = checkFileType(type, file.type);
+            const validFileType = checkFileType(type, file.type, allowFileExtensions);
 
             fd.append('file', file);
             fd.append('name', file.name);

@@ -1,14 +1,21 @@
-import { path, split, replace, contains, head, prop } from 'ramda';
+import { path, split, replace, contains, head, prop, isEmpty, values, join, keys, startsWith } from 'ramda';
 import * as yup from 'yup';
 
 import i18n from './i18n';
 
 import { TYPES, VALIDATION_FILE_TYPES } from '../constants/allowFileExtensions';
 
-export const checkFileType = (fileType, mimeType) => {
-    const allowFileTypes = TYPES[fileType];
+export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
+    switch (fileType) {
+        case 'audio':
+            return startsWith('audio', mimeType);
+        case 'video':
+            return startsWith('video', mimeType);
+        default:
+            const allowFileTypes = allowFileExtensions && !isEmpty(allowFileExtensions[fileType]) ? join(',', values(allowFileExtensions[fileType])) : TYPES[fileType];
 
-    return contains(mimeType, split(',', replace(/\s/g, '', allowFileTypes)));
+            return contains(mimeType, split(',', replace(/\s/g, '', allowFileTypes)));
+    }
 };
 
 export const compositeValidator = (value) => {
@@ -37,39 +44,45 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
         personalDataAgreement: htmlOpd ? yup.string() : yup.boolean(),
         boolean: yup.boolean(),
         choice: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
-        file: allowFileExtensions ? path(['settings', 'multiple'], field) ? yup.array() : yup.string() : (
-            yup.mixed().test({
-                name: 'fileExtensions',
-                message: ({ value }) => {
-                    const types = Array.isArray(value) ? (
-                        prop(prop('type', head(value)), VALIDATION_FILE_TYPES)
-                    ) : prop('type', VALIDATION_FILE_TYPES);
+        file: yup.mixed().test({
+            name: 'fileExtensions',
+            message: ({ value }) => {
+                const type = Array.isArray(value) ? prop('type', head(value)) : prop('type', value);
+                switch (type) {
+                    case 'audio':
+                        return i18n.t('errors.fileTypeAudio');
+                    case 'video':
+                        return i18n.t('errors.fileTypeVideo');
+                    default:
+                        if (allowFileExtensions && !isEmpty(allowFileExtensions[type])) {
+                            return i18n.t('errors.fileType', { types: join(', ', keys(allowFileExtensions[type])) });
+                        } else {
+                            return i18n.t('errors.fileType', { types: prop(type, VALIDATION_FILE_TYPES) });
+                        }
+                }
+            },
+            test: (value) => {
+                if (!value) {
+                    return true;
+                }
 
-                    return i18n.t('errors.fileType', { types });
-                },
-                test: (value) => {
-                    if (!value) {
-                        return true;
-                    }
+                if (path(['settings', 'multiple'], field)) {
+                    let result = true;
 
-                    if (Array.isArray(value)) {
-                        let result = true;
+                    value.forEach(value => {
+                        if (result) {
+                            result = checkFileType(value.type, value.contentType, allowFileExtensions);
+                        }
+                    });
 
-                        value.forEach(value => {
-                            if (result) {
-                                result = checkFileType(value.type, value.contentType);
-                            }
-                        });
+                    return result;
+                } else {
+                    const { type, contentType } = value;
 
-                        return result;
-                    } else {
-                        const { type, contentType } = value;
-
-                        return checkFileType(type, contentType);
-                    }
-                },
-            })
-        ),
+                    return checkFileType(type, contentType, allowFileExtensions);
+                }
+            },
+        }),
         money: yup.object().shape({
             amount: field.required ? (
                 yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })).required(() => i18n.t('errors.required'))
