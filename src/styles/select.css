@@ -9,3 +9,13 @@
 .jobot-forms__control .jobot-forms__clear-indicator {
     padding-right: 0;
 }
+
+.jobot-forms__control.jobot-forms__control--is-disabled {
+  border: 1px solid #ccc;
+  background-color: rgba(239, 239, 239, 0.3);
+}
+
+.jobot-forms__menu .jobot-forms__menu-list {
+  padding-bottom: 0;
+  padding-top: 0;
+}

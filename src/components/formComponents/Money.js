@@ -69,7 +69,7 @@ class Money extends Component {
     }
 
     render() {
-        const { input: { name }, t } = this.props;
+        const { input: { name }, t, disabled } = this.props;
         const options = this.getOptions();
         const singleCurrency = this.getSingleCurrency();
 
@@ -79,8 +79,9 @@ class Money extends Component {
                     <Field name={`${name}.amount`} key={name}>
                         {({ input: { value, onChange } }) => (
                             <input
+                                disabled={disabled}
                                 type='number'
-                                className={`${input} {styles.formInput}`}
+                                className={styles.formInput}
                                 value={value}
                                 onChange={this.onChangeAmount(onChange)}
                                 placeholder={null}
@@ -96,14 +97,16 @@ class Money extends Component {
                     >
                         {({ input: { value, onChange } }) => (
                             <ReactSelect
+                                menuIsOpen={true}
                                 styles={customStyle}
-                                isDisabled={singleCurrency}
+                                isDisabled={singleCurrency || disabled}
                                 inputValue={singleCurrency}
                                 value={find(propEq('code', value), options)}
                                 options={options}
                                 onChange={this.onChangeCurrency(onChange)}
                                 noOptionsMessage={() => t('noOptionsMessage')}
                                 placeholder={t('placeholders.salaryCurrency')}
+                                classNamePrefix='jobot-forms'
                             />
                         )}
                     </Field>

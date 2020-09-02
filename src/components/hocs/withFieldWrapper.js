@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { contains, find, propEq, propOr, path, prop } from 'ramda';
 import cx from 'classnames';
-import { isLinkedField } from '../../utils/field';
 
+import { isLinkedField } from '../../utils/field';
+import { DisableContext } from '../../context/DisableContext';
 import styles from '../../styles/index.module.css';
 
 export default WrappedComponent =>
@@ -82,12 +83,17 @@ export default WrappedComponent =>
                     </label>
                 }
                 <div>
-                    <WrappedComponent
-                        {...this.props}
-                        onChange={this.onChange}
-                        toggleRequired={this.toggleRequired}
-                        required={required}
-                    />
+                    <DisableContext.Consumer>
+                        { ({ disabled }) => (
+                            <WrappedComponent
+                                {...this.props}
+                                disabled={disabled}
+                                onChange={this.onChange}
+                                toggleRequired={this.toggleRequired}
+                                required={required}
+                            />
+                        )}
+                    </DisableContext.Consumer>
                 </div>
                 { submitFailed && error && <div className={styles.error}>{ error }</div> }
                 { showServerError && <div className={styles.error}>{ serverError }</div> }

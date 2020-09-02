@@ -16,7 +16,7 @@ class Input extends Component {
     onChange = e => this.props.onChange(e.target.value);
 
     render() {
-        const { fieldType, input: { value }, settings } = this.props;
+        const { fieldType, input: { value }, settings, disabled } = this.props;
         const mask = prop('mask', settings);
         const inputMask = mask && getMask(mask);
 
@@ -26,6 +26,7 @@ class Input extends Component {
                 minRows={3}
                 onChange={this.onChange}
                 value={value}
+                disabled={disabled}
             />
         ) : inputMask ? (
             <Masked
@@ -36,6 +37,7 @@ class Input extends Component {
                 mask={inputMask}
                 placeholderChar={'\u2000'}
                 keepCharPositions={false}
+                disabled={disabled}
                 guide
             />
         ) : (
@@ -44,6 +46,7 @@ class Input extends Component {
                 value={value}
                 type={fieldType}
                 onChange={this.onChange}
+                disabled={disabled}
             />
         );
     }

@@ -149,7 +149,7 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value }, settings, errors, dictionaryType, t } = this.props;
+        const { input: { value }, settings, errors, dictionaryType, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions() || [];
         const MenuList = this.getMenuList(options);
@@ -172,6 +172,7 @@ class Select extends Component {
                 IndicatorSeparator: () => null,
                 DropdownIndicator: this.getDropdownIndicator,
             }}
+            isDisabled={disabled}
             isClearable />;
     }
 }

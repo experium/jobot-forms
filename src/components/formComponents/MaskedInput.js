@@ -8,9 +8,10 @@ import { PHONE_MASK, PHONE_MASK_EIGHT } from '../../constants/masks';
 
 class MaskedInputComponent extends Component {
     render() {
-        const { input: { value }, onChange, mask } = this.props;
+        const { input: { value }, onChange, mask, disabled } = this.props;
 
         return <Masked
+            disabled={disabled}
             className={`${styles.formInput} input`}
             value={value}
             onChange={onChange}

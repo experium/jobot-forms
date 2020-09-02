@@ -19,7 +19,7 @@ class ImageFile extends Component {
     }
 
     render() {
-        const { available, t } = this.props;
+        const { available, t, disabled } = this.props;
 
         return <div>
             { available ?
@@ -27,8 +27,8 @@ class ImageFile extends Component {
                     <div>
                         <img alt='webcam' src={this.state.image} />
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>{ t('cancel') }</button>
-                            <button className={styles.formBtn} type='button' onClick={this.save}>{ t('save') }</button>
+                            <button disabled={disabled} className={styles.formBtnCancel} type='button' onClick={this.cancel}>{ t('cancel') }</button>
+                            <button disabled={disabled} className={styles.formBtn} type='button' onClick={this.save}>{ t('save') }</button>
                         </div>
                     </div> :
                     <Fragment>
@@ -39,7 +39,7 @@ class ImageFile extends Component {
                             screenshotQuality={1}
                             minScreenshotWidth={640} />
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtn} onClick={this.capture}>{ t('takePhoto') }</button>
+                            <button disabled={disabled} className={styles.formBtn} onClick={this.capture}>{ t('takePhoto') }</button>
                         </div>
                     </Fragment>
                 ) :

@@ -32,6 +32,7 @@ import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions
 import { isLinkedField } from '../utils/field';
 import { fieldArrayInitialValues } from '../constants/form';
 import { CompanyDictionaryContext } from '../context/CompanyDictionary';
+import { DisableContext } from '../context/DisableContext';
 import Spinner from './formComponents/Spinner';
 
 const CompositeError = ({ meta }) => {
@@ -87,7 +88,8 @@ class Form extends Component {
             errors: {},
             initialValues: props.initialValues || {},
             fieldsWithoutValidation: {},
-            options: {}
+            options: {},
+            submitted: false,
         };
 
         this.dictionaryTypes = [];
@@ -130,6 +132,10 @@ class Form extends Component {
 
         if (!equals(initialValues, prevProps.initialValues)) {
             this.setState({ initialValues });
+        }
+
+        if (serverErrors && !prevProps.serverErrors && this.state.submitted) {
+            this.setState({ submitted: false });
         }
 
         if (!prevProps.serverErrors && serverErrors) {
@@ -312,7 +318,10 @@ class Form extends Component {
         );
     }
 
-    onSubmit = values => this.props.onSubmit(values, this.formProps);
+    onSubmit = values => {
+        this.setState({ submitted: true });
+        this.props.onSubmit(values, this.formProps);
+    };
 
     renderCompositeRemoveButton = (field, index) => {
         if (field.required) {
@@ -379,75 +388,79 @@ class Form extends Component {
                     noValidate
                 >
                     { (formProps) => {
-                        const { handleSubmit, form, submitting, submitFailed } = formProps;
+                        const { handleSubmit, form, submitFailed, submitting } = formProps;
+                        const submitted = this.state.submitted || submitting || !!externalSubmitting;
 
                         if (!this.formProps) {
                             this.formProps = form;
                         }
 
                         return <form onSubmit={e => this.handleSubmit(e, handleSubmit)} noValidate className={submitFailed ? 'jobot-form-submit-failed' : ''}>
-                            <FormSpy
-                                subscription={{ submitFailed: true }}
-                                onChange={this.onChangeSubmitFailed} />
-                            <FormRender
-                                {...formProps}
-                                fields={fields}
-                                renderField={field =>
-                                    <div key={field.field}>
-                                        { field.type === 'composite' ?
-                                            <Fragment>
-                                                <h2>{ language ? pathOr(field.label, ['translations', 'label', language], field) : field.label }</h2>
-                                                { path(['settings', 'multiple'], field) ?
-                                                    <FieldArray
-                                                        name={field.field}
-                                                        validate={field.required ? compositeValidator : undefined}
-                                                        initialValue={fieldArrayInitialValues}
-                                                    >
-                                                        { (fieldProps) =>
-                                                            <div className={styles.formSection}>
-                                                                <CompositeError meta={prop('meta', fieldProps)} />
-                                                                { fieldProps.fields.map((name, index) =>
-                                                                    <div key={name} className={styles.formSectionRow}>
-                                                                        { pathOr([], ['settings', 'questions'], field).map(question =>
-                                                                            <div key={`${name}-${question.field}`}>
-                                                                                { this.renderField(question, `${name}.${question.field}`, form) }
-                                                                            </div>
-                                                                        )}
-                                                                        { this.renderCompositeRemoveButton(field, index) && (
-                                                                            <button
-                                                                                className={styles.formSectionBtn}
-                                                                                type='button'
-                                                                                onClick={() => fieldProps.fields.remove(index)}
-                                                                            >
-                                                                                { t('remove') }
-                                                                            </button>
-                                                                        )}
-                                                                    </div>
-                                                                )}
-                                                                <button className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
+                            <DisableContext.Provider value={{ disabled: submitted }}>
+                                <FormSpy
+                                    subscription={{ submitFailed: true }}
+                                    onChange={this.onChangeSubmitFailed} />
+                                <FormRender
+                                    {...formProps}
+                                    fields={fields}
+                                    renderField={field =>
+                                        <div key={field.field}>
+                                            { field.type === 'composite' ?
+                                                <Fragment>
+                                                    <h2>{ language ? pathOr(field.label, ['translations', 'label', language], field) : field.label }</h2>
+                                                    { path(['settings', 'multiple'], field) ?
+                                                        <FieldArray
+                                                            name={field.field}
+                                                            validate={field.required ? compositeValidator : undefined}
+                                                            initialValue={fieldArrayInitialValues}
+                                                        >
+                                                            { (fieldProps) =>
+                                                                <div className={styles.formSection}>
+                                                                    <CompositeError meta={prop('meta', fieldProps)} />
+                                                                    { fieldProps.fields.map((name, index) =>
+                                                                        <div key={name} className={styles.formSectionRow}>
+                                                                            { pathOr([], ['settings', 'questions'], field).map(question =>
+                                                                                <div key={`${name}-${question.field}`}>
+                                                                                    { this.renderField(question, `${name}.${question.field}`, form) }
+                                                                                </div>
+                                                                            )}
+                                                                            { this.renderCompositeRemoveButton(field, index) && (
+                                                                                <button
+                                                                                    disabled={submitted}
+                                                                                    className={styles.formSectionBtn}
+                                                                                    type='button'
+                                                                                    onClick={() => fieldProps.fields.remove(index)}
+                                                                                >
+                                                                                    { t('remove') }
+                                                                                </button>
+                                                                            )}
+                                                                        </div>
+                                                                    )}
+                                                                    <button disabled={submitted} className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
+                                                                </div>
+                                                            }
+                                                        </FieldArray> :
+                                                        pathOr([], ['settings', 'questions'], field).map(question =>
+                                                            <div key={`${field.field}-${question.field}`}>
+                                                                { this.renderField(question, `${field.field}.${question.field}`, form) }
                                                             </div>
-                                                        }
-                                                    </FieldArray> :
-                                                    pathOr([], ['settings', 'questions'], field).map(question =>
-                                                        <div key={`${field.field}-${question.field}`}>
-                                                            { this.renderField(question, `${field.field}.${question.field}`, form) }
-                                                        </div>
-                                                    )
-                                                }
-                                            </Fragment> :
-                                            this.renderField(field, null, form)
-                                        }
-                                    </div>
-                                }
-                            />
-                            <div>
-                                <button className={styles.formBtn} type='submit' disabled={submitting || !!externalSubmitting}>
-                                    { (submitting || !!externalSubmitting) && <Spinner />}
-                                    <span className='button-text'>
-                                        { t('send') }
-                                    </span>
-                                </button>
-                            </div>
+                                                        )
+                                                    }
+                                                </Fragment> :
+                                                this.renderField(field, null, form)
+                                            }
+                                        </div>
+                                    }
+                                />
+                                <div>
+                                    <button className={styles.formBtn} type='submit' disabled={submitted}>
+                                        { submitted && <Spinner /> }
+                                        <span className='button-text'>
+                                            { t('send') }
+                                        </span>
+                                    </button>
+                                </div>
+                            </DisableContext.Provider>
                         </form>;
                     }}
                 </FinalFormForm>

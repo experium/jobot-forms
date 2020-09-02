@@ -150,6 +150,11 @@
     vertical-align: middle;
 }
 
+label.disabled {
+    cursor: not-allowed!important;
+    background: #ccc!important;
+}
+
 @keyframes spin {
     100% {
         transform:rotate(360deg);

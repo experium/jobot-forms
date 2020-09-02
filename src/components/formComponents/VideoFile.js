@@ -39,7 +39,7 @@ class VideoFile extends Component {
     }
 
     render() {
-        const { available, t } = this.props;
+        const { available, t, disabled } = this.props;
 
         return <div>
             { available ?
@@ -52,8 +52,8 @@ class VideoFile extends Component {
                             <source src={URL.createObjectURL(this.state.data)} type='video/webm' />
                         </video>
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtnCancel} type='button' onClick={this.cancel}>{ t('cancel') }</button>
-                            <button className={styles.formBtn} type='button' onClick={this.save}>{ t('save') }</button>
+                            <button disabled={disabled} className={styles.formBtnCancel} type='button' onClick={this.cancel}>{ t('cancel') }</button>
+                            <button disabled={disabled} className={styles.formBtn} type='button' onClick={this.save}>{ t('save') }</button>
                         </div>
                     </div> :
                     <Fragment>
@@ -63,7 +63,7 @@ class VideoFile extends Component {
                             onUserMedia={this.onUserMedia} />
                         <MediaLength recording={this.state.recording} data={this.state.data} />
                         <div className={styles.modalButtonGroup}>
-                            <button className={styles.formBtn} onClick={this.state.recording ? this.stop : this.start}>
+                            <button disabled={disabled} className={styles.formBtn} onClick={this.state.recording ? this.stop : this.start}>
                                 { this.state.recording ? t('stopRecording') : t('startRecording') }
                             </button>
                         </div>
