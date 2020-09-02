@@ -44,7 +44,7 @@ class File extends Component {
 
     onSave = file => {
         if (file) {
-            const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange, t, allowFileExtensions } = this.props;
+            const { postFileUrl, settings, getFileUrl, input: { value, name }, onChange, t, allowFileExtensions, setInputError } = this.props;
             const multiple = prop('multiple', settings);
             const type = prop('type', settings);
             const fd = new FormData();
@@ -56,6 +56,7 @@ class File extends Component {
 
             if (validFileType) {
                 this.setState({ loading: true, error: false });
+                setInputError(undefined);
 
                 fetch(postFileUrl, {
                     method: 'POST',
@@ -64,6 +65,7 @@ class File extends Component {
                     .then(response => response.json())
                     .then(data => {
                         if (data.statusCode === 400) {
+                            setInputError(getFileErrorText(data.message));
                             return this.setState({ error: data.message || true, loading: false });
                         }
 
@@ -292,7 +294,6 @@ class File extends Component {
                     )
                 )}
             </div>
-            { this.state.error && <div className={styles.error}>{ getFileErrorText(this.state.error) }</div> }
             { MODAL_CONTENT[type] && (
                 <Modal
                     center

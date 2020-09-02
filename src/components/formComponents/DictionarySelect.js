@@ -202,7 +202,7 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value }, settings, t } = this.props;
+        const { input: { value }, settings, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions();
 
@@ -218,7 +218,7 @@ class Select extends Component {
                     noOptionsMessage={() => t('noOptionsMessage')}
                     placeholder={null}
                     classNamePrefix='jobot-forms'
-                    isDisabled={this.getDisableStatus()}
+                    isDisabled={disabled || this.getDisableStatus()}
                     getOptionLabel={(option) => option ? option.value : undefined}
                     getOptionValue={(option) => option.id}
                     isLoading={this.state.loading}
