@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { contains, find, propEq, propOr, path, prop } from 'ramda';
 import cx from 'classnames';
 
@@ -13,6 +13,7 @@ export default WrappedComponent =>
 
             this.state = {
                 required: this.props.required,
+                errorFromInput: undefined,
             };
         }
 
@@ -68,8 +69,25 @@ export default WrappedComponent =>
             }
         }
 
+        setInputError = (errorFromInput) => this.setState({ errorFromInput });
+
+        renderError = () => {
+            const { meta: { error, submitFailed, modifiedSinceLastSubmit, dirtySinceLastSubmit } } = this.props;
+            const { errorFromInput } = this.state;
+            const serverError = this.getServerError();
+            const showServerError = !modifiedSinceLastSubmit && !dirtySinceLastSubmit && serverError;
+
+            if (errorFromInput) {
+                return <div className={styles.error}>{ errorFromInput }</div>;
+            } else if (showServerError) {
+                return <div className={styles.error}>{ serverError }</div>;
+            } else {
+                return submitFailed && error ? <div className={styles.error}>{ error }</div> : null;
+            }
+        }
+
         render() {
-            const { label, extra = '', meta: { submitFailed, error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { value } } = this.props;
+            const { label, extra = '', meta: { error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { value } } = this.props;
             const serverError = this.getServerError();
             const isLinked = isLinkedField({ settings });
             const required = isLinked ? this.props.required : this.state.required;
@@ -91,12 +109,12 @@ export default WrappedComponent =>
                                 onChange={this.onChange}
                                 toggleRequired={this.toggleRequired}
                                 required={required}
+                                setInputError={this.setInputError}
                             />
                         )}
                     </DisableContext.Consumer>
                 </div>
-                { submitFailed && error && <div className={styles.error}>{ error }</div> }
-                { showServerError && <div className={styles.error}>{ serverError }</div> }
+                { this.renderError() }
             </div>;
         }
     };
