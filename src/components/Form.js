@@ -127,7 +127,9 @@ class Form extends Component {
         const { language: languageProps, initialValues, serverErrors } = this.props;
 
         if (languageProps !== language) {
-            this.setState({ language: languageProps }, () => i18n.changeLanguage(this.state.language));
+            this.setState({ language: languageProps }, () => {
+                i18n.changeLanguage(this.state.language);
+            });
         }
 
         if (!equals(initialValues, prevProps.initialValues)) {
@@ -259,6 +261,7 @@ class Form extends Component {
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
+                language={language}
                 validate={(value, form) => validate(value, form, field, this.props, fieldsWithoutValidation)}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}

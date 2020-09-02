@@ -3,6 +3,7 @@ import * as yup from 'yup';
 
 import i18n from './i18n';
 
+import { EMAIL_EXPERIUM } from '../constants/regexps';
 import { TYPES, VALIDATION_FILE_TYPES } from '../constants/allowFileExtensions';
 
 export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
@@ -40,7 +41,19 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
     const allowFileExtensions = props.allowFileExtensions;
 
     const rules = {
-        email: yup.string().email(i18n.t('errors.email')),
+        email: yup.string().email(i18n.t('errors.email')).test({
+            name: 'emailExperium',
+            message: i18n.t('errors.email'),
+            test: (value) => {
+                if (!value) {
+                    return true;
+                }
+
+                if (EMAIL_EXPERIUM.test(value)) {
+                    return i18n.t('errors.email');
+                }
+            },
+        }),
         personalDataAgreement: htmlOpd ? yup.string() : yup.boolean(),
         boolean: yup.boolean(),
         choice: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
