@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactSelect from 'react-select';
+import ReactSelect, { components } from 'react-select';
 import { path, contains, find, propEq, filter, prop, propOr, pathOr, isEmpty, pathEq } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
@@ -12,6 +12,7 @@ class Select extends Component {
     state = {
         options: {},
         loading: false,
+        error: false,
     }
 
     getDictionary = async (dictionaryId, parentId) => {
@@ -20,7 +21,7 @@ class Select extends Component {
 
         if (!this.state.loading) {
             const { apiUrl, field, changeContextOptions } = this.props;
-            this.setState({ loading: true });
+            this.setState({ loading: true, error: false });
 
             const urlParams = isDictionaryLink ? (
                 qs.stringify({
@@ -43,16 +44,20 @@ class Select extends Component {
                 }, { addQueryPrefix: true })
             );
 
-            const response = await fetch(`${apiUrl || ''}/api/company-dictionary-item${urlParams}`);
-            const responseData = propOr([], 'items', await response.json());
-            const dictionaryKey = parentId || dictionaryId;
+            try {
+                const response = await fetch(`${apiUrl || ''}/api/company-dictionary-item${urlParams}`);
+                const responseData = propOr([], 'items', await response.json());
+                const dictionaryKey = parentId || dictionaryId;
 
-            this.setState({
-                options: {
-                    [dictionaryKey]: responseData,
-                },
-                loading: false,
-            }, () => changeContextOptions && changeContextOptions(field, responseData));
+                this.setState({
+                    options: {
+                        [dictionaryKey]: responseData,
+                    },
+                    loading: false,
+                }, () => changeContextOptions && changeContextOptions(field, responseData));
+            } catch (error) {
+                this.setState({ loading: false, error: true });
+            }
         }
     }
 
@@ -201,6 +206,24 @@ class Select extends Component {
         return childs;
     }
 
+    getDropdownIndicator = (props) => {
+        const { error } = this.state;
+        const { getStyles } = props;
+
+        return error ? (
+            <div style={getStyles('dropdownIndicator', props)}>
+                <div
+                    className='error-indicator'
+                    onClick={() =>  this.getDictionary(this.props.settings.dictionary, this.props.settings.parent)}
+                >
+                    <div className='error-icon'>!</div>
+                </div>
+            </div>
+        ) : (
+            <components.DropdownIndicator {...props} />
+        );
+    }
+
     render() {
         const { input: { value }, settings, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
@@ -222,6 +245,10 @@ class Select extends Component {
                     getOptionLabel={(option) => option ? option.value : undefined}
                     getOptionValue={(option) => option.id}
                     isLoading={this.state.loading}
+                    components={{
+                        DropdownIndicator: this.getDropdownIndicator
+                    }}
+                    openMenuOnClick={!this.state.error}
                     isClearable
                 />
             </div>

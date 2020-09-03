@@ -19,3 +19,8 @@
   padding-bottom: 0;
   padding-top: 0;
 }
+
+.jobot-forms__indicators .loading-indicator-wrapper {
+  width: 40px;
+  text-align: center;
+}
