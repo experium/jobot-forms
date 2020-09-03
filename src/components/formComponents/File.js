@@ -246,8 +246,8 @@ class File extends Component {
                             { this.renderPreview(url, index) }
                             <div className={styles.fileButtonGroup}>
                                 <a
-                                    className={styles.downloadButton}
-                                    href={url}
+                                    className={`${styles.downloadButton} ${disabled ? styles.downloadButtonDisabled : ''}`}
+                                    href={disabled ? undefined : url}
                                     download
                                     target='_blank'
                                     rel='noopener noreferrer'
@@ -255,7 +255,8 @@ class File extends Component {
                                     { t('download') }
                                 </a>
                                 <button
-                                    className={styles.dangerBtn}
+                                    disabled={disabled}
+                                    className={`${styles.dangerBtn} ${disabled ? styles.dangerBtnDisabled : ''}`}
                                     type='button'
                                     onClick={() => this.onDelete(index)}
                                 >
@@ -288,7 +289,7 @@ class File extends Component {
                 }
                 { (!multiple && value.length > 1) || !BTN_TEXT[type] ? null : (
                     type && (
-                        <button disabled={loading && !error} className={formStyles.formBtn} type='button' onClick={this.openModal}>
+                        <button disabled={loading && !error || disabled} className={formStyles.formBtn} type='button' onClick={this.openModal}>
                             { t(BTN_TEXT[type]) }
                         </button>
                     )
