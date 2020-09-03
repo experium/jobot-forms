@@ -6,10 +6,8 @@ import { withTranslation } from 'react-i18next';
 import TreeSelect from 'rc-tree-select';
 
 import DownOutlined from '@ant-design/icons/DownOutlined';
-import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import CloseOutlined from '@ant-design/icons/CloseOutlined';
 import CloseCircleFilled from '@ant-design/icons/CloseCircleFilled';
-import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 
 import '../../styles/tree.css';
@@ -34,10 +32,12 @@ class TreeSelectComponent extends Component {
             loaded: {},
             treeData: [],
             loading: false,
+            error: false,
         };
     }
 
     getDictionary = async (dictionary, parentId, search) => {
+        this.setState({ error: false });
         const { apiUrl } = this.props;
         const urlParams = qs.stringify({
             filter: {
@@ -49,10 +49,15 @@ class TreeSelectComponent extends Component {
             relations: ['parent'],
         }, { addQueryPrefix: true });
 
-        const response = await fetch(`${apiUrl || ''}/api/company-dictionary-item${urlParams}`);
-        const items = propOr([], 'items', await response.json());
+        try {
+            const response = await fetch(`${apiUrl || ''}/api/company-dictionary-item${urlParams}`);
+            const items = propOr([], 'items', await response.json());
 
-        return items;
+            return items;
+        } catch {
+            this.setState({ error: true, loading: false });
+            return [];
+        }
     }
 
     setDictionaryItems = (items, dict, parent, parentDict, childrenPath) => {
@@ -79,7 +84,7 @@ class TreeSelectComponent extends Component {
         });
     }
 
-    async componentDidMount() {
+    async fetchAndSetDictionary() {
         const { settings } = this.props;
 
         const parentKeys = keys(settings.parents);
@@ -152,6 +157,10 @@ class TreeSelectComponent extends Component {
         }
     }
 
+    componentDidMount() {
+        this.fetchAndSetDictionary();
+    }
+
     onLoadData = async (item) => {
         if (item.children) {
             return true;
@@ -197,8 +206,31 @@ class TreeSelectComponent extends Component {
         return prop(parentField, contextOptions);
     }
 
+    getInputIcon = () => {
+        const { error, loading } = this.state;
+        if (loading) {
+            return <LoadingOutlined />;
+        } else if (error) {
+            return (
+                <div
+                    className='error-indicator'
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        this.fetchAndSetDictionary();
+                    }}
+                >
+                    <div className='error-icon'>!</div>
+                </div>
+            );
+        } else {
+            return <DownOutlined />;
+        }
+    }
+
     render() {
-        const { loading } = this.state;
+        const { loading, error} = this.state;
         const { input: { value }, settings, t, disabled } = this.props;
         const showFullPath = path(['showFullPath'], settings) || true;
         const multiple = path(['multiple'], settings);
@@ -206,6 +238,7 @@ class TreeSelectComponent extends Component {
 
         return (
             <TreeSelect
+                className={`${error ? 'error' : ''}`}
                 disabled={disabled}
                 dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 8] }}
                 value={value ? `${dictionary}_${value}` : value}
@@ -219,7 +252,7 @@ class TreeSelectComponent extends Component {
                 treeCheckable={multiple}
                 showSearch={!multiple}
 
-                inputIcon={() => loading ? <LoadingOutlined /> : <DownOutlined />}
+                inputIcon={this.getInputIcon}
                 switcherIcon={({ loading, isLeaf }) => loading ? <LoadingOutlined /> : isLeaf ? null : <DownOutlined />}
                 removeIcon={<CloseOutlined />}
                 clearIcon={<CloseCircleFilled />}

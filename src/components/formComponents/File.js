@@ -98,7 +98,10 @@ class File extends Component {
                             onChange(fileItem);
                         }
                     })
-                    .catch(() => this.setState({ error: true }));
+                    .catch((error) => {
+                        setInputError(getFileErrorText(error));
+                        this.setState({ error: true });
+                    });
             } else {
                 const fileItem = {
                     text: file.name,

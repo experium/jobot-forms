@@ -1600,3 +1600,13 @@
     -webkit-transform: rotate(90deg);
             transform: rotate(90deg);
   }
+
+.rc-tree-select.error .rc-tree-select-arrow {
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  cursor: pointer;
+  pointer-events: initial;
+}
