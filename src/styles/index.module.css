@@ -243,6 +243,13 @@
     border-color: #ff7875;
 }
 
+.dangerBtnDisabled, .dangerBtnDisabled:hover, .dangerBtnDisabled:focus {
+    cursor: not-allowed;
+    background: #ccc;
+    color: white;
+    border: 1px solid #ccc;
+}
+
 /* File */
 
 .fileList {
@@ -281,6 +288,13 @@
 .downloadButton:hover, .downloadButton:focus {
     color: #4487dd;
     border-color: #4487dd;
+}
+
+.downloadButtonDisabled, .downloadButtonDisabled:focus, .downloadButtonDisabled:hover  {
+    cursor: not-allowed;
+    background: #ccc;
+    color: white;
+    border: 1px solid #ccc;
 }
 
 .fileButtonGroup {
