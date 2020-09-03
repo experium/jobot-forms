@@ -62,7 +62,13 @@ class File extends Component {
                     method: 'POST',
                     body: fd
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error();
+                        } else {
+                            return response.json();
+                        }
+                    })
                     .then(data => {
                         if (data.statusCode === 400) {
                             setInputError(getFileErrorText(data.message));
