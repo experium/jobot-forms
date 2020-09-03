@@ -186,12 +186,14 @@ class AppForm extends Component {
                                 translations={{
                                     en: {
                                         translation: {
-                                            'send': 'OK'
+                                            'send': 'OK',
+                                            'errors.required': 'Required',
                                         }
                                     },
                                     ru: {
                                         translation: {
-                                            'send': 'OK'
+                                            'send': 'OK',
+                                            'errors.required': 'Введите значение',
                                         }
                                     }
                                 }}

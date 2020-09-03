@@ -55,6 +55,7 @@ export const TRANSLATIONS = {
                 'fileType': 'Invalid type, available types: {{types}}',
                 'fileTypeAudio': 'Invalid type, select audio file',
                 'fileTypeVideo': 'Invalid type, select video file',
+                'composite': 'Required block',
             }
         },
     },
@@ -114,6 +115,7 @@ export const TRANSLATIONS = {
                 'fileType': 'Неверный тип файла, доступные типы: {{types}}',
                 'fileTypeAudio': 'Неверный тип файла, выберите аудиофайл',
                 'fileTypeVideo': 'Неверный тип файла, выберите видеофайл',
+                'composite': 'Блок обязателен для заполнения',
             }
         },
     },

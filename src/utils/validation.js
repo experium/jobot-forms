@@ -20,7 +20,7 @@ export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
 };
 
 export const compositeValidator = (value) => {
-    return value && (value.length > 0) ? undefined : 'Блок обязателен для заполнения';
+    return value && (value.length > 0) ? undefined : i18n.t('errors.composite');
 };
 
 export const validateLink = (field, values) => {
