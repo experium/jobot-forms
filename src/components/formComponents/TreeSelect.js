@@ -51,6 +51,11 @@ class TreeSelectComponent extends Component {
 
         try {
             const response = await fetch(`${apiUrl || ''}/api/company-dictionary-item${urlParams}`);
+
+            if (!response.ok) {
+                throw new Error();
+            }
+
             const items = propOr([], 'items', await response.json());
 
             return items;
