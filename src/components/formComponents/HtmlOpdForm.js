@@ -99,12 +99,28 @@ class HtmlOpdForm extends Component {
         }
     }
 
+    scrollToInvalid = () => {
+        const invalidInput = document.querySelector('.opd-html-form input:invalid');
+        const container = document.querySelector('.react-responsive-modal-overlay');
+
+        if (invalidInput) {
+            invalidInput.focus({
+                preventScroll: true
+            });
+
+            container.scrollTo({
+                top: (invalidInput.getBoundingClientRect().top + container.scrollTop) - 10,
+                behavior: 'smooth'
+            });
+        }
+    }
+
     onSubmit = formProps => {
         const form = path(['form'], formProps);
         const inputs = this.form.querySelectorAll('input');
         const valid = all(input => input.validity.valid, inputs);
 
-        this.setState({ submitted: true });
+        this.setState(() => ({ submitted: true }), () => this.scrollToInvalid());
 
         if (valid) {
             const values = {};
