@@ -42,15 +42,15 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
 
     const rules = {
         email: yup.string().email(i18n.t('errors.email')).test({
-            name: 'emailExperium',
-            message: i18n.t('errors.email'),
+            name: 'emailChars',
+            message: i18n.t('errors.emailChars'),
             test: (value) => {
                 if (!value) {
                     return true;
                 }
 
                 if (EMAIL_EXPERIUM.test(value)) {
-                    return i18n.t('errors.email');
+                    return i18n.t('errors.emailChars');
                 }
             },
         }),
