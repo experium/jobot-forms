@@ -14,6 +14,7 @@ import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/index.module.css';
 import HtmlOpdForm from './HtmlOpdForm';
 import { FormContext } from '../../context/FormContext';
+import { getAttrs } from '../../utils/attrs';
 
 class CheckboxComponent extends Component {
     static propTypes = {
@@ -58,7 +59,7 @@ class CheckboxComponent extends Component {
     }
 
     render() {
-        const { input: { value = [] }, options, disabled, settings, required, fieldType } = this.props;
+        const { input: { value = [] }, options, disabled, settings, required, fieldType, htmlAttrs } = this.props;
 
         return options && !isEmpty(options) ? (
             <div className='checkbox-block'>
@@ -74,6 +75,7 @@ class CheckboxComponent extends Component {
                                 checked={prop('multiple', settings) ? contains(checkboxValue, value) : !!value}
                                 value={checkboxValue}
                                 disabled={disabled}
+                                {...htmlAttrs}
                             />
                             <div className='checkbox-label'>
                                 { label }
@@ -157,6 +159,7 @@ class PersonalDataAgreementComponent extends Component {
                         value: true,
                         label: this.getLabel()
                     }]}
+                    htmlAttrs={getAttrs('opdCheckbox', htmlAttrs)}
                 />
                 { this.props.htmlOpd &&
                     <Modal

@@ -208,6 +208,9 @@ class AppForm extends Component {
                                     submit: {
                                         'data-analytics-link-name': 'submit'
                                     },
+                                    opdCheckbox: {
+                                        'data-analytics-link-name': 'i accept the data privacy policy'
+                                    },
                                 }}
                             />
                         }

@@ -4,6 +4,7 @@ import cx from 'classnames';
 
 import { isLinkedField } from '../../utils/field';
 import { FormContext } from '../../context/FormContext';
+import { getAttrs } from '../../utils/attrs';
 import styles from '../../styles/index.module.css';
 
 export default WrappedComponent =>
@@ -87,7 +88,7 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, extra = '', meta: { error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { value } } = this.props;
+            const { label, extra = '', meta: { error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { name } } = this.props;
             const serverError = this.getServerError();
             const isLinked = isLinkedField({ settings });
             const required = isLinked ? this.props.required : this.state.required;
@@ -102,7 +103,7 @@ export default WrappedComponent =>
                 }
                 <div>
                     <FormContext.Consumer>
-                        { ({ disabled }) => (
+                        { ({ disabled, htmlAttrs }) => (
                             <WrappedComponent
                                 {...this.props}
                                 disabled={disabled}
@@ -110,6 +111,7 @@ export default WrappedComponent =>
                                 toggleRequired={this.toggleRequired}
                                 required={required}
                                 setInputError={this.setInputError}
+                                htmlAttrs={getAttrs(name, htmlAttrs)}
                             />
                         )}
                     </FormContext.Consumer>
