@@ -3,7 +3,7 @@ import { contains, find, propEq, propOr, path, prop } from 'ramda';
 import cx from 'classnames';
 
 import { isLinkedField } from '../../utils/field';
-import { DisableContext } from '../../context/DisableContext';
+import { FormContext } from '../../context/FormContext';
 import styles from '../../styles/index.module.css';
 
 export default WrappedComponent =>
@@ -101,7 +101,7 @@ export default WrappedComponent =>
                     </label>
                 }
                 <div>
-                    <DisableContext.Consumer>
+                    <FormContext.Consumer>
                         { ({ disabled }) => (
                             <WrappedComponent
                                 {...this.props}
@@ -112,7 +112,7 @@ export default WrappedComponent =>
                                 setInputError={this.setInputError}
                             />
                         )}
-                    </DisableContext.Consumer>
+                    </FormContext.Consumer>
                 </div>
                 { this.renderError() }
             </div>;

@@ -30,9 +30,10 @@ import withFieldWrapper from './hocs/withFieldWrapper';
 import LinkedFieldWrapper from './hocs/LinkedFieldWrapper';
 import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
 import { isLinkedField } from '../utils/field';
+import { getAttrs } from '../utils/attrs';
 import { fieldArrayInitialValues } from '../constants/form';
 import { CompanyDictionaryContext } from '../context/CompanyDictionary';
-import { DisableContext } from '../context/DisableContext';
+import { FormContext } from '../context/FormContext';
 import Spinner from './formComponents/Spinner';
 
 const CompositeError = ({ meta }) => {
@@ -372,7 +373,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, formRender, t, submitting: externalSubmitting } = this.props;
+        const { fields, language, formRender, t, submitting: externalSubmitting, htmlAttrs } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -398,8 +399,13 @@ class Form extends Component {
                             this.formProps = form;
                         }
 
-                        return <form onSubmit={e => this.handleSubmit(e, handleSubmit)} noValidate className={submitFailed ? 'jobot-form-submit-failed' : ''}>
-                            <DisableContext.Provider value={{ disabled: submitted }}>
+                        return <form
+                            className={submitFailed ? 'jobot-form-submit-failed' : ''}
+                            onSubmit={e => this.handleSubmit(e, handleSubmit)}
+                            ref={this.props.formRef}
+                            noValidate
+                        >
+                            <FormContext.Provider value={{ disabled: submitted, htmlAttrs }}>
                                 <FormSpy
                                     subscription={{ submitFailed: true }}
                                     onChange={this.onChangeSubmitFailed} />
@@ -456,14 +462,14 @@ class Form extends Component {
                                     }
                                 />
                                 <div>
-                                    <button className={styles.formBtn} type='submit' disabled={submitted}>
+                                    <button className={styles.formBtn} type='submit' disabled={submitted} {...getAttrs('submit', htmlAttrs)}>
                                         { submitted && <Spinner /> }
                                         <span className='button-text'>
                                             { t('send') }
                                         </span>
                                     </button>
                                 </div>
-                            </DisableContext.Provider>
+                            </FormContext.Provider>
                         </form>;
                     }}
                 </FinalFormForm>

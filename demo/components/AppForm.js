@@ -123,10 +123,16 @@ const customComponents = {
 };
 
 class AppForm extends Component {
-    state = {
-        error: false,
-        language: 'en',
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            error: false,
+            language: 'en',
+        };
+
+        this.formRef = React.createRef();
+    }
 
     onCompleted = () => {
         this.state.error && this.setState({ error: false });
@@ -163,6 +169,7 @@ class AppForm extends Component {
                         onError={this.onError}>
                         { (mutation, { error }) =>
                             <Form
+                                formRef={this.formRef}
                                 apiUrl={API_URL}
                                 fields={compose(
                                     pathOr([], ['questions']),
@@ -196,6 +203,11 @@ class AppForm extends Component {
                                             'errors.required': 'Введите значение',
                                         }
                                     }
+                                }}
+                                htmlAttrs={{
+                                    submit: {
+                                        'data-analytics-link-name': 'submit'
+                                    },
                                 }}
                             />
                         }

@@ -13,6 +13,7 @@ import 'react-responsive-modal/styles.css';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/index.module.css';
 import HtmlOpdForm from './HtmlOpdForm';
+import { FormContext } from '../../context/FormContext';
 
 class CheckboxComponent extends Component {
     static propTypes = {
@@ -147,39 +148,44 @@ class PersonalDataAgreementComponent extends Component {
     }
 
     render() {
-        return <Fragment>
-            <Checkbox
-                {...this.props}
-                onValueChange={this.props.htmlOpd ? this.onChange : null}
-                options={[{
-                    value: true,
-                    label: this.getLabel()
-                }]}
-            />
-            { this.props.htmlOpd &&
-                <Modal
-                    open={this.state.openedHtml}
-                    onClose={this.closeHtml}
-                    classNames={{
-                        modal: 'pda-modal',
-                        closeButton: 'pda-modal-close-button',
-                    }}
-                    destroyOnClose
-                    center
-                >
-                    <FormSpy>
-                        { formProps => (
-                            <HtmlOpdForm
-                                onSubmit={this.onSubmitHtml}
-                                value={this.props.input.value}
-                                formProps={formProps}
-                                getOpdValues={() => this.props.getOpdValues && this.props.getOpdValues(formProps)}
-                                html={this.props.htmlOpd} />
-                        )}
-                    </FormSpy>
-                </Modal>
-            }
-        </Fragment>;
+        return <FormContext.Consumer>{ ({ htmlAttrs }) => (
+            <Fragment>
+                <Checkbox
+                    {...this.props}
+                    onValueChange={this.props.htmlOpd ? this.onChange : null}
+                    options={[{
+                        value: true,
+                        label: this.getLabel()
+                    }]}
+                />
+                { this.props.htmlOpd &&
+                    <Modal
+                        open={this.state.openedHtml}
+                        onClose={this.closeHtml}
+                        classNames={{
+                            modal: 'pda-modal',
+                            closeButton: 'pda-modal-close-button',
+                        }}
+                        destroyOnClose
+                        showCloseIcon={false}
+                        center
+                    >
+                        <FormSpy>
+                            { formProps => (
+                                <HtmlOpdForm
+                                    onSubmit={this.onSubmitHtml}
+                                    onClose={this.closeHtml}
+                                    value={this.props.input.value}
+                                    formProps={formProps}
+                                    getOpdValues={() => this.props.getOpdValues && this.props.getOpdValues(formProps)}
+                                    htmlAttrs={htmlAttrs}
+                                    html={this.props.htmlOpd} />
+                            )}
+                        </FormSpy>
+                    </Modal>
+                }
+            </Fragment>
+        )}</FormContext.Consumer>;
     }
 }
 
