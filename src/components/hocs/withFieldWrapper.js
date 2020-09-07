@@ -88,7 +88,7 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, extra = '', meta: { error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { name } } = this.props;
+            const { label, extra = '', meta: { error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { name }, htmlAttrs: fieldHtmlAttrs } = this.props;
             const serverError = this.getServerError();
             const isLinked = isLinkedField({ settings });
             const required = isLinked ? this.props.required : this.state.required;
@@ -111,7 +111,7 @@ export default WrappedComponent =>
                                 toggleRequired={this.toggleRequired}
                                 required={required}
                                 setInputError={this.setInputError}
-                                htmlAttrs={getAttrs(name, htmlAttrs)}
+                                htmlAttrs={fieldHtmlAttrs || getAttrs(name, htmlAttrs)}
                             />
                         )}
                     </FormContext.Consumer>
