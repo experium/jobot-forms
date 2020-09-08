@@ -362,7 +362,7 @@ class Form extends Component {
             }
 
             if (input) {
-                setTimeout(() => input.focus(), 1000);
+                input.focus({ preventScroll: true });
             }
         }
     }
