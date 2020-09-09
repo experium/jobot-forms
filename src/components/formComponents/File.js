@@ -63,7 +63,7 @@ class File extends Component {
                     body: fd
                 })
                     .then(response => {
-                        if (!response.ok) {
+                        if (!response.ok && response.status !== 400) {
                             throw new Error();
                         } else {
                             return response.json();
