@@ -3,7 +3,7 @@ import * as yup from 'yup';
 
 import i18n from './i18n';
 
-import { EMAIL_EXPERIUM } from '../constants/regexps';
+import { EMAIL_EXPERIUM, EMAIL_DOMAIN } from '../constants/regexps';
 import { TYPES, VALIDATION_FILE_TYPES } from '../constants/allowFileExtensions';
 
 export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
@@ -43,15 +43,20 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
     const rules = {
         email: yup.string().email(i18n.t('errors.email')).test({
             name: 'emailChars',
-            message: i18n.t('errors.emailChars'),
+            message: ({ value }) => {
+                const invalidChars = !EMAIL_EXPERIUM.test(value);
+                const invalidDomain = !EMAIL_DOMAIN.test(value);
+
+                if (invalidChars || invalidDomain) {
+                    return invalidDomain ? i18n.t('errors.emailDomain') : i18n.t('errors.emailChars');
+                }
+            },
             test: (value) => {
                 if (!value) {
                     return true;
                 }
 
-                if (EMAIL_EXPERIUM.test(value)) {
-                    return i18n.t('errors.emailChars');
-                }
+                return EMAIL_EXPERIUM.test(value);
             },
         }),
         personalDataAgreement: htmlOpd ? yup.string() : yup.boolean(),

@@ -6,6 +6,7 @@ import cx from 'classnames';
 import styles from '../../styles/index.module.css';
 
 import { getAttrs } from '../../utils/attrs';
+import { EMAIL_EXPERIUM } from '../../constants/regexps';
 
 const commonStyle = `
     .opd-html-form {
@@ -120,7 +121,15 @@ class HtmlOpdForm extends Component {
     onSubmit = formProps => {
         const form = path(['form'], formProps);
         const inputs = this.form.querySelectorAll('input');
-        const valid = all(input => input.validity.valid, inputs);
+        const valid = all(input => {
+            if ((input.type === 'email') && !EMAIL_EXPERIUM.test(input.value)) {
+                input.setCustomValidity('Incorrect email');
+                return false;
+            } else {
+                input.setCustomValidity('');
+            }
+            return input.validity.valid;
+        }, inputs);
 
         this.setState(() => ({ submitted: true }), () => this.scrollToInvalid());
 
