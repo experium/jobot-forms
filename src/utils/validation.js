@@ -42,7 +42,22 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
     const allowFileExtensions = props.allowFileExtensions;
 
     const rules = {
-        phone: yup.string().test({
+        text: yup.string().nullable().test({
+            name: 'text',
+            message: i18n.t('errors.required'),
+            test: value => {
+                const mask = path(['settings', 'mask'], field);
+
+                if (!value || !mask) {
+                    return true;
+                }
+                const parsedValue = value.replace(/[\s]+/gm, '');
+                const parsedMask = mask.replace(/[\s]+/gm, '');
+
+                return parsedMask.length === parsedValue.length;
+            }
+        }),
+        phone: yup.string().nullable().test({
             name: 'phone',
             message: ({ value }) => {
                 const parsedValue = value.replace(/[\+\(\)-\s]+/gm, '');
@@ -54,10 +69,10 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
                     return true;
                 }
 
-                return isPhoneNumber(value, 'RU');
+                return isPhoneNumber(value, 'RU') || isPhoneNumber(value, 'KZ');
             },
         }),
-        email: yup.string().email(i18n.t('errors.email')).test({
+        email: yup.string().nullable().email(i18n.t('errors.email')).test({
             name: 'emailChars',
             message: ({ value }) => {
                 const invalidChars = !EMAIL_EXPERIUM.test(value);

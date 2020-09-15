@@ -172,6 +172,8 @@ class AppForm extends Component {
                                 formRef={this.formRef}
                                 apiUrl={API_URL}
                                 fields={compose(
+                                    // mask text field
+                                    // assocPath([0, 'settings', 'mask'], '9999'),
                                     pathOr([], ['questions']),
                                 )(vacancy)}
                                 onSubmit={form => {
