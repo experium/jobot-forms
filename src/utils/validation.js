@@ -1,9 +1,10 @@
 import { path, split, replace, contains, head, prop, isEmpty, values, join, keys, startsWith } from 'ramda';
 import * as yup from 'yup';
+import { isPhoneNumber } from 'class-validator';
 
 import i18n from './i18n';
 
-import { EMAIL_EXPERIUM, EMAIL_DOMAIN } from '../constants/regexps';
+import { EMAIL_EXPERIUM, EMAIL_DOMAIN, PHONE } from '../constants/regexps';
 import { TYPES, VALIDATION_FILE_TYPES } from '../constants/allowFileExtensions';
 
 export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
@@ -41,6 +42,21 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
     const allowFileExtensions = props.allowFileExtensions;
 
     const rules = {
+        phone: yup.string().test({
+            name: 'phone',
+            message: ({ value }) => {
+                const parsedValue = value.replace(/[\+\(\)-\s]+/gm, '');
+
+                return parsedValue.length >= 11 ? i18n.t('errors.phone') : i18n.t('errors.required');
+            },
+            test: (value) => {
+                if (!value) {
+                    return true;
+                }
+
+                return isPhoneNumber(value, 'RU');
+            },
+        }),
         email: yup.string().email(i18n.t('errors.email')).test({
             name: 'emailChars',
             message: ({ value }) => {

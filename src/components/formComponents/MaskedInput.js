@@ -24,4 +24,9 @@ class MaskedInputComponent extends Component {
 
 const MaskedInput = withFieldWrapper(MaskedInputComponent);
 
-export const PhoneInput = props => <MaskedInput {...props} mask={value => value && value[0] === '8' ? PHONE_MASK_EIGHT : PHONE_MASK} />;
+export const PhoneInput = props => (
+    <MaskedInput
+        {...props}
+        mask={value => value && value[0] === '8' ? PHONE_MASK_EIGHT : PHONE_MASK}
+    />
+);
