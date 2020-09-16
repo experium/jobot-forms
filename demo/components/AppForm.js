@@ -211,7 +211,10 @@ class AppForm extends Component {
                                         'data-analytics-link-name': 'submit'
                                     },
                                     opdCheckbox: {
-                                        'data-analytics-link-name': 'i accept the data privacy policy'
+                                        'data-analytics-link-name': 'i accept the data privacy policy',
+                                        'data-analytics-content-type': 'cta',
+                                        'data-analytics-template-zone': 'body',
+                                        'data-analytics-module-name': 'application submission',
                                     },
                                 }}
                             />

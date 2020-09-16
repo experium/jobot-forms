@@ -62,7 +62,7 @@ class CheckboxComponent extends Component {
         const { input: { value = [] }, options, disabled, settings, required, fieldType, htmlAttrs } = this.props;
 
         return options && !isEmpty(options) ? (
-            <div className='checkbox-block'>
+            <div className='checkbox-block' {...htmlAttrs}>
                 { options.map(({ value: checkboxValue, label }) => {
                     return (
                         <label
@@ -75,7 +75,6 @@ class CheckboxComponent extends Component {
                                 checked={prop('multiple', settings) ? contains(checkboxValue, value) : !!value}
                                 value={checkboxValue}
                                 disabled={disabled}
-                                {...htmlAttrs}
                             />
                             <div className='checkbox-label'>
                                 { label }
