@@ -37,12 +37,9 @@ export const validateLink = (field, values) => {
     }
 };
 
-export const validate = (value, form, field, props, fieldsWithoutValidation) => {
-    const htmlOpd = path(['htmlOpd'], props);
-    const allowFileExtensions = props.allowFileExtensions;
-
+export const getValidate = ({ htmlOpd, allowFileExtensions }) => {
     const rules = {
-        text: yup.string().nullable().test({
+        texts: field => yup.string().nullable().test({
             name: 'text',
             message: i18n.t('errors.required'),
             test: value => {
@@ -57,7 +54,7 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
                 return parsedMask.length === parsedValue.length;
             }
         }),
-        phone: yup.string().nullable().test({
+        phone: field => yup.string().nullable().test({
             name: 'phone',
             message: ({ value }) => {
                 const parsedValue = value.replace(/[\+\(\)-\s]+/gm, '');
@@ -72,7 +69,7 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
                 return isPhoneNumber(value, 'RU') || isPhoneNumber(value, 'KZ');
             },
         }),
-        email: yup.string().nullable().email(i18n.t('errors.email')).test({
+        email: field => yup.string().nullable().email(i18n.t('errors.email')).test({
             name: 'emailChars',
             message: ({ value }) => {
                 const invalidChars = !EMAIL_EXPERIUM.test(value);
@@ -90,10 +87,10 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
                 return EMAIL_EXPERIUM.test(value);
             },
         }),
-        personalDataAgreement: htmlOpd ? yup.string() : yup.boolean(),
-        boolean: yup.boolean(),
-        choice: path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
-        file: yup.mixed().test({
+        personalDataAgreement: field => htmlOpd ? yup.string() : yup.boolean(),
+        boolean: field => yup.boolean(),
+        choice: field => path(['settings', 'multiple'], field) ? yup.array() : yup.string(),
+        file: field => yup.mixed().test({
             name: 'fileExtensions',
             message: ({ value }) => {
                 const type = Array.isArray(value) ? prop('type', head(value)) : prop('type', value);
@@ -132,7 +129,7 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
                 }
             },
         }),
-        money: yup.object().shape({
+        money: field => yup.object().shape({
             amount: field.required ? (
                 yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })).required(() => i18n.t('errors.required'))
             ) : yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })),
@@ -142,15 +139,17 @@ export const validate = (value, form, field, props, fieldsWithoutValidation) => 
         })
     };
 
-    let rule = rules[field.type] || yup.string();
-    rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
-        (field.required || validateLink(field, form)) && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
-    );
+    return (value, form, field, fieldsWithoutValidation) => {
+        let rule = rules[field.type] ? rules[field.type](field) : yup.string();
+        rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
+            (field.required || validateLink(field, form)) && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
+        );
 
-    try {
-        rule.validateSync(value);
-        return undefined;
-    } catch (e) {
-        return e.message;
-    }
+        try {
+            rule.validateSync(value);
+            return undefined;
+        } catch (e) {
+            return e.message;
+        }
+    };
 };

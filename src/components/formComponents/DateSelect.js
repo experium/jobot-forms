@@ -137,7 +137,7 @@ class DateSelect extends Component {
         const { day, month, year } = this.state;
         const options = t('MONTHS', { returnObjects: true });
 
-        return <div className={styles.formDateSelect}>
+        return <div className={`jobot-forms__formDateSelect ${styles.formDateSelect}`}>
             { showDay &&
                 <Masked
                     className={styles.formInput}
