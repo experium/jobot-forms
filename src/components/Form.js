@@ -24,7 +24,7 @@ import File from './formComponents/File';
 import Radio from './formComponents/Radio';
 import Money from './formComponents/Money';
 import DICTIONARIES_NAMES, { GEO_DICTIONARIES } from '../constants/dictionaries';
-import { compositeValidator, getValidate } from '../utils/validation';
+import { compositeValidator, validate } from '../utils/validation';
 import { RU } from '../constants/translations';
 import withFieldWrapper from './hocs/withFieldWrapper';
 import LinkedFieldWrapper from './hocs/LinkedFieldWrapper';
@@ -95,7 +95,6 @@ class Form extends Component {
 
         this.dictionaryTypes = [];
         this.formProps = null;
-        this.validate = getValidate(props);
 
         i18n.changeLanguage(language);
 
@@ -250,18 +249,13 @@ class Form extends Component {
         }
     };
 
-    validateField = (value, form, field) => {
-        const { fieldsWithoutValidation } = this.state;
-
-        return this.validate(value, form, field, fieldsWithoutValidation);
-    }
-
     renderField = (field, name, form) => {
         const { opd, getFileUrl, postFileUrl, apiUrl, language, components, htmlOpd, getOpdValues, serverErrors, fields, allowFileExtensions } = this.props;
         const { fieldsWithoutValidation, errors } = this.state;
         const fieldName = name || field.field;
         const isLinked = isLinkedField(field);
 
+        const validateField = (value, form) => validate(value, form, field, fieldsWithoutValidation, this.props, { htmlOpd, allowFileExtensions });
         const renderLinkedField = (props = {}) => (
             <Field
                 name={fieldName}
@@ -270,7 +264,7 @@ class Form extends Component {
                 options={this.getOptions(field)}
                 opd={opd}
                 language={language}
-                validate={(value, form) => this.validateField(value, form, field)}
+                validate={validateField}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}
                 getFileUrl={getFileUrl}
@@ -305,7 +299,7 @@ class Form extends Component {
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
-                validate={(value, form) => this.validateField(value, form, field)}
+                validate={validateField}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}
                 getFileUrl={getFileUrl}
