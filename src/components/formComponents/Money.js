@@ -74,11 +74,12 @@ class Money extends Component {
         const singleCurrency = this.getSingleCurrency();
 
         return (
-            <div>
+            <div id={`${name}-money`}>
                 <div className={styles.amountField}>
                     <Field name={`${name}.amount`} key={name}>
                         {({ input: { value, onChange } }) => (
                             <input
+                                id={name}
                                 disabled={disabled}
                                 type='number'
                                 className={styles.formInput}
@@ -97,6 +98,7 @@ class Money extends Component {
                     >
                         {({ input: { value, onChange } }) => (
                             <ReactSelect
+                                id={`${name}-currency`}
                                 menuIsOpen={true}
                                 styles={customStyle}
                                 isDisabled={singleCurrency || disabled}

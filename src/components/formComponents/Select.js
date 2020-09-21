@@ -149,13 +149,14 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value }, settings, errors, dictionaryType, t, disabled } = this.props;
+        const { input: { value, name }, settings, errors, dictionaryType, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
         const options = this.getOptions() || [];
         const MenuList = this.getMenuList(options);
         const isError = errors[dictionaryType];
 
         return <ReactSelect
+            id={name}
             key={value}
             value={multiple ? filter(item => contains(item.value, value || []), options) : find(propEq('value', value), options)}
             options={options}

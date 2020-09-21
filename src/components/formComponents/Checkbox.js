@@ -59,16 +59,19 @@ class CheckboxComponent extends Component {
     }
 
     render() {
-        const { input: { value = [] }, options, disabled, settings, required, fieldType, htmlAttrs } = this.props;
+        const { input: { value = [], name }, options, disabled, settings, required, fieldType, htmlAttrs } = this.props;
 
         return options && !isEmpty(options) ? (
             <div className='checkbox-block' {...htmlAttrs}>
                 { options.map(({ value: checkboxValue, label }) => {
                     return (
                         <label
+                            id={`${name}-label`}
                             className={cx('checkbox-wrapper', { 'checkbox-wrapper-required': required || fieldType === 'personalDataAgreement' })}
-                            key={label}>
+                            key={label}
+                        >
                             <RcCheckbox
+                                id={name}
                                 onChange={this.onChange}
                                 className='checkbox'
                                 defaultChecked={contains(checkboxValue, value)}
@@ -152,6 +155,7 @@ class PersonalDataAgreementComponent extends Component {
         return <FormContext.Consumer>{ ({ htmlAttrs }) => (
             <Fragment>
                 <Checkbox
+                    id={'opdCheckbox'}
                     {...this.props}
                     onValueChange={this.props.htmlOpd ? this.onChange : null}
                     options={[{

@@ -129,7 +129,7 @@ class DateSelect extends Component {
     }
 
     render() {
-        const { settings, t, disabled } = this.props;
+        const { settings, t, disabled, input: { name } } = this.props;
         const format = path(['format'], settings);
         const showDay = format ? contains('dd', format) : true;
         const showMonth = format ? contains('MM', format) : true;
@@ -137,9 +137,10 @@ class DateSelect extends Component {
         const { day, month, year } = this.state;
         const options = t('MONTHS', { returnObjects: true });
 
-        return <div className={`jobot-forms__formDateSelect ${styles.formDateSelect}`}>
+        return <div id={name} className={`jobot-forms__formDateSelect ${styles.formDateSelect}`}>
             { showDay &&
                 <Masked
+                    id={`${name}-day`}
                     className={styles.formInput}
                     value={day}
                     onChange={this.onChangeDay}
@@ -153,6 +154,7 @@ class DateSelect extends Component {
             }
             { showMonth &&
                 <Select
+                    id={`${name}-month`}
                     isDisabled={disabled}
                     value={find(propEq('value', month), options)}
                     onChange={this.onChangeMonth}
@@ -166,6 +168,7 @@ class DateSelect extends Component {
             }
             { showYear &&
                 <Masked
+                    id={`${name}-year`}
                     disabled={disabled}
                     className={styles.formInput}
                     value={year}

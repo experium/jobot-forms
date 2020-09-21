@@ -16,12 +16,13 @@ class Input extends Component {
     onChange = e => this.props.onChange(e.target.value);
 
     render() {
-        const { fieldType, input: { value }, settings, disabled } = this.props;
+        const { fieldType, input: { name, value }, settings, disabled } = this.props;
         const mask = prop('mask', settings);
         const inputMask = mask && getMask(mask);
 
         return path(['textarea'], settings) ? (
             <AutosizeTextarea
+                id={name}
                 className={`textarea ${styles.formTextarea}`}
                 minRows={3}
                 onChange={this.onChange}
@@ -30,6 +31,7 @@ class Input extends Component {
             />
         ) : inputMask ? (
             <Masked
+                id={name}
                 className={`input ${styles.formInput}`}
                 value={value}
                 type={fieldType}
@@ -42,6 +44,7 @@ class Input extends Component {
             />
         ) : (
             <input
+                id={name}
                 className={`input ${styles.formInput}`}
                 value={value}
                 type={fieldType}

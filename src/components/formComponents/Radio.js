@@ -33,7 +33,7 @@ class RadioComponent extends Component {
     }
 
     render() {
-        const { input: { value = [] }, options, disabled } = this.props;
+        const { input: { value = [], name }, options, disabled } = this.props;
 
         return options && !isEmpty(options) ? (
             <div className='radio-block'>
@@ -41,6 +41,7 @@ class RadioComponent extends Component {
                     return (
                         <label className='radio-wrapper' key={label}>
                             <RcRadio
+                                id={name}
                                 onChange={this.onChange}
                                 className='radio'
                                 checked={checkboxValue === value}

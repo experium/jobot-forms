@@ -247,7 +247,7 @@ class File extends Component {
         const ModalContent = MODAL_CONTENT[type];
         const { loading, error } = this.state;
 
-        return <div>
+        return <div id={`${name}-file`}>
             { !isEmpty(value) && (
                 <div className={styles.fileList}>
                     { values.map(({ url }, index) =>
