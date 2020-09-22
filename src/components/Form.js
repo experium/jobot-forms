@@ -76,6 +76,7 @@ class Form extends Component {
         dictionaryOptions: {},
         components: {},
         language: RU,
+        opdSubmitDisabled: true,
     };
 
     constructor(props) {
@@ -374,7 +375,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, formRender, t, submitting: externalSubmitting, htmlAttrs } = this.props;
+        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, htmlAttrs } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -463,12 +464,16 @@ class Form extends Component {
                                     }
                                 />
                                 <div>
-                                    <button className={styles.formBtn} type='submit' disabled={submitted} {...getAttrs('submit', htmlAttrs)}>
-                                        { submitted && <Spinner /> }
-                                        <span className='button-text'>
-                                            { t('send') }
-                                        </span>
-                                    </button>
+                                    <Field name='personalDataAgreement' subscription={{ value: true }}>
+                                        {({ input: { value } }) => (
+                                            <button className={styles.formBtn} type='submit' disabled={opdSubmitDisabled && !value || submitted} {...getAttrs('submit', htmlAttrs)}>
+                                                { submitted && <Spinner /> }
+                                                <span className='button-text'>
+                                                    { t('send') }
+                                                </span>
+                                            </button>
+                                        )}
+                                    </Field>
                                 </div>
                             </FormContext.Provider>
                         </form>;
