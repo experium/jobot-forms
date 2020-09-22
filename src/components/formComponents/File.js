@@ -254,15 +254,17 @@ class File extends Component {
                         <div className={styles.fileItem} key={`file-${index}`}>
                             { this.renderPreview(url, index) }
                             <div className={styles.fileButtonGroup}>
-                                <a
-                                    className={`${styles.downloadButton} ${disabled ? styles.downloadButtonDisabled : ''}`}
-                                    href={disabled ? undefined : url}
-                                    download
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    { t('download') }
-                                </a>
+                                { !!url && (
+                                    <a
+                                        className={`${styles.downloadButton} ${disabled ? styles.downloadButtonDisabled : ''}`}
+                                        href={disabled ? undefined : url}
+                                        download
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        { t('download') }
+                                    </a>
+                                )}
                                 <button
                                     disabled={disabled}
                                     className={`${styles.dangerBtn} ${disabled ? styles.dangerBtnDisabled : ''}`}
