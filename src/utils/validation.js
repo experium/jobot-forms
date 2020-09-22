@@ -5,7 +5,7 @@ import { isPhoneNumber } from 'class-validator';
 import i18n from './i18n';
 
 import { EMAIL_EXPERIUM, EMAIL_DOMAIN, PHONE } from '../constants/regexps';
-import { TYPES, VALIDATION_FILE_TYPES } from '../constants/allowFileExtensions';
+import { defaultAllowFileExtensions, VALIDATION_FILE_TYPES } from '../constants/allowFileExtensions';
 
 export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
     switch (fileType) {
@@ -14,8 +14,9 @@ export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
         case 'video':
             return startsWith('video', mimeType);
         default:
-            const allowFileTypes = allowFileExtensions && !isEmpty(allowFileExtensions[fileType]) ? join(',', values(allowFileExtensions[fileType])) : TYPES[fileType];
-
+            const allowFileTypes = join(',', values(
+                allowFileExtensions && !isEmpty(allowFileExtensions[fileType]) ? allowFileExtensions[fileType] : defaultAllowFileExtensions[fileType]
+            ));
             return contains(mimeType, split(',', replace(/\s/g, '', allowFileTypes)));
     }
 };
@@ -122,9 +123,7 @@ const rules = {
 
                 return result;
             } else {
-                const { type, contentType } = value;
-
-                return checkFileType(type, contentType, allowFileExtensions);
+                return checkFileType(value.type, value.contentType, allowFileExtensions);
             }
         },
     }),

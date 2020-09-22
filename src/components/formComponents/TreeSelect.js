@@ -235,7 +235,7 @@ class TreeSelectComponent extends Component {
     }
 
     render() {
-        const { loading, error} = this.state;
+        const { loading, error } = this.state;
         const { input: { value, name }, settings, t, disabled } = this.props;
         const showFullPath = path(['showFullPath'], settings) || true;
         const multiple = path(['multiple'], settings);

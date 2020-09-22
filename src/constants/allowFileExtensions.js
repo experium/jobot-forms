@@ -1,3 +1,22 @@
+export const defaultAllowFileExtensions = {
+    document: {
+        doc: 'application/msword',
+        docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        html: 'text/html',
+        odt: 'application/vnd.oasis.opendocument.text',
+        pdf: 'application/pdf',
+        rtf: 'application/rtf, .rtf',
+        txt: 'text/plain',
+        xls: 'application/vnd.ms-excel',
+        xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    },
+    image: {
+        jpg: 'image/jpeg',
+        png: 'image/png',
+        tif: 'image/tiff'
+    }
+};
+
 export const TYPES = {
     audio: 'audio/*',
     video: 'video/*',
