@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { withTranslation } from 'react-i18next';
-import { all, forEach, is, path } from 'ramda';
+import { all, forEach, is, path, trim } from 'ramda';
 import cx from 'classnames';
 
 import styles from '../../styles/index.module.css';
@@ -96,7 +96,7 @@ class HtmlOpdForm extends Component {
             forEach(input => {
                 const value = path([input.name], values);
                 if (value) {
-                    input.setAttribute('value', value);
+                    input.setAttribute('value', trim(`${value || ''}`));
                 }
             }, inputs);
         }
@@ -165,18 +165,20 @@ class HtmlOpdForm extends Component {
         const html = this.state.value || this.props.html;
 
         return <Fragment>
-            <button onClick={onClose} className='react-responsive-modal-closeButton pda-modal-close-button' data-testid='close-button' {...getAttrs('opdClose', htmlAttrs)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 36 36" data-testid="close-icon"><path d="M28.5 9.62L26.38 7.5 18 15.88 9.62 7.5 7.5 9.62 15.88 18 7.5 26.38l2.12 2.12L18 20.12l8.38 8.38 2.12-2.12L20.12 18z"></path></svg>
-            </button>
             <div>
                 <div ref={node => this.valueHtml = node} style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: path(['value', 'htmlContent'], this.props) }} />
                 <style>{commonStyle}</style>
-                <form ref={node => this.form = node}>
+                <form className='personalDataAgreementForm' ref={node => this.form = node}>
+                    <button onClick={onClose} type='button' className='react-responsive-modal-closeButton pda-modal-close-button' data-testid='close-button' {...getAttrs('opdClose', htmlAttrs)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 36 36" data-testid="close-icon"><path d="M28.5 9.62L26.38 7.5 18 15.88 9.62 7.5 7.5 9.62 15.88 18 7.5 26.38l2.12 2.12L18 20.12l8.38 8.38 2.12-2.12L20.12 18z"></path></svg>
+                    </button>
+
                     <div className={cx('opd-html-form', { submitted: this.state.submitted })} dangerouslySetInnerHTML={{ __html: html }} />
+
+                    <button className={styles.formBtn} type='button' onClick={() => this.onSubmit(formProps)} {...getAttrs('opdAccept', htmlAttrs)}>
+                        {t('opdFormAccept')}
+                    </button>
                 </form>
-                <button className={styles.formBtn} type='button' onClick={() => this.onSubmit(formProps)} {...getAttrs('opdAccept', htmlAttrs)}>
-                    {t('opdFormAccept')}
-                </button>
             </div>
         </Fragment>;
     }
