@@ -13,24 +13,31 @@ import formStyles from '../../styles/index.module.css';
 import Spinner from './Spinner';
 import { getFileErrorText } from '../../utils/file';
 import { TYPES } from '../../constants/allowFileExtensions';
-import { checkFileType } from '../../utils/validation';
+import { checkFileType, getFileTypeMessage } from '../../utils/validation';
+
+const JOBOT_FILE_TYPES = {
+    image: 'image',
+    video: 'video',
+    audio: 'audio',
+    document: 'document',
+};
 
 const MEDIA = {
-    audio: { audio: true },
-    video: { audio: true, video: true },
-    photo: { video: true }
+    [JOBOT_FILE_TYPES.audio]: { audio: true },
+    [JOBOT_FILE_TYPES.video]: { audio: true, video: true },
+    [JOBOT_FILE_TYPES.image]: { video: true }
 };
 
 const MODAL_CONTENT = {
-    audio: AudioFile,
-    video: VideoFile,
-    photo: ImageFile
+    [JOBOT_FILE_TYPES.audio]: AudioFile,
+    [JOBOT_FILE_TYPES.video]: VideoFile,
+    [JOBOT_FILE_TYPES.image]: ImageFile
 };
 
 const BTN_TEXT = {
-    audio: 'recordAudio',
-    video: 'recordVideo',
-    photo: 'takePhoto'
+    [JOBOT_FILE_TYPES.audio]: 'recordAudio',
+    [JOBOT_FILE_TYPES.video]: 'recordVideo',
+    [JOBOT_FILE_TYPES.image]: 'takePhoto'
 };
 
 class File extends Component {
@@ -115,16 +122,23 @@ class File extends Component {
                     type,
                 };
 
+                setInputError(getFileTypeMessage(type, allowFileExtensions));
                 if (multiple) {
                     const fieldFiles = pathOr([], ['fileNames', name], this.state);
-                    this.setState({ fileNames: {
-                        [name]: [...fieldFiles, fileItem.text],
-                    }});
+                    this.setState({
+                        error: true,
+                        fileNames: {
+                            [name]: [...fieldFiles, fileItem.text],
+                        }
+                    });
                     onChange(append(fileItem, value || []));
                 } else {
-                    this.setState({ fileNames: {
-                        [name]: [fileItem.text],
-                    }});
+                    this.setState({
+                        error: true,
+                        fileNames: {
+                            [name]: [fileItem.text],
+                        }
+                    });
                     onChange(fileItem);
                 }
             }
@@ -138,10 +152,13 @@ class File extends Component {
     }
 
     onDelete = (index) => {
-        const { input: { value, name }, onChange } = this.props;
+        const { input: { value, name }, setInputError, onChange } = this.props;
         const fieldFiles = path(['fileNames', name], this.state);
 
+        setInputError(undefined);
+
         this.setState({
+            error: false,
             fileNames: {
                 [name]: remove(index, 1, fieldFiles),
             },
@@ -191,7 +208,7 @@ class File extends Component {
         const isBlob = fileName === 'blob';
 
         switch (type) {
-            case 'photo':
+            case [JOBOT_FILE_TYPES.image]:
                 return (
                     <div>
                         { isBlob ? (
@@ -199,7 +216,7 @@ class File extends Component {
                         ) : fileName}
                     </div>
                 );
-            case 'video':
+            case [JOBOT_FILE_TYPES.video]:
                 return (
                     <div>
                         { isBlob ? (
@@ -209,7 +226,7 @@ class File extends Component {
                         ) : fileName}
                     </div>
                 );
-            case 'audio':
+            case [JOBOT_FILE_TYPES.audio]:
                 return (
                     <div>
                         { isBlob ? (

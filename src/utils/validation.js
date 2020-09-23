@@ -20,6 +20,20 @@ export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
             return contains(mimeType, split(',', replace(/\s/g, '', allowFileTypes)));
     }
 };
+export const getFileTypeMessage = (type, allowFileExtensions = {}) => {
+    switch (type) {
+        case 'audio':
+            return i18n.t('errors.fileTypeAudio');
+        case 'video':
+            return i18n.t('errors.fileTypeVideo');
+        default:
+            if (allowFileExtensions && !isEmpty(allowFileExtensions[type])) {
+                return i18n.t('errors.fileType', { types: join(', ', keys(allowFileExtensions[type])) });
+            } else {
+                return i18n.t('errors.fileType', { types: prop(type, VALIDATION_FILE_TYPES) });
+            }
+    }
+};
 
 export const compositeValidator = (value) => {
     return value && (value.length > 0) ? undefined : i18n.t('errors.composite');
@@ -94,18 +108,7 @@ const rules = {
         name: 'fileExtensions',
         message: ({ value }) => {
             const type = Array.isArray(value) ? prop('type', head(value)) : prop('type', value);
-            switch (type) {
-                case 'audio':
-                    return i18n.t('errors.fileTypeAudio');
-                case 'video':
-                    return i18n.t('errors.fileTypeVideo');
-                default:
-                    if (allowFileExtensions && !isEmpty(allowFileExtensions[type])) {
-                        return i18n.t('errors.fileType', { types: join(', ', keys(allowFileExtensions[type])) });
-                    } else {
-                        return i18n.t('errors.fileType', { types: prop(type, VALIDATION_FILE_TYPES) });
-                    }
-            }
+            return getFileTypeMessage(type, allowFileExtensions);
         },
         test: (value) => {
             if (!value) {
