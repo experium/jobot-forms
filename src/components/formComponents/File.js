@@ -201,14 +201,13 @@ class File extends Component {
         this.closeModal();
     }
 
-    renderPreview = (url, index) => {
+    renderPreview = (url, index, type) => {
         const { input: { name } } = this.props;
-        const type = path(['settings', 'type'], this.props);
         const fileName = path(['fileNames', name, index], this.state);
         const isBlob = fileName === 'blob';
 
         switch (type) {
-            case [JOBOT_FILE_TYPES.image]:
+            case JOBOT_FILE_TYPES.image:
                 return (
                     <div>
                         { isBlob ? (
@@ -216,7 +215,7 @@ class File extends Component {
                         ) : fileName}
                     </div>
                 );
-            case [JOBOT_FILE_TYPES.video]:
+            case JOBOT_FILE_TYPES.video:
                 return (
                     <div>
                         { isBlob ? (
@@ -226,7 +225,7 @@ class File extends Component {
                         ) : fileName}
                     </div>
                 );
-            case [JOBOT_FILE_TYPES.audio]:
+            case JOBOT_FILE_TYPES.audio:
                 return (
                     <div>
                         { isBlob ? (
@@ -269,7 +268,7 @@ class File extends Component {
                 <div className={styles.fileList}>
                     { values.map(({ url }, index) =>
                         <div className={styles.fileItem} key={`file-${index}`}>
-                            { this.renderPreview(url, index) }
+                            { this.renderPreview(url, index, type) }
                             <div className={styles.fileButtonGroup}>
                                 { !!url && (
                                     <a
