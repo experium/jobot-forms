@@ -1,5 +1,9 @@
+.checkbox-block {
+    display: inline-block;
+}
+
 .checkbox-wrapper {
-    display: block;
+    display: inline-block;
     margin-bottom: 8px;
     position: relative;
 }
