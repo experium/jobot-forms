@@ -1,6 +1,6 @@
 import { path, split, replace, contains, head, prop, isEmpty, values, join, keys, startsWith } from 'ramda';
 import * as yup from 'yup';
-import { isPhoneNumber } from 'class-validator';
+import { parsePhoneNumberWithError, ParseError } from 'libphonenumber-js';
 
 import i18n from './i18n';
 
@@ -99,16 +99,24 @@ const rules = {
     phone: field => yup.string().nullable().test({
         name: 'phone',
         message: ({ value }) => {
-            const parsedValue = value.replace(/[\+\(\)-\s]+/gm, '');
+            const { required } = field;
 
-            return parsedValue.length >= 11 ? i18n.t('errors.phone') : i18n.t('errors.required');
+            if (required && !value) {
+                return i18n.t('errors.required');
+            } else {
+                return i18n.t('errors.phone');
+            }
         },
         test: (value) => {
-            if (!value) {
-                return true;
-            }
+            try {
+                const phoneNumber = parsePhoneNumberWithError(value);
 
-            return isPhoneNumber(value, 'RU') || isPhoneNumber(value, 'KZ');
+                return phoneNumber.isValid();
+            } catch (error) {
+                if (error instanceof ParseError) {
+                    return false;
+                }
+            }
         },
     }),
     email: field => yup.string().nullable().email(i18n.t('errors.email'))
