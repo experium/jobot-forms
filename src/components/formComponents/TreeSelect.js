@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { assocPath, path, head, compose, concat, join, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys, last, map, split } from 'ramda';
+import { assocPath, path, head, contains, compose, concat, join, propEq, prop, propOr, pathOr, findIndex, indexOf, values, keys, last, map, split, toLower } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -234,6 +234,11 @@ class TreeSelectComponent extends Component {
         }
     }
 
+    filterTreeNode = (value, node) => {
+        const search = toLower(`${value || ''}`);
+        return node.isLeaf && search ? contains(search, toLower(`${node.title || ''}`)) : false;
+    }
+
     render() {
         const { loading, error } = this.state;
         const { input: { value, name }, settings, t, disabled } = this.props;
@@ -249,6 +254,7 @@ class TreeSelectComponent extends Component {
                 dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 8] }}
                 value={value ? `${dictionary}_${value}` : value}
                 treeData={this.state.treeData}
+                filterTreeNode={this.filterTreeNode}
                 treeNodeFilterProp="label"
                 treeNodeLabelProp={showFullPath ? 'fullLabel' : undefined}
                 notFoundContent={loading ? t('loading') : t('noOptionsMessage')}

@@ -1,5 +1,5 @@
-export const domain = 'dev';
-export const company = 'heliosoft';
+export const domain = 'demo';
+export const company = 'accenture';
 
 export const URL = `https://jobot.${domain}.experium.net/api/graphql`;
 export const API_URL = `https://jobot.${domain}.experium.net`;
