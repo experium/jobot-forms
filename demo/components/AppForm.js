@@ -175,10 +175,9 @@ class AppForm extends Component {
                                     // mask text field
                                     // assocPath([0, 'settings', 'mask'], '9999'),
                                     // tree
-                                    // assocPath([7, 'settings', 'tree'], true),
-                                    // assocPath([7, 'settings', 'parents'], {
-                                    //     [path(['questions', 5, 'field'], vacancy)]: path(['questions', 5, 'settings', 'dictionary'], vacancy),
-                                    //     [path(['questions', 6, 'field'], vacancy)]: path(['questions', 6, 'settings', 'dictionary'], vacancy),
+                                    // assocPath([1, 'settings', 'tree'], true),
+                                    // assocPath([1, 'settings', 'parents'], {
+                                    //     [path(['questions', 0, 'field'], vacancy)]: path(['questions', 0, 'settings', 'dictionary'], vacancy),
                                     // }),
                                     pathOr([], ['questions']),
                                 )(vacancy)}

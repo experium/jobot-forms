@@ -38,7 +38,7 @@ class TreeSelectComponent extends Component {
 
     getDictionary = async (dictionary, parentId, search) => {
         this.setState({ error: false });
-        const { apiUrl } = this.props;
+        const { apiUrl, settings } = this.props;
         const urlParams = qs.stringify({
             filter: {
                 dictionary,
@@ -46,6 +46,7 @@ class TreeSelectComponent extends Component {
                 parents: Array.isArray(parentId) ? parentId : undefined
             },
             pagination: JSON.stringify({ limit: 0 }),
+            sorting: JSON.stringify(pathOr({ field: 'value', order: 'asc' }, ['sorting'], settings)),
             relations: ['parent'],
         }, { addQueryPrefix: true });
 
