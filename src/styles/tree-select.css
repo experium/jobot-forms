@@ -1639,3 +1639,7 @@
 .rc-tree-select-tree .rc-tree-select-tree-switcher-noop + .rc-tree-select-tree-node-content-wrapper {
   margin-left: 0;
 }
+
+.rc-tree-select-clear {
+  right: 45px;
+}

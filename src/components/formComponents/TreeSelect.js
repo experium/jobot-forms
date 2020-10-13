@@ -36,6 +36,10 @@ class TreeSelectComponent extends Component {
         };
     }
 
+    componentDidMount() {
+        this.fetchAndSetDictionary();
+    }
+
     getDictionary = async (dictionary, parentId, search) => {
         this.setState({ error: false });
         const { apiUrl, settings } = this.props;
@@ -163,10 +167,6 @@ class TreeSelectComponent extends Component {
         }
     }
 
-    componentDidMount() {
-        this.fetchAndSetDictionary();
-    }
-
     onLoadData = async (item) => {
         if (item.children) {
             return true;
@@ -244,34 +244,38 @@ class TreeSelectComponent extends Component {
         const { loading, error } = this.state;
         const { input: { value, name }, settings, t, disabled } = this.props;
         const showFullPath = path(['showFullPath'], settings) || true;
+        const required = path(['required'], settings);
         const multiple = path(['multiple'], settings);
         const dictionary = path(['dictionary'], settings);
         const placeholder = path(['placeholder'], settings);
 
         return (
-            <TreeSelect
-                id={name}
-                className={`${error ? 'error' : ''}`}
-                disabled={disabled}
-                dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 8] }}
-                value={value ? `${dictionary}_${value}` : value}
-                treeData={this.state.treeData}
-                filterTreeNode={this.filterTreeNode}
-                treeNodeFilterProp="label"
-                treeNodeLabelProp={showFullPath ? 'fullLabel' : undefined}
-                notFoundContent={loading ? t('loading') : t('noOptionsMessage')}
-                onChange={this.onChange}
-                onSelect={this.onSelect}
-                loadData={this.onLoadData}
-                treeCheckable={multiple}
-                showSearch={!multiple}
-                placeholder={placeholder}
+            <div >
+                <TreeSelect
+                    id={name}
+                    className={`${error ? 'error' : ''}`}
+                    disabled={disabled}
+                    dropdownPopupAlign={{ overflow: { adjustY: 0, adjustX: 0 }, offset: [0, 8] }}
+                    value={value ? `${dictionary}_${value}` : value || null}
+                    treeData={this.state.treeData}
+                    filterTreeNode={this.filterTreeNode}
+                    treeNodeFilterProp="label"
+                    treeNodeLabelProp={showFullPath ? 'fullLabel' : undefined}
+                    notFoundContent={loading ? t('loading') : t('noOptionsMessage')}
+                    onChange={this.onChange}
+                    onSelect={this.onSelect}
+                    loadData={this.onLoadData}
+                    treeCheckable={multiple}
+                    showSearch={!multiple}
+                    allowClear={required}
+                    placeholder={placeholder}
 
-                inputIcon={this.getInputIcon}
-                switcherIcon={({ loading, isLeaf }) => loading ? <LoadingOutlined /> : isLeaf ? null : <DownOutlined />}
-                removeIcon={<CloseOutlined />}
-                clearIcon={<CloseCircleFilled />}
-            />
+                    inputIcon={this.getInputIcon}
+                    switcherIcon={({ loading, isLeaf }) => loading ? <LoadingOutlined /> : isLeaf ? null : <DownOutlined />}
+                    removeIcon={<CloseOutlined />}
+                    clearIcon={<CloseCircleFilled />}
+                />
+            </div>
         );
     }
 }

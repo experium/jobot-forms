@@ -178,6 +178,7 @@ class AppForm extends Component {
                                     // assocPath([0, 'settings', 'mask'], '9999'),
                                     // tree
                                     // assocPath([1, 'settings', 'tree'], true),
+                                    // assocPath([1, 'settings', 'placeholder'], 'placeholder'),
                                     // assocPath([1, 'settings', 'parents'], {
                                     //     [path(['questions', 0, 'field'], vacancy)]: path(['questions', 0, 'settings', 'dictionary'], vacancy),
                                     // }),
