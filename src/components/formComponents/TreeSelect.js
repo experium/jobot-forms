@@ -246,6 +246,7 @@ class TreeSelectComponent extends Component {
         const showFullPath = path(['showFullPath'], settings) || true;
         const multiple = path(['multiple'], settings);
         const dictionary = path(['dictionary'], settings);
+        const placeholder = path(['placeholder'], settings);
 
         return (
             <TreeSelect
@@ -264,6 +265,7 @@ class TreeSelectComponent extends Component {
                 loadData={this.onLoadData}
                 treeCheckable={multiple}
                 showSearch={!multiple}
+                placeholder={placeholder}
 
                 inputIcon={this.getInputIcon}
                 switcherIcon={({ loading, isLeaf }) => loading ? <LoadingOutlined /> : isLeaf ? null : <DownOutlined />}

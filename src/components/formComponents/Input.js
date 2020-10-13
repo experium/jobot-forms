@@ -18,6 +18,7 @@ class Input extends Component {
     render() {
         const { fieldType, input: { name, value }, settings, disabled } = this.props;
         const mask = prop('mask', settings);
+        const placeholder = prop('placeholder', settings);
         const inputMask = mask && getMask(mask);
 
         return path(['textarea'], settings) ? (
@@ -27,6 +28,7 @@ class Input extends Component {
                 minRows={3}
                 onChange={this.onChange}
                 value={value}
+                placeholder={placeholder}
                 disabled={disabled}
             />
         ) : inputMask ? (
@@ -34,6 +36,7 @@ class Input extends Component {
                 id={name}
                 className={`input ${styles.formInput}`}
                 value={value}
+                placeholder={placeholder}
                 type={fieldType}
                 onChange={this.onChange}
                 mask={inputMask}
@@ -47,6 +50,7 @@ class Input extends Component {
                 id={name}
                 className={`input ${styles.formInput}`}
                 value={value}
+                placeholder={placeholder}
                 type={fieldType}
                 onChange={this.onChange}
                 disabled={disabled}

@@ -232,6 +232,7 @@ class Select extends Component {
     render() {
         const { input: { value, name }, settings, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
+        const placeholder = path(['placeholder'], settings);
         const options = this.getOptions();
 
         return (
@@ -241,6 +242,7 @@ class Select extends Component {
                     key={value}
                     value={multiple ? filter(item => contains(item.id, value || []), options) : find(propEq('id', value), options)}
                     options={options}
+                    placeholder={placeholder}
                     onChange={this.onChange}
                     isMulti={multiple}
                     isSearchable={options.length > 10}

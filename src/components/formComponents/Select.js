@@ -151,6 +151,7 @@ class Select extends Component {
     render() {
         const { input: { value, name }, settings, errors, dictionaryType, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
+        const placeholder = path(['placeholder'], settings);
         const options = this.getOptions() || [];
         const MenuList = this.getMenuList(options);
         const isError = errors[dictionaryType];
@@ -160,6 +161,7 @@ class Select extends Component {
             key={value}
             value={multiple ? filter(item => contains(item.value, value || []), options) : find(propEq('value', value), options)}
             options={options}
+            placeholder={placeholder}
             onChange={this.onChange}
             isMulti={multiple}
             isSearchable={options.length > 10}

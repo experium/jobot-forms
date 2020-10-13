@@ -172,6 +172,8 @@ class AppForm extends Component {
                                 formRef={this.formRef}
                                 apiUrl={API_URL}
                                 fields={compose(
+                                    // placeholder
+                                    // assocPath([0, 'settings', 'placeholder'], 'placeholder'),
                                     // mask text field
                                     // assocPath([0, 'settings', 'mask'], '9999'),
                                     // tree
