@@ -9,6 +9,7 @@ import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals, isEmpt
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
+import cx from 'classnames';
 
 import '../styles/index.css';
 import styles from '../styles/index.module.css';
@@ -375,7 +376,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, htmlAttrs } = this.props;
+        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -383,7 +384,7 @@ class Form extends Component {
 
         const FormRender = formRender || defaultFormRender;
 
-        return <div className={styles.formWrapper} ref={node => this.container = node}>
+        return <div className={cx(styles.formWrapper, { 'jobot-form-server-failed': !!serverErrors })} ref={node => this.container = node}>
             <CompanyDictionaryContext.Provider value={contextValue}>
                 <FinalFormForm
                     onSubmit={this.onSubmit}
