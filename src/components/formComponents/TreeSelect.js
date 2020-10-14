@@ -248,6 +248,7 @@ class TreeSelectComponent extends Component {
         const multiple = path(['multiple'], settings);
         const dictionary = path(['dictionary'], settings);
         const placeholder = path(['placeholder'], settings);
+        const noOptionsMessage = path(['noOptionsMessage'], settings);
 
         return (
             <div >
@@ -261,7 +262,7 @@ class TreeSelectComponent extends Component {
                     filterTreeNode={this.filterTreeNode}
                     treeNodeFilterProp="label"
                     treeNodeLabelProp={showFullPath ? 'fullLabel' : undefined}
-                    notFoundContent={loading ? t('loading') : t('noOptionsMessage')}
+                    notFoundContent={loading ? t('loading') : noOptionsMessage || t('noOptionsMessage')}
                     onChange={this.onChange}
                     onSelect={this.onSelect}
                     loadData={this.onLoadData}
