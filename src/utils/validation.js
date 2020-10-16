@@ -17,7 +17,8 @@ export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
             const allowFileTypes = join(',', values(
                 allowFileExtensions && !isEmpty(allowFileExtensions[fileType]) ? allowFileExtensions[fileType] : defaultAllowFileExtensions[fileType]
             ));
-            return contains(mimeType, split(',', replace(/\s/g, '', allowFileTypes)));
+
+            return allowFileTypes ? contains(mimeType, split(',', replace(/\s/g, '', allowFileTypes))) : true;
     }
 };
 export const getFileTypeMessage = (type, allowFileExtensions = {}) => {
