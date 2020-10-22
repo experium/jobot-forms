@@ -149,7 +149,7 @@ class Form extends Component {
     }
 
     getDictionary = async (type, dataPath, urlParams, optionsPaths = {}) => {
-        if (!contains(type, this.dictionaryTypes)) {
+        if (type && !contains(type, this.dictionaryTypes)) {
             const { apiUrl, dictionaryOptions } = this.props;
 
             try {
@@ -210,9 +210,9 @@ class Form extends Component {
     getOptions = (field) => {
         const { language } = this.props;
         const options = this.state.dictionaries[path(['settings', 'dictionary'], field)] ||
-        this.state.dictionaries[DICTIONARIES_NAMES[field.type]] ||
-        this.state.dictionaries[GEO_DICTIONARIES[field.type]] ||
-        pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }));
+            this.state.dictionaries[DICTIONARIES_NAMES[field.type]] ||
+            this.state.dictionaries[GEO_DICTIONARIES[field.type]] ||
+            pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }));
 
         if (isEmpty(options)) {
             return undefined;

@@ -44,6 +44,8 @@ export const TRANSLATIONS = {
             },
             'errors': {
                 'required': 'Required field',
+                'minLength': 'Minimum letters count - {{count}}',
+                'maxLength': 'Maximum letters count - {{count}}',
                 'moreThan': 'Number must be greater than {{more}}',
                 'currency': 'Currency required',
                 'phone': 'Invalid phone number',
@@ -106,6 +108,8 @@ export const TRANSLATIONS = {
             },
             'errors': {
                 'required': 'Поле обязательно для заполнения',
+                'minLength': 'Минимальное количество символов - {{count}}',
+                'maxLength': 'Максимальное количество символов - {{count}}',
                 'moreThan': 'Число должно быть больше ${more}',
                 'currency': 'Необходимо указать валюту',
                 'phone': 'Неверный формат телефонного номера',

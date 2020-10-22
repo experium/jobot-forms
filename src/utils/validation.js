@@ -54,21 +54,48 @@ export const validateLink = (field, values) => {
 };
 
 const rules = {
-    texts: field => yup.string().nullable().test({
-        name: 'text',
-        message: i18n.t('errors.required'),
-        test: value => {
-            const mask = path(['settings', 'mask'], field);
+    text: field => yup.string().nullable()
+        .test({
+            name: 'text',
+            message: i18n.t('errors.required'),
+            test: value => {
+                const mask = path(['settings', 'mask'], field);
 
-            if (!value || !mask) {
-                return true;
+                if (!value || !mask) {
+                    return true;
+                }
+                const parsedValue = value.replace(/[\s]+/gm, '');
+                const parsedMask = mask.replace(/[\s]+/gm, '');
+
+                return parsedMask.length === parsedValue.length;
             }
-            const parsedValue = value.replace(/[\s]+/gm, '');
-            const parsedMask = mask.replace(/[\s]+/gm, '');
+        })
+        .test({
+            name: 'maxLength',
+            message: i18n.t('errors.maxLength', { count: path(['settings', 'maxLength'], field) }),
+            test: value => {
+                const maxLength = path(['settings', 'maxLength'], field);
 
-            return parsedMask.length === parsedValue.length;
-        }
-    }),
+                if (!value || !maxLength) {
+                    return true;
+                }
+
+                return value.length < maxLength;
+            }
+        })
+        .test({
+            name: 'minLength',
+            message: i18n.t('errors.minLength', { count: path(['settings', 'minLength'], field) }),
+            test: value => {
+                const minLength = path(['settings', 'minLength'], field);
+
+                if (!value || !minLength) {
+                    return true;
+                }
+
+                return value.length > minLength;
+            }
+        }),
     phone: field => yup.string().nullable().test({
         name: 'phone',
         message: ({ value }) => {
@@ -84,24 +111,38 @@ const rules = {
             return isPhoneNumber(value, 'RU') || isPhoneNumber(value, 'KZ');
         },
     }),
-    email: field => yup.string().nullable().email(i18n.t('errors.email')).test({
-        name: 'emailChars',
-        message: ({ value }) => {
-            const invalidChars = !EMAIL_EXPERIUM.test(value);
-            const invalidDomain = !EMAIL_DOMAIN.test(value);
+    email: field => yup.string().nullable().email(i18n.t('errors.email'))
+        .test({
+            name: 'emailChars',
+            message: ({ value }) => {
+                const invalidChars = !EMAIL_EXPERIUM.test(value);
+                const invalidDomain = !EMAIL_DOMAIN.test(value);
 
-            if (invalidChars || invalidDomain) {
-                return invalidDomain ? i18n.t('errors.emailDomain') : i18n.t('errors.emailChars');
-            }
-        },
-        test: (value) => {
-            if (!value) {
-                return true;
-            }
+                if (invalidChars || invalidDomain) {
+                    return invalidDomain ? i18n.t('errors.emailDomain') : i18n.t('errors.emailChars');
+                }
+            },
+            test: (value) => {
+                if (!value) {
+                    return true;
+                }
 
-            return EMAIL_EXPERIUM.test(value);
-        },
-    }),
+                return EMAIL_EXPERIUM.test(value);
+            },
+        })
+        .test({
+            name: 'maxLength',
+            message: i18n.t('errors.maxLength', { count: path(['settings', 'maxLength'], field) }),
+            test: value => {
+                const maxLength = path(['settings', 'maxLength'], field);
+
+                if (!value || !maxLength) {
+                    return true;
+                }
+
+                return value.length < maxLength;
+            }
+        }),
     personalDataAgreement: (field, { htmlOpd }) => htmlOpd ? yup.string() : yup.boolean(),
     boolean: field => yup.boolean(),
     choice: field => path(['settings', 'multiple'], field) ? yup.array() : yup.string(),

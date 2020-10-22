@@ -25,7 +25,7 @@ class Select extends Component {
 
         if (contains(dictionaryType, GEO_DICTIONARIES_TYPES)) {
             getDictionary(dictionaryType, 'items', qs.stringify({ pagination: JSON.stringify({ limit: 0 })}, { addQueryPrefix: true }));
-        } else {
+        } else if (dictionaryType) {
             getDictionary(dictionaryType);
         }
     }
