@@ -15,7 +15,9 @@ export const HEIGHT = 34;
 
 class Select extends Component {
     componentDidMount() {
-        this.fetchDictionary();
+        if (this.props.dictionaryType) {
+            this.fetchDictionary();
+        }
     }
 
     fetchDictionary = () => {
