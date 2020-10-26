@@ -96,7 +96,7 @@ class Select extends Component {
 
     getOptionsHeight = childrens => {
         if (Array.isArray(childrens)) {
-            return (childrens.length * HEIGHT) + 1;
+            return childrens.length * HEIGHT;
         }
 
         return HEIGHT;
