@@ -23,12 +23,23 @@ Form components
 ### Props
 
 - `fields`: form fields array
+- `initialValues`: form values
 - `formRender`: custom form fields array renderer
 - `onSubmit`: `onSubmit` handler will be called when form will be submitted
-- `opd`: personal data agreement text
+- `apiUrl`: api url
 - `postFileUrl`: post file url
 - `getFileUrl`: get file url function
+
+- `language`: language state
 - `translations`: i18n translation object expand or replace
+- `allowFileExtensions`: allow file settings for document types
+- `submitting`: loading
+- `serverErrors`: errors object
+- `opd`: personal data agreement text
+- `htmlOpd`: personal data agreement html template
+- `getOpdValues`: personal data agreement html template values map
+- `opdSubmitDisabled`: disable submit with no opd
+- `htmlAttrs`: html attrs for fields
 
 ### Form fields
 

@@ -99,7 +99,6 @@ class Money extends Component {
                         {({ input: { value, onChange } }) => (
                             <ReactSelect
                                 id={`${name}-currency`}
-                                menuIsOpen={true}
                                 styles={customStyle}
                                 isDisabled={singleCurrency || disabled}
                                 inputValue={singleCurrency}
