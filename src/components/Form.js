@@ -5,7 +5,7 @@ import i18n from '../utils/i18n';
 
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field, FormSpy } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals, isEmpty } from 'ramda';
+import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals, isEmpty, forEach } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
@@ -71,6 +71,18 @@ const getFieldComponent = (field, components) => {
 
 const defaultFormRender = ({ fields, renderField }) => fields.map(renderField);
 
+const getInitialValues = (initialValues, fields) => {
+    const values = initialValues || {};
+
+    forEach(field => {
+        if (field.type === 'boolean' && !values[field.field]) {
+            values[field.field] = false;
+        }
+    }, fields || []);
+
+    return values;
+};
+
 class Form extends Component {
     static defaultProps = {
         fields: [],
@@ -89,7 +101,7 @@ class Form extends Component {
             language,
             dictionaries: {},
             errors: {},
-            initialValues: props.initialValues || {},
+            initialValues: getInitialValues(props.initialValues, props.fields),
             fieldsWithoutValidation: {},
             options: {},
             submitted: false,
@@ -127,7 +139,7 @@ class Form extends Component {
 
     componentDidUpdate = (prevProps) => {
         const { language } = prevProps;
-        const { language: languageProps, initialValues, serverErrors } = this.props;
+        const { language: languageProps, initialValues, serverErrors, fields } = this.props;
 
         if (languageProps !== language) {
             this.setState({ language: languageProps }, () => {
@@ -135,8 +147,8 @@ class Form extends Component {
             });
         }
 
-        if (!equals(initialValues, prevProps.initialValues)) {
-            this.setState({ initialValues });
+        if (!equals(getInitialValues(initialValues, fields), getInitialValues(prevProps.initialValues, prevProps.fields))) {
+            this.setState({ initialValues: getInitialValues(initialValues, fields) });
         }
 
         if (serverErrors && !prevProps.serverErrors && this.state.submitted) {
