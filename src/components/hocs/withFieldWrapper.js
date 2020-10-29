@@ -88,13 +88,15 @@ export default WrappedComponent =>
         }
 
         render() {
-            const { label, extra = '', meta: { error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { name }, htmlAttrs: fieldHtmlAttrs } = this.props;
+            const { label, extra = '', meta: { error, modifiedSinceLastSubmit, dirtySinceLastSubmit }, settings, input: { name }, htmlAttrs: fieldHtmlAttrs, fieldType } = this.props;
             const serverError = this.getServerError();
             const isLinked = isLinkedField({ settings });
             const required = isLinked ? this.props.required : this.state.required;
             const showServerError = !modifiedSinceLastSubmit && !dirtySinceLastSubmit && serverError;
 
-            return <div style={{ marginBottom: 20 }} className={cx({ 'jobot-form-invalid': !!error || showServerError })}>
+            return <div
+                style={{ marginBottom: 20 }}
+                className={cx(`jobot-form-field-${fieldType}`, { 'jobot-form-invalid': !!error || showServerError, 'jobot-form-field-textarea': !!path(['textarea'], settings) })}>
                 { !this.hideLabel() &&
                     <label className={required ? styles.formLabelRequired : styles.formLabel}>
                         { label }
