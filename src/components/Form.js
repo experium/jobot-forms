@@ -337,9 +337,14 @@ class Form extends Component {
         );
     }
 
+    reset = () => {
+        this.formProps.reset();
+        this.setState({ submitted: false, errors: {} });
+    }
+
     onSubmit = values => {
         this.setState({ submitted: true });
-        this.props.onSubmit(values, this.formProps);
+        this.props.onSubmit(values, { ...this.formProps, reset: this.reset });
     };
 
     renderCompositeRemoveButton = (field, index) => {

@@ -7,7 +7,6 @@ import moment from 'moment';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { YEAR_MASK, DAY_MASK } from '../../constants/masks';
-import { MONTHS } from '../../constants/dates';
 import styles from '../../styles/index.module.css';
 
 class DateSelect extends Component {
@@ -44,6 +43,12 @@ class DateSelect extends Component {
             month,
             year
         };
+    }
+
+    componentDidUpdate(prev) {
+        if (!this.props.input.value && prev.input.value) {
+            this.setState({ day: '', month: null, year: '' });
+        }
     }
 
     onChange = (day, month, year) => {
@@ -156,7 +161,7 @@ class DateSelect extends Component {
                 <Select
                     id={`${name}-month`}
                     isDisabled={disabled}
-                    value={find(propEq('value', month), options)}
+                    value={find(propEq('value', month), options) || null}
                     onChange={this.onChangeMonth}
                     options={options}
                     placeholder={t('placeholders.datePicker.month')}
