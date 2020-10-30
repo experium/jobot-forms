@@ -5,7 +5,7 @@ import i18n from '../utils/i18n';
 
 import React, { Component, Fragment } from 'react';
 import { Form as FinalFormForm, Field, FormSpy } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals, isEmpty, forEach } from 'ramda';
+import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, equals, isEmpty, forEach, filter, includes } from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
@@ -90,6 +90,8 @@ class Form extends Component {
         components: {},
         language: RU,
         opdSubmitDisabled: true,
+        excludeDictionary: {},
+        renameDictionary: {}
     };
 
     constructor(props) {
@@ -175,7 +177,16 @@ class Form extends Component {
                 }
 
                 const responseData = dataPath ? prop(dataPath, await response.json()) : await response.json();
-                const data = Array.isArray(responseData) ? responseData : [responseData];
+                let data = Array.isArray(responseData) ? responseData : [responseData];
+
+                if (this.props.excludeDictionary[type]) {
+                    data = filter(item => !includes(item.id, this.props.excludeDictionary[type]), data);
+                }
+
+                if (this.props.renameDictionary[type]) {
+                    data = data.map(item => this.props.renameDictionary[type][item.id] ? { ...item, name: this.props.renameDictionary[type][item.id] } : item);
+                }
+
                 this.dictionaryTypes.push(type);
 
                 this.setState(prev => ({

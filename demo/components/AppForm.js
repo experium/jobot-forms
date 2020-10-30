@@ -225,6 +225,14 @@ class AppForm extends Component {
                                         'data-analytics-module-name': 'application submission',
                                     },
                                 }}
+                                excludeDictionary={{
+                                    'PplEduLevel': [6]
+                                }}
+                                renameDictionary={{
+                                    'PplEduLevel': {
+                                        3: 'Высшее (специалитет)'
+                                    }
+                                }}
                             />
                         }
                     </Mutation>
