@@ -287,7 +287,8 @@ class Form extends Component {
             serverErrors,
             fields,
             allowFileExtensions,
-            renderOpdLabel
+            renderOpdLabel,
+            useNative
         } = this.props;
         const { fieldsWithoutValidation, errors } = this.state;
         const fieldName = name || field.field;
@@ -323,6 +324,7 @@ class Form extends Component {
                 fields={fields}
                 allowFileExtensions={allowFileExtensions}
                 renderOpdLabel={renderOpdLabel}
+                useNative={useNative}
                 {...props}
             />
         );
@@ -359,6 +361,7 @@ class Form extends Component {
                 fields={fields}
                 allowFileExtensions={allowFileExtensions}
                 renderOpdLabel={renderOpdLabel}
+                useNative={useNative}
             />
         );
     }
