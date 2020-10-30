@@ -275,7 +275,20 @@ class Form extends Component {
     };
 
     renderField = (field, name, form) => {
-        const { opd, getFileUrl, postFileUrl, apiUrl, language, components, htmlOpd, getOpdValues, serverErrors, fields, allowFileExtensions } = this.props;
+        const {
+            opd,
+            getFileUrl,
+            postFileUrl,
+            apiUrl,
+            language,
+            components,
+            htmlOpd,
+            getOpdValues,
+            serverErrors,
+            fields,
+            allowFileExtensions,
+            renderOpdLabel
+        } = this.props;
         const { fieldsWithoutValidation, errors } = this.state;
         const fieldName = name || field.field;
         const isLinked = isLinkedField(field);
@@ -309,6 +322,7 @@ class Form extends Component {
                 serverErrors={serverErrors}
                 fields={fields}
                 allowFileExtensions={allowFileExtensions}
+                renderOpdLabel={renderOpdLabel}
                 {...props}
             />
         );
@@ -344,6 +358,7 @@ class Form extends Component {
                 serverErrors={serverErrors}
                 fields={fields}
                 allowFileExtensions={allowFileExtensions}
+                renderOpdLabel={renderOpdLabel}
             />
         );
     }
