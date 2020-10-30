@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { compose, pathOr, find, propEq, path, has } from 'ramda';
+import { assocPath, compose, pathOr, find, propEq, path, has } from 'ramda';
 import ReactSelect from 'react-select';
 import qs from 'qs';
 import Modal from 'react-responsive-modal';
@@ -182,6 +182,10 @@ class AppForm extends Component {
                                     // assocPath([1, 'settings', 'parents'], {
                                     //     [path(['questions', 0, 'field'], vacancy)]: path(['questions', 0, 'settings', 'dictionary'], vacancy),
                                     // }),
+                                    // link
+                                    // assocPath([1, 'settings', 'linkField'], path(['questions', 0, 'field'], vacancy)),
+                                    // assocPath([1, 'settings', 'linkType'], 'hide'),
+                                    // assocPath([1, 'settings', 'linkValue'], '1'),
                                     pathOr([], ['questions']),
                                 )(vacancy)}
                                 onSubmit={form => {
