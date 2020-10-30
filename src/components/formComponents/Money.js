@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ReactSelect from 'react-select';
 import { prop, find, propEq, isEmpty } from 'ramda';
 import { Field } from 'react-final-form';
 import { withTranslation } from 'react-i18next';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import styles from '../../styles/index.module.css';
+import FormSelect from './FormSelect';
 
 const customStyle = {
     control: (provided) => ({
@@ -69,7 +69,7 @@ class Money extends Component {
     }
 
     render() {
-        const { input: { name }, t, disabled } = this.props;
+        const { input: { name }, t, disabled, useNative } = this.props;
         const options = this.getOptions();
         const singleCurrency = this.getSingleCurrency();
 
@@ -97,7 +97,7 @@ class Money extends Component {
                         initialValue={ singleCurrency }
                     >
                         {({ input: { value, onChange } }) => (
-                            <ReactSelect
+                            <FormSelect
                                 id={`${name}-currency`}
                                 styles={customStyle}
                                 isDisabled={singleCurrency || disabled}
@@ -108,6 +108,7 @@ class Money extends Component {
                                 noOptionsMessage={() => t('noOptionsMessage')}
                                 placeholder={t('placeholders.salaryCurrency')}
                                 classNamePrefix='jobot-forms'
+                                useNative={useNative}
                             />
                         )}
                     </Field>

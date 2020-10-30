@@ -14,6 +14,7 @@
     "final-form-arrays": "^3.0.2",
     "getusermedia": "^2.0.1",
     "i18next": "^19.8.3",
+    "ismobilejs": "^1.1.1",
     "moment": "^2.24.0",
     "qs": "^6.9.4",
     "ramda": "^0.27.1",

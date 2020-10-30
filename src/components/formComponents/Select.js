@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import ReactSelect, { components } from 'react-select';
+import { components } from 'react-select';
 import { path, contains, find, propEq, filter, findIndex, equals, take, isEmpty, includes, pathOr } from 'ramda';
 import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
@@ -11,6 +11,7 @@ import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import withLocationValues from '../hocs/withLocationValues';
 import styles from '../../styles/index.module.css';
+import FormSelect from './FormSelect';
 
 export const HEIGHT = 34;
 
@@ -181,7 +182,7 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value, name }, settings, errors, dictionaryType, t, disabled } = this.props;
+        const { input: { value, name }, settings, errors, dictionaryType, t, disabled, useNative } = this.props;
         const multiple = path(['multiple'], settings);
         const placeholder = path(['placeholder'], settings);
         const options = this.getOptions() || [];
@@ -189,7 +190,7 @@ class Select extends Component {
         const isError = errors[dictionaryType];
 
         return <Fragment>
-            <ReactSelect
+            <FormSelect
                 id={name}
                 key={value}
                 value={this.allowUserValue() && this.state.other ?
@@ -212,6 +213,7 @@ class Select extends Component {
                     DropdownIndicator: this.getDropdownIndicator,
                 }}
                 isDisabled={disabled}
+                useNative={useNative}
                 isClearable />
             { this.allowUserValue() && this.state.other &&
                 <input

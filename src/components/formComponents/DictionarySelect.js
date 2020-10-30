@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactSelect, { components } from 'react-select';
+import { components } from 'react-select';
 import { path, contains, find, propEq, filter, prop, propOr, pathOr, isEmpty, pathEq } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next';
 
 import { CompanyDictionaryContext } from '../../context/CompanyDictionary';
 import withFieldWrapper from '../hocs/withFieldWrapper';
+import FormSelect from './FormSelect';
 
 class Select extends Component {
     state = {
@@ -230,14 +231,14 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value, name }, settings, t, disabled } = this.props;
+        const { input: { value, name }, settings, t, disabled, useNative } = this.props;
         const multiple = path(['multiple'], settings);
         const placeholder = path(['placeholder'], settings) || null;
         const options = this.getOptions();
 
         return (
             <div>
-                <ReactSelect
+                <FormSelect
                     id={name}
                     key={value}
                     value={multiple ? filter(item => contains(item.id, value || []), options) : find(propEq('id', value), options)}
@@ -257,6 +258,7 @@ class Select extends Component {
                     }}
                     openMenuOnClick={!this.state.error}
                     isClearable
+                    useNative={useNative}
                 />
             </div>
         );

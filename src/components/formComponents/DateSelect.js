@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Masked from 'react-text-mask';
-import Select from 'react-select';
 import { contains, path, isNil, find, propEq } from 'ramda';
 import { withTranslation } from 'react-i18next';
 import moment from 'moment';
@@ -8,6 +7,7 @@ import moment from 'moment';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { YEAR_MASK, DAY_MASK } from '../../constants/masks';
 import styles from '../../styles/index.module.css';
+import FormSelect from './FormSelect';
 
 class DateSelect extends Component {
     constructor(props) {
@@ -158,7 +158,7 @@ class DateSelect extends Component {
                     guide />
             }
             { showMonth &&
-                <Select
+                <FormSelect
                     id={`${name}-month`}
                     isDisabled={disabled}
                     value={find(propEq('value', month), options) || null}
@@ -166,6 +166,7 @@ class DateSelect extends Component {
                     options={options}
                     placeholder={t('placeholders.datePicker.month')}
                     classNamePrefix='jobot-forms'
+                    nativeStyles={{ width: 150, minWidth: 150, marginRight: 10 }}
                     styles={{
                         container: s => ({ ...s, width: 150, minWidth: 150, marginRight: 10 })
                     }}
