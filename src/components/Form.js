@@ -238,7 +238,7 @@ class Form extends Component {
             pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }));
 
         if (isEmpty(options)) {
-            return undefined;
+            return [];
         }
 
         if (language === RU) {
