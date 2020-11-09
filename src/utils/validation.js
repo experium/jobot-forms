@@ -180,6 +180,11 @@ const rules = {
             return amount ? schema.required(i18n.t('errors.currency')) : schema.nullable();
         }),
     }),
+    date: () => yup.string().nullable().test({
+        name: 'completeDate',
+        message: i18n.t('errors.icompleteDate'),
+        test: value => value !== 'incomplete'
+    })
 };
 
 export const validate = (value, form, field, fieldsWithoutValidation, props) => {

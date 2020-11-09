@@ -60,13 +60,13 @@ class DateSelect extends Component {
                     day && !isNil(month) && year ? (
                         moment().year(year).month(month).date(day)
                             .format('DD.MM.YYYY')
-                    ) : undefined
+                    ) : (day || !isNil(month) || year) ? 'incomplete' : undefined
                 );
             } else if (format === 'MM.y') {
                 this.props.onChange(
                     year && !isNil(month) ? (
                         moment().year(year).month(month).format('MM.YYYY')
-                    ) : undefined);
+                    ) : (year || !isNil(month)) ? 'incomplete' : undefined);
             } else if (format === 'y') {
                 this.props.onChange(year ? (
                     moment().year(year).format('YYYY')
@@ -77,7 +77,7 @@ class DateSelect extends Component {
                 day && !isNil(month) && year ?
                     moment().year(year).month(month).date(day)
                         .format('YYYYMMDD') :
-                    undefined
+                    (day || !isNil(month) || year) ? 'incomplete' : undefined
             );
         }
     }
