@@ -186,6 +186,8 @@ class AppForm extends Component {
                                     // assocPath([1, 'settings', 'linkField'], path(['questions', 0, 'field'], vacancy)),
                                     // assocPath([1, 'settings', 'linkType'], 'hide'),
                                     // assocPath([1, 'settings', 'linkValue'], '1'),
+                                    // phone
+                                    // assocPath([6, 'settings', 'international'], true),
                                     pathOr([], ['questions']),
                                 )(vacancy)}
                                 onSubmit={form => {

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Masked from 'react-text-mask';
+import { path } from 'ramda';
 
 import styles from '../../styles/index.module.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import { getPhoneMask } from '../../utils/mask';
+import { getPhoneMask, getPhoneMaskRU } from '../../utils/mask';
 
 class MaskedInputComponent extends Component {
     render() {
@@ -30,7 +31,7 @@ export const PhoneInput = props => {
     return (
         <MaskedInput
             {...props}
-            mask={getPhoneMask}
+            mask={path(['settings', 'international'], props) ? getPhoneMask : getPhoneMaskRU}
             showMask={true}
             guide={true}
             placeholder='+'

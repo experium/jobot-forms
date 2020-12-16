@@ -2,7 +2,7 @@ import { is, trim, isEmpty, replace, split, join } from 'ramda';
 import { AsYouType } from 'libphonenumber-js';
 
 import { maskItems } from '../constants/mask';
-import { PHONE_MASK } from '../constants/masks';
+import { PHONE_MASK, PHONE_MASK_RU, PHONE_MASK_RU_EIGHT } from '../constants/masks';
 
 const isEmptyString = (str) => {
     return isEmpty(trim(str));
@@ -84,3 +84,5 @@ export const getPhoneMask = (rawValue, { previousConformedValue }) => {
         return PHONE_MASK;
     }
 };
+
+export const getPhoneMaskRU = value => value && value[0] === '8' ? PHONE_MASK_RU_EIGHT : PHONE_MASK_RU;

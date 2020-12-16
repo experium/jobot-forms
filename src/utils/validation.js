@@ -1,5 +1,6 @@
 import { path, split, replace, contains, head, prop, isEmpty, values, join, keys, startsWith } from 'ramda';
 import * as yup from 'yup';
+import { isPhoneNumber } from 'class-validator';
 import { parsePhoneNumberWithError, ParseError } from 'libphonenumber-js';
 
 import i18n from './i18n';
@@ -109,9 +110,12 @@ const rules = {
         },
         test: (value) => {
             try {
-                const phoneNumber = parsePhoneNumberWithError(value);
-
-                return phoneNumber.isValid();
+                if (path(['settings', 'international'], field)) {
+                    const phoneNumber = parsePhoneNumberWithError(value);
+                    return phoneNumber.isValid();
+                } else {
+                    return isPhoneNumber(value, 'RU') || isPhoneNumber(value, 'KZ');
+                }
             } catch (error) {
                 if (error instanceof ParseError) {
                     return false;
