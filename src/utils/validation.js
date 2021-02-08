@@ -109,6 +109,10 @@ const rules = {
             }
         },
         test: (value) => {
+            if (!value) {
+                return true;
+            }
+
             try {
                 if (path(['settings', 'international'], field)) {
                     const phoneNumber = parsePhoneNumberWithError(value);
