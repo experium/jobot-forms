@@ -12,7 +12,8 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': '"development"'
+                'NODE_ENV': '"development"',
+                'RECAPTCHA': '"6LeGFW0aAAAAADzkbozlVnpbROvKEBMwc-d4zkMx"'
             }
         }),
         new webpack.HotModuleReplacementPlugin(),
@@ -29,8 +30,8 @@ module.exports = {
         publicPath: '/',
         contentBase: path.resolve(__dirname, '../.tmp'),
         watchContentBase: true,
-        port: 9000,
-        host: '0.0.0.0',
+        port: 80,
+        host: 'testjobotforms.me',
         historyApiFallback: true,
         open: true,
     }

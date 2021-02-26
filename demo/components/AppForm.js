@@ -239,6 +239,9 @@ class AppForm extends Component {
                                         3: 'Высшее (специалитет)'
                                     }
                                 }}
+                                options={{
+                                    captchaRequired: true
+                                }}
                             />
                         }
                     </Mutation>

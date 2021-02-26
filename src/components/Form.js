@@ -36,6 +36,7 @@ import { fieldArrayInitialValues } from '../constants/form';
 import { CompanyDictionaryContext } from '../context/CompanyDictionary';
 import { FormContext } from '../context/FormContext';
 import Spinner from './formComponents/Spinner';
+import ReCaptcha from './formComponents/ReCaptcha';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -91,7 +92,8 @@ class Form extends Component {
         language: RU,
         opdSubmitDisabled: true,
         excludeDictionary: {},
-        renameDictionary: {}
+        renameDictionary: {},
+        options: {}
     };
 
     constructor(props) {
@@ -422,7 +424,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs } = this.props;
+        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs, options } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -511,6 +513,12 @@ class Form extends Component {
                                     }
                                 />
                                 <div>
+                                    { !!options.captchaRequired &&
+                                        <Field
+                                            name='_captcha'
+                                            component={ReCaptcha}
+                                            validate={value => value ? undefined : i18n.t('errors.captchaRequired')} />
+                                    }
                                     <Field name='personalDataAgreement' subscription={{ value: true }}>
                                         {({ input: { value } }) => (
                                             <button className={styles.formBtn} type='submit' disabled={opdSubmitDisabled && !value || submitted} {...getAttrs('submit', htmlAttrs)}>

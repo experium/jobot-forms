@@ -61,7 +61,8 @@ export const TRANSLATIONS = {
                 'fileTypeAudio': 'Invalid type, select audio file',
                 'fileTypeVideo': 'Invalid type, select video file',
                 'composite': 'Required block',
-                'icompleteDate': 'Full date is required'
+                'icompleteDate': 'Full date is required',
+                'captchaRequired': 'Verification required'
             }
         },
     },
@@ -127,7 +128,8 @@ export const TRANSLATIONS = {
                 'fileTypeAudio': 'Неверный тип файла, выберите аудиофайл',
                 'fileTypeVideo': 'Неверный тип файла, выберите видеофайл',
                 'composite': 'Блок обязателен для заполнения',
-                'icompleteDate': 'Необходимо указать дату полностью'
+                'icompleteDate': 'Необходимо указать дату полностью',
+                'captchaRequired': 'Необходимо пройти проверку'
             }
         },
     },
