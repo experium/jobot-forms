@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { components } from 'react-select';
-import { path, contains, find, propEq, filter, prop, propOr, pathOr, isEmpty, pathEq } from 'ramda';
+import { allPass, path, contains, find, propEq, filter, prop, propOr, pathOr, isEmpty, pathEq } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -158,17 +158,23 @@ class Select extends Component {
     }
 
     getOptions = () => {
-        const { parentField, parentFieldValue, contextOptions } = this.props;
+        const { settings, parentField, parentFieldValue, contextOptions } = this.props;
         const parentFieldOptions = prop(parentField, contextOptions);
+        const dictionaryKey = settings.parent || settings.dictionary;
 
-        if (parentField && !isEmpty(parentFieldOptions)) {
-            return pathOr([], ['options', parentFieldValue], this.state);
-        } else {
-            const { settings } = this.props;
-            const dictionaryKey = settings.parent || settings.dictionary;
+        const options = parentField && !isEmpty(parentFieldOptions) ?
+            pathOr([], ['options', parentFieldValue], this.state)
+            : pathOr([], ['options', dictionaryKey], this.state);
 
-            return pathOr([], ['options', dictionaryKey], this.state);
-        }
+        return filter(allPass([
+            item => {
+                if (settings.selection) {
+                    return contains(item.id, settings.selection);
+                } else {
+                    return true;
+                }
+            },
+        ]), options);
     }
 
     getParentOptions = () => {

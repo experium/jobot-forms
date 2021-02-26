@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { components } from 'react-select';
-import { path, contains, find, propEq, filter, findIndex, equals, take, isEmpty, includes, pathOr } from 'ramda';
+import { allPass, prop, path, contains, find, propEq, filter, findIndex, equals, take, isEmpty, includes, pathOr } from 'ramda';
 import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -137,28 +137,38 @@ class Select extends Component {
 
     getOptions = () => {
         const { settings, options, formValues } = this.props;
+        const regionParent = prop(settings.regionField, formValues);
+        const countryParent = prop(settings.countryField, formValues);
 
-        if (formValues && !formValues[settings.regionField] && !formValues[settings.countryField] && !formValues.country || !formValues) {
-            return this.allowUserValue() ? [...options, this.getUserValueQuestion()] : options;
-        }
+        const filteredOptions = filter(allPass([
+            item => {
+                if (countryParent || countryParent) {
+                    const regionEqual = regionParent === item.region;
+                    const countryEqual = countryParent === item.country;
 
-        const filteredOptions =  filter(item => {
-            const regionEqual = formValues[settings.regionField] === item.region;
-            const countryEqual = formValues[settings.countryField] === item.country;
-
-            if (formValues && formValues[settings.regionField] && formValues[settings.countryField]) {
-                return regionEqual && countryEqual;
-            } else if (formValues && formValues[settings.regionField]) {
-                return regionEqual;
-            } else if (formValues && formValues[settings.countryField]) {
-                return countryEqual;
-            } else if (formValues && settings.regionField && formValues.country) {
-                return formValues.country === item.country;
-            } else {
-                return true;
-            }
-        }, options);
-
+                    return regionEqual || countryEqual;
+                } else {
+                    return true;
+                }
+            },
+            item => {
+                if (settings.countries || settings.regions) {
+                    return (
+                        contains(item.region, settings.regions || [])
+                        || contains(item.country, settings.countries || [])
+                    );
+                } else {
+                    return true;
+                }
+            },
+            item => {
+                if (settings.selection) {
+                    return contains(item.value, settings.selection);
+                } else {
+                    return true;
+                }
+            },
+        ]), options);
         return this.allowUserValue() ? [...filteredOptions, this.getUserValueQuestion()] : filteredOptions;
     }
 
