@@ -61,6 +61,7 @@ const rules = {
             message: i18n.t('errors.required'),
             test: value => {
                 const mask = path(['settings', 'mask'], field);
+                const minLength = path(['settings', 'minLength'], field);
 
                 if (!value || !mask) {
                     return true;
@@ -68,7 +69,7 @@ const rules = {
                 const parsedValue = value.replace(/[\s]+/gm, '');
                 const parsedMask = mask.replace(/[\s]+/gm, '');
 
-                return parsedMask.length === parsedValue.length;
+                return (parsedMask.length === parsedValue.length) || (minLength && (parsedValue.length > minLength));
             }
         })
         .test({
