@@ -20,6 +20,7 @@ import { CompanyDictionaryContext } from '../context/CompanyDictionary';
 import { FormContext } from '../context/FormContext';
 import Fields from './Fields';
 import Spinner from './formComponents/Spinner';
+import ReCaptcha from './formComponents/ReCaptcha';
 
 const getInitialValues = (initialValues, fields) => {
     const values = initialValues || {};
@@ -41,7 +42,8 @@ class Form extends Component {
         language: RU,
         opdSubmitDisabled: true,
         excludeDictionary: {},
-        renameDictionary: {}
+        renameDictionary: {},
+        options: {}
     };
 
     constructor(props) {
@@ -181,7 +183,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs } = this.props;
+        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs, options } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -242,6 +244,12 @@ class Form extends Component {
                                     t={t}
                                 />
                                 <div>
+                                    { !!options.captchaRequired &&
+                                        <Field
+                                            name='_captcha'
+                                            component={ReCaptcha}
+                                            validate={value => value ? undefined : i18n.t('errors.captchaRequired')} />
+                                    }
                                     <Field name='personalDataAgreement' subscription={{ value: true }}>
                                         {({ input: { value } }) => (
                                             <button className={styles.formBtn} type='submit' disabled={opdSubmitDisabled && !value || submitted} {...getAttrs('submit', htmlAttrs)}>

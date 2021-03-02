@@ -21,6 +21,11 @@ export const getVacancy = gql(`
                     allowFileExtensions
                 }
             },
+            formPreset {
+                options {
+                    captchaRequired
+                }
+            }
         }
     }
 `);
