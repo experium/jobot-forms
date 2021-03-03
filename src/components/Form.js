@@ -246,9 +246,11 @@ class Form extends Component {
                                 <div>
                                     { !!options.captchaRequired &&
                                         <Field
+                                            key={language}
                                             name='_captcha'
                                             component={ReCaptcha}
-                                            validate={value => value ? undefined : i18n.t('errors.captchaRequired')} />
+                                            validate={value => value ? undefined : i18n.t('errors.captchaRequired')}
+                                            language={language} />
                                     }
                                     <Field name='personalDataAgreement' subscription={{ value: true }}>
                                         {({ input: { value } }) => (
