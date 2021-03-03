@@ -24,12 +24,12 @@ class DateSelect extends Component {
                 const date = moment(value, 'DD.MM.YYYY');
 
                 day = date.date();
-                month = date.month();
+                month = date.month() + 1;
                 year = date.year();
             } else if (format === 'MM.y') {
                 const date = moment(value, 'MM.YYYY');
 
-                month = date.month();
+                month = date.month() + 1;
                 year = date.year();
             } else if (format === 'y') {
                 const date = moment(value, 'YYYY');
@@ -58,14 +58,14 @@ class DateSelect extends Component {
             if (format === 'dd.MM.y') {
                 this.props.onChange(
                     day && !isNil(month) && year ? (
-                        moment().year(year).month(month).date(day)
+                        moment().year(year).month(month - 1).date(day)
                             .format('DD.MM.YYYY')
                     ) : (day || !isNil(month) || year) ? 'incomplete' : undefined
                 );
             } else if (format === 'MM.y') {
                 this.props.onChange(
                     year && !isNil(month) ? (
-                        moment().year(year).month(month).format('MM.YYYY')
+                        moment().year(year).month(month - 1).format('MM.YYYY')
                     ) : (year || !isNil(month)) ? 'incomplete' : undefined);
             } else if (format === 'y') {
                 this.props.onChange(year ? (
@@ -75,7 +75,7 @@ class DateSelect extends Component {
         } else {
             this.props.onChange(
                 day && !isNil(month) && year ?
-                    moment().year(year).month(month).date(day)
+                    moment().year(year).month(month - 1).date(day)
                         .format('YYYYMMDD') :
                     (day || !isNil(month) || year) ? 'incomplete' : undefined
             );
@@ -93,8 +93,8 @@ class DateSelect extends Component {
     onChangeMonth = value => {
         const { day: current, year } = this.state;
         const month = path(['value'], value);
-        const day = month && !year && moment().month(month).daysInMonth() < current ? moment().month(month).daysInMonth() :
-            month && year && moment().month(month).year(year).daysInMonth() < current ? moment().month(month).year(year).daysInMonth() :
+        const day = month && !year && moment().month(month - 1).daysInMonth() < current ? moment().month(month - 1).daysInMonth() :
+            month && year && moment().month(month - 1).year(year).daysInMonth() < current ? moment().month(month - 1).year(year).daysInMonth() :
                 current;
 
         this.setState({ month, day });
@@ -112,8 +112,8 @@ class DateSelect extends Component {
     onBlurDay = () => {
         const { day: current, month, year } = this.state;
         const day = !month && current > 31 ? 31 :
-            month && !year && moment().month(month).daysInMonth() < current ? moment().month(month).daysInMonth() :
-                month && year && moment().month(month).year(year).daysInMonth() < current ? moment().month(month).year(year).daysInMonth() :
+            month && !year && moment().month(month - 1).daysInMonth() < current ? moment().month(month - 1).daysInMonth() :
+                month && year && moment().month(month - 1).year(year).daysInMonth() < current ? moment().month(month - 1).year(year).daysInMonth() :
                     current;
 
         this.setState({ day });
@@ -124,7 +124,7 @@ class DateSelect extends Component {
         const { day: current, month, year } = this.state;
 
         if (month && year) {
-            const daysInMonth = moment().month(month + 1).year(year).daysInMonth();
+            const daysInMonth = moment().month(month).year(year).daysInMonth();
 
             if (daysInMonth < current) {
                 this.setState({ day: daysInMonth });
