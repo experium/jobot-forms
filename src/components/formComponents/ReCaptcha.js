@@ -7,12 +7,12 @@ class ReCaptcha extends Component {
     render() {
         const { input: { onChange }, language } = this.props;
 
-        return <ReCAPTCHA
+        return process.env.RECAPTCHA ? <ReCAPTCHA
             sitekey={process.env.RECAPTCHA}
             onChange={onChange}
             style={{ marginBottom: 15 }}
             hl={language || 'ru'}
-        />;
+        /> : null;
     }
 }
 
