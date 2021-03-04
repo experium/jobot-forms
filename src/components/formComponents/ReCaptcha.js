@@ -6,9 +6,10 @@ import withFieldWrapper from '../hocs/withFieldWrapper';
 class ReCaptcha extends Component {
     render() {
         const { input: { onChange }, language } = this.props;
+        const sitekey = process.env.RECAPTCHA || process.env.REACT_APP_RECAPTCHA;
 
-        return process.env.RECAPTCHA ? <ReCAPTCHA
-            sitekey={process.env.RECAPTCHA}
+        return sitekey ? <ReCAPTCHA
+            sitekey={sitekey}
             onChange={onChange}
             style={{ marginBottom: 15 }}
             hl={language || 'ru'}
