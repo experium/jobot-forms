@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Field } from 'react-final-form';
 import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, isEmpty, filter, includes } from 'ramda';
 import { FieldArray } from 'react-final-form-arrays';
+import { withTranslation } from 'react-i18next';
 
 import styles from '../styles/index.module.css';
 
@@ -351,4 +352,4 @@ class Fields extends Component {
     }
 }
 
-export default Fields;
+export default withTranslation()(Fields);

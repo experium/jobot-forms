@@ -144,6 +144,7 @@ class AppForm extends Component {
     render() {
         const { data, match, history: { location: { search }}} = this.props;
         const vacancy = pathOr({}, ['vacancy'], data);
+        const companyCaptcha = path(['company', 'companySettings', 'captcha', 'landings'], vacancy);
         const companyPda = path(['company', 'companySettings', 'pda'], vacancy);
         const searchPath = qs.parse(search, { ignoreQueryPrefix: true });
         const components = has('custom', searchPath) ? customComponents : {};
@@ -240,7 +241,7 @@ class AppForm extends Component {
                                     }
                                 }}
                                 options={{
-                                    captchaRequired: true
+                                    captchaRequired: companyCaptcha
                                 }}
                             />
                         }

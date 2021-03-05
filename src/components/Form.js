@@ -241,7 +241,6 @@ class Form extends Component {
                                     fieldsWithoutValidation={this.state.fieldsWithoutValidation}
                                     errors={this.state.errors}
                                     language={language}
-                                    t={t}
                                 />
                                 <div>
                                     { !!options.captchaRequired &&

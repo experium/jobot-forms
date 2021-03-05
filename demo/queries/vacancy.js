@@ -18,12 +18,11 @@ export const getVacancy = gql(`
             company {
                 companySettings {
                     pda,
-                    allowFileExtensions
-                }
-            },
-            formPreset {
-                options {
-                    captchaRequired
+                    allowFileExtensions,
+                    captcha {
+                        landings,
+                        domains
+                    }
                 }
             }
         }
