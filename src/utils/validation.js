@@ -69,7 +69,10 @@ const rules = {
                 const parsedValue = value.replace(/[\s]+/gm, '');
                 const parsedMask = mask.replace(/[\s]+/gm, '');
 
-                return (parsedMask.length === parsedValue.length) || (minLength && (parsedValue.length > minLength));
+                const maskFull = parsedMask.length === parsedValue.length;
+                const maskMin = (parsedValue.length > minLength) && (parsedValue.length <= parsedMask.length);
+
+                return minLength ? maskMin : maskFull;
             }
         })
         .test({
@@ -82,7 +85,7 @@ const rules = {
                     return true;
                 }
 
-                return value.length < maxLength;
+                return value.length <= maxLength;
             }
         })
         .test({
@@ -157,7 +160,7 @@ const rules = {
                     return true;
                 }
 
-                return value.length < maxLength;
+                return value.length <= maxLength;
             }
         }),
     personalDataAgreement: (field, { htmlOpd }) => htmlOpd ? yup.string() : yup.boolean(),
