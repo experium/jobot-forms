@@ -70,7 +70,7 @@ const rules = {
                 const parsedMask = mask.replace(/[\s]+/gm, '');
 
                 const maskFull = parsedMask.length === parsedValue.length;
-                const maskMin = (parsedValue.length > minLength) && (parsedValue.length <= parsedMask.length);
+                const maskMin = (parsedValue.length >= minLength) && (parsedValue.length <= parsedMask.length);
 
                 return minLength ? maskMin : maskFull;
             }
