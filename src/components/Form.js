@@ -43,7 +43,8 @@ class Form extends Component {
         opdSubmitDisabled: true,
         excludeDictionary: {},
         renameDictionary: {},
-        options: {}
+        options: {},
+        selectHeight: 34
     };
 
     constructor(props) {
@@ -183,7 +184,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs, options } = this.props;
+        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs, options, selectHeight } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -241,6 +242,7 @@ class Form extends Component {
                                     fieldsWithoutValidation={this.state.fieldsWithoutValidation}
                                     errors={this.state.errors}
                                     language={language}
+                                    selectHeight={selectHeight}
                                 />
                                 <div>
                                     { !!options.captchaRequired &&

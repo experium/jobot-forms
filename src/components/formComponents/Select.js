@@ -13,12 +13,10 @@ import withLocationValues from '../hocs/withLocationValues';
 import styles from '../../styles/index.module.css';
 import FormSelect from './FormSelect';
 
-export const HEIGHT = 34;
-
-function countLines(name, text) {
+function countLines(name, text, selectHeight) {
     const el = document.createElement('div');
     el.style.width = `${document.getElementById(name).offsetWidth - 20}px`;
-    el.style.lineHeight = `${HEIGHT}px`;
+    el.style.lineHeight = `${selectHeight}px`;
     el.innerHTML = text;
     document.body.appendChild(el);
 
@@ -116,13 +114,13 @@ class Select extends Component {
             let height = 0;
 
             forEach(child => {
-                height = height + HEIGHT + ((countLines(this.props.input.name, child.props.data.label) - 1) * 18);
+                height = height + this.props.selectHeight + ((countLines(this.props.input.name, child.props.data.label, this.props.selectHeight) - 1) * 18);
             }, childrens);
 
             return height;
         }
 
-        return HEIGHT;
+        return this.props.selectHeight;
     }
 
     getOffset = (options, value) => {
@@ -141,7 +139,7 @@ class Select extends Component {
         return <List
             height={listHeight}
             itemCount={children.length || 1}
-            itemSize={index => HEIGHT + ((countLines(this.props.input.name, options[index].label) - 1) * 18)}
+            itemSize={index => this.props.selectHeight + ((countLines(this.props.input.name, options[index].label, this.props.selectHeight) - 1) * 18)}
             initialScrollOffset={initialOffset}>
             { ({ index, style }) => <div style={style}>{ Array.isArray(children) ? children[index] : children }</div> }
         </List>;
@@ -214,7 +212,7 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value, name }, settings, errors, dictionaryType, t, disabled, useNative } = this.props;
+        const { input: { value, name }, settings, errors, dictionaryType, t, disabled, useNative, selectHeight } = this.props;
         const multiple = path(['multiple'], settings);
         const placeholder = path(['placeholder'], settings);
         const options = this.getOptions() || [];
@@ -237,7 +235,7 @@ class Select extends Component {
                 placeholder={null}
                 noOptionsMessage={() => t('noOptionsMessage')}
                 classNamePrefix='jobot-forms'
-                maxMenuHeight={HEIGHT * 6}
+                maxMenuHeight={selectHeight * 6}
                 openMenuOnClick={!isError}
                 components={{
                     MenuList,
