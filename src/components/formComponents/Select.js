@@ -19,6 +19,7 @@ function countLines(name, text, selectHeight) {
     el.style.lineHeight = `${selectHeight}px`;
     el.style.paddingLeft = '11px';
     el.style.paddingRight = '11px';
+    el.className = 'jobot-forms_select-count-lines-item';
     el.innerHTML = text;
     document.body.appendChild(el);
 
