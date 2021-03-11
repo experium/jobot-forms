@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { components } from 'react-select';
-import { allPass, prop, path, contains, find, propEq, filter, findIndex, equals, take, isEmpty, includes, pathOr } from 'ramda';
+import { allPass, prop, path, contains, find, propEq, filter, findIndex, equals, take, isEmpty, includes, pathOr, forEach } from 'ramda';
 import { VariableSizeList as List } from 'react-window';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
@@ -14,6 +14,22 @@ import styles from '../../styles/index.module.css';
 import FormSelect from './FormSelect';
 
 export const HEIGHT = 34;
+
+function countLines(name, text) {
+    const el = document.createElement('div');
+    el.style.width = `${document.getElementById(name).offsetWidth - 20}px`;
+    el.style.lineHeight = `${HEIGHT}px`;
+    el.innerHTML = text;
+    document.body.appendChild(el);
+
+    const divHeight = el.offsetHeight;
+    const lineHeight = parseInt(el.style.lineHeight);
+    const lines = divHeight / lineHeight;
+
+    el.parentNode.removeChild(el);
+
+    return lines;
+}
 
 class Select extends Component {
     constructor(props) {
@@ -97,7 +113,13 @@ class Select extends Component {
 
     getOptionsHeight = childrens => {
         if (Array.isArray(childrens)) {
-            return childrens.length * HEIGHT;
+            let height = 0;
+
+            forEach(child => {
+                height = height + HEIGHT + ((countLines(this.props.input.name, child.props.data.label) - 1) * 18);
+            }, childrens);
+
+            return height;
         }
 
         return HEIGHT;
@@ -119,7 +141,7 @@ class Select extends Component {
         return <List
             height={listHeight}
             itemCount={children.length || 1}
-            itemSize={() => HEIGHT}
+            itemSize={index => HEIGHT + ((countLines(this.props.input.name, options[index].label) - 1) * 18)}
             initialScrollOffset={initialOffset}>
             { ({ index, style }) => <div style={style}>{ Array.isArray(children) ? children[index] : children }</div> }
         </List>;
