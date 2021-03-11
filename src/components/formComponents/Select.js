@@ -15,8 +15,10 @@ import FormSelect from './FormSelect';
 
 function countLines(name, text, selectHeight) {
     const el = document.createElement('div');
-    el.style.width = `${document.getElementById(name).offsetWidth - 20}px`;
+    el.style.width = `${document.getElementById(name).offsetWidth}px`;
     el.style.lineHeight = `${selectHeight}px`;
+    el.style.paddingLeft = '11px';
+    el.style.paddingRight = '11px';
     el.innerHTML = text;
     document.body.appendChild(el);
 
@@ -111,10 +113,11 @@ class Select extends Component {
 
     getOptionsHeight = childrens => {
         if (Array.isArray(childrens)) {
+            const { selectLineHeight, selectHeight, input } = this.props;
             let height = 0;
 
             forEach(child => {
-                height = height + this.props.selectHeight + ((countLines(this.props.input.name, child.props.data.label, this.props.selectHeight) - 1) * 18);
+                height = height + selectHeight + ((countLines(input.name, (child.label || child.props.data.label), selectHeight) - 1) * selectLineHeight);
             }, childrens);
 
             return height;
@@ -130,6 +133,7 @@ class Select extends Component {
     }
 
     getMenuList = options => ({ children, maxHeight, getValue }) => {
+        const { selectLineHeight, selectHeight, input } = this.props;
         const [ value ] = getValue();
         const optionsHeight = this.getOptionsHeight(children);
 
@@ -139,7 +143,7 @@ class Select extends Component {
         return <List
             height={listHeight}
             itemCount={children.length || 1}
-            itemSize={index => this.props.selectHeight + ((countLines(this.props.input.name, options[index].label, this.props.selectHeight) - 1) * 18)}
+            itemSize={index => selectHeight + ((countLines(input.name, options[index].label, selectHeight) - 1) * selectLineHeight)}
             initialScrollOffset={initialOffset}>
             { ({ index, style }) => <div style={style}>{ Array.isArray(children) ? children[index] : children }</div> }
         </List>;

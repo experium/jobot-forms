@@ -206,7 +206,8 @@ class Fields extends Component {
             fieldsWithoutValidation,
             errors,
             changeFieldValidation,
-            selectHeight
+            selectHeight,
+            selectLineHeight
         } = this.props;
         const fieldName = name || field.field;
         const isLinked = isLinkedField(field);
@@ -243,6 +244,7 @@ class Fields extends Component {
                 renderOpdLabel={renderOpdLabel}
                 useNative={useNative}
                 selectHeight={selectHeight}
+                selectLineHeight={selectLineHeight}
                 {...props}
             />
         );
@@ -281,6 +283,7 @@ class Fields extends Component {
                 renderOpdLabel={renderOpdLabel}
                 useNative={useNative}
                 selectHeight={selectHeight}
+                selectLineHeight={selectLineHeight}
             />
         );
     }
