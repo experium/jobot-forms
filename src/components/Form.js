@@ -44,7 +44,8 @@ class Form extends Component {
         excludeDictionary: {},
         renameDictionary: {},
         options: {},
-        selectHeight: 34
+        selectHeight: 34,
+        selectLineHeight: 18
     };
 
     constructor(props) {
@@ -184,7 +185,7 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs, options, selectHeight } = this.props;
+        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs, options, selectHeight, selectLineHeight } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
@@ -243,6 +244,7 @@ class Form extends Component {
                                     errors={this.state.errors}
                                     language={language}
                                     selectHeight={selectHeight}
+                                    selectLineHeight={selectLineHeight}
                                 />
                                 <div>
                                     { !!options.captchaRequired &&
