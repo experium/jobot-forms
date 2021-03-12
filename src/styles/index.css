@@ -3,7 +3,7 @@
 }
 
 .checkbox-wrapper {
-    display: inline-block;
+    display: flex;
     margin-bottom: 8px;
     position: relative;
 }

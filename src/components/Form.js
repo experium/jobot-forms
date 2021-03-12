@@ -185,7 +185,19 @@ class Form extends Component {
     }
 
     render() {
-        const { fields, language, opdSubmitDisabled, formRender, t, submitting: externalSubmitting, serverErrors, htmlAttrs, options, selectHeight, selectLineHeight } = this.props;
+        const {
+            fields,
+            language,
+            opdSubmitDisabled,
+            formRender,
+            t,
+            submitting: externalSubmitting,
+            serverErrors,
+            htmlAttrs,
+            options,
+            selectHeight,
+            selectLineHeight
+        } = this.props;
         const contextValue = {
             options: this.state.options,
             changeOptions: this.changeOptions,
