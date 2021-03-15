@@ -8,9 +8,9 @@ const isEmptyString = (str) => {
     return isEmpty(trim(str));
 };
 
-export const getMask = (maskString) => {
-    if (is(String, maskString) && !isEmptyString(maskString)) {
-        const result = [...maskString].reduce(
+export const getMask = (mask) => {
+    if (is(String, mask) && !isEmptyString(mask)) {
+        const result = [...mask].reduce(
             (prevValue, item, index, array) => {
                 const prevItem = index !== 0 && array[index - 1];
 
@@ -30,7 +30,7 @@ export const getMask = (maskString) => {
 
         return result;
     } else {
-        return false;
+        return mask;
     }
 };
 

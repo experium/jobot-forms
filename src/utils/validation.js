@@ -1,4 +1,4 @@
-import { path, split, replace, contains, head, prop, isEmpty, values, join, keys, startsWith } from 'ramda';
+import { path, split, replace, contains, head, prop, isEmpty, values, join, keys, startsWith, is } from 'ramda';
 import * as yup from 'yup';
 import { isPhoneNumber } from 'class-validator';
 import { parsePhoneNumberWithError, ParseError } from 'libphonenumber-js';
@@ -63,7 +63,7 @@ const rules = {
                 const mask = path(['settings', 'mask'], field);
                 const minLength = path(['settings', 'minLength'], field);
 
-                if (!value || !mask) {
+                if (!value || !mask || !is(String, mask)) {
                     return true;
                 }
                 const parsedValue = value.replace(/[\s]+/gm, '');

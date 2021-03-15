@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { path } from 'ramda';
 import AutosizeTextarea from 'react-textarea-autosize';
 import { prop } from 'ramda';
+import Masked from 'react-text-mask';
+
+import styles from '../../styles/index.module.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import styles from '../../styles/index.module.css';
-import Masked from 'react-text-mask';
 import { getMask } from '../../utils/mask';
 
 class Input extends Component {
