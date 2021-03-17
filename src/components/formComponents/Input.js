@@ -38,7 +38,7 @@ class Input extends Component {
                 className={`input ${styles.formInput}`}
                 value={value}
                 placeholder={placeholder}
-                type={fieldType}
+                type='text'
                 onChange={this.onChange}
                 mask={inputMask}
                 placeholderChar={'\u2000'}

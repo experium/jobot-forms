@@ -5,7 +5,7 @@ import { parsePhoneNumberWithError, ParseError } from 'libphonenumber-js';
 
 import i18n from './i18n';
 
-import { EMAIL_EXPERIUM, EMAIL_DOMAIN, PHONE } from '../constants/regexps';
+import { EMAIL_EXPERIUM, EMAIL_DOMAIN, EMAIL_RFC, EMAIL_RFC_LOCALPART } from '../constants/regexps';
 import { defaultAllowFileExtensions, VALIDATION_FILE_TYPES } from '../constants/allowFileExtensions';
 
 export const checkFileType = (fileType, mimeType, allowFileExtensions = {}) => {
@@ -131,7 +131,10 @@ const rules = {
             }
         },
     }),
-    email: field => yup.string().nullable().email(i18n.t('errors.email'))
+    email: field => yup.string().nullable()
+        .email(i18n.t('errors.email'))
+        .matches(EMAIL_RFC, i18n.t('errors.email'))
+        .matches(EMAIL_RFC_LOCALPART, i18n.t('errors.email'))
         .test({
             name: 'emailChars',
             message: ({ value }) => {
