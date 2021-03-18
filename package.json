@@ -3,7 +3,8 @@
   "version": "1.1.0",
   "main": "./lib/index.js",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "cache": "~/.npm"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
