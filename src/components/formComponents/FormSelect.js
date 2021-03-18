@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import isMobile from 'ismobilejs';
-import ReactSelect from 'react-select';
+import ReactSelect from 'rc-select';
 
 import styles from '../../styles/index.module.css';
 import { filter, path } from 'ramda';
@@ -46,7 +46,6 @@ export default class FormSelect extends Component {
                     </option>
                 ))}
             </select> :
-            <ReactSelect
-                {...props} />;
+            <ReactSelect {...props} />;
     }
 }

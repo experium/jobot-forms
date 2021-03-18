@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { assocPath, compose, pathOr, find, propEq, path, has } from 'ramda';
-import ReactSelect from 'react-select';
+import { compose, pathOr, find, propEq, path, has } from 'ramda';
+import ReactSelect from 'rc-select';
 import qs from 'qs';
 import Modal from 'react-responsive-modal';
 
@@ -158,9 +158,10 @@ class AppForm extends Component {
                         <h1 className='vacancy-title'>{ vacancy.title }</h1>
                         <div className='language-select'>
                             <ReactSelect
-                                onChange={({ value }) => this.setState({ language: value })}
+                                prefixCls='jobot-forms-rc-select'
+                                onChange={value => this.setState({ language: value })}
                                 options={LANGUAGES_OPTIONS}
-                                value={find(propEq('value', this.state.language), LANGUAGES_OPTIONS)}
+                                value={this.state.language}
                             />
                         </div>
                     </div>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { components } from 'react-select';
 import { allPass, path, contains, find, propEq, filter, prop, propOr, pathOr, isEmpty, pathEq } from 'ramda';
 import { Field } from 'react-final-form';
 import qs from 'qs';
@@ -8,6 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { CompanyDictionaryContext } from '../../context/CompanyDictionary';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import FormSelect from './FormSelect';
+import { sorterByLabel } from './Select';
 
 class Select extends Component {
     state = {
@@ -128,21 +128,21 @@ class Select extends Component {
         }
     }
 
-    onChange = (data) => {
-        const { settings, onChange, field, form: { batch, change }, changeContextOptions, input: { value } } = this.props;
+    onChange = (value) => {
+        const { settings, onChange, field, form: { batch, change }, changeContextOptions, input } = this.props;
         const multiple = path(['multiple'], settings);
 
-        if (data) {
+        if (value) {
             if (multiple) {
-                onChange(data && data.length ? data.map(({ id }) => id) : undefined);
+                onChange(value && value.length ? value : undefined);
             } else {
-                onChange(path(['id'], data) || undefined);
+                onChange(value || undefined);
             }
         }
 
-        if (!data || (!!value && (value !== data.id))) {
+        if (!value || (!!value && (value !== input.value))) {
             const childs = this.getFieldChilds();
-            const fieldsForCleaning = !data ? [field, ...childs] : childs;
+            const fieldsForCleaning = !value ? [field, ...childs] : childs;
             const { mutators: { mutateValue } } = this.props.form;
 
             batch(() => {
@@ -218,24 +218,6 @@ class Select extends Component {
         return childs;
     }
 
-    getDropdownIndicator = (props) => {
-        const { error } = this.state;
-        const { getStyles } = props;
-
-        return error ? (
-            <div style={getStyles('dropdownIndicator', props)}>
-                <div
-                    className='error-indicator'
-                    onClick={() =>  this.getDictionary(this.props.settings.dictionary, this.props.settings.parent)}
-                >
-                    <div className='error-icon'>!</div>
-                </div>
-            </div>
-        ) : (
-            <components.DropdownIndicator {...props} />
-        );
-    }
-
     render() {
         const { input: { value, name }, settings, t, disabled, useNative } = this.props;
         const multiple = path(['multiple'], settings);
@@ -247,23 +229,22 @@ class Select extends Component {
                 <FormSelect
                     id={name}
                     key={value}
-                    value={multiple ? filter(item => contains(item.id, value || []), options) : find(propEq('id', value), options)}
+                    value={value || undefined}
                     options={options}
                     onChange={this.onChange}
-                    isMulti={multiple}
-                    isSearchable={options.length > 10}
-                    noOptionsMessage={() => t('noOptionsMessage')}
+                    mode={multiple ? 'multiple' : 'single'}
+                    showSearch={options.length > 10}
+                    filterSort={sorterByLabel}
+                    optionFilterProp='label'
+                    notFoundContent={t('noOptionsMessage')}
                     placeholder={placeholder}
-                    classNamePrefix='jobot-forms'
-                    isDisabled={disabled || this.getDisableStatus()}
-                    getOptionLabel={(option) => option ? option.value : undefined}
-                    getOptionValue={(option) => option.id}
-                    isLoading={this.state.loading}
-                    components={{
-                        DropdownIndicator: this.getDropdownIndicator
-                    }}
+                    prefixCls='jobot-forms-rc-select'
+                    disabled={disabled || this.getDisableStatus()}
+                    loading={this.state.loading}
                     openMenuOnClick={!this.state.error}
-                    isClearable
+                    allowClear
+                    virtual
+                    {...(this.state.error ? { open: false } : {})}
                     useNative={useNative}
                 />
             </div>

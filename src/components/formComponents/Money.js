@@ -64,7 +64,7 @@ class Money extends Component {
         onChange(value ? Number(value) : undefined);
     }
 
-    onChangeCurrency = onChange => ({ value }) => {
+    onChangeCurrency = onChange => value => {
         onChange(value);
     }
 
@@ -100,14 +100,13 @@ class Money extends Component {
                             <FormSelect
                                 id={`${name}-currency`}
                                 styles={customStyle}
-                                isDisabled={singleCurrency || disabled}
-                                inputValue={singleCurrency}
-                                value={find(propEq('code', value), options)}
+                                disabled={singleCurrency || disabled}
+                                value={singleCurrency}
                                 options={options}
                                 onChange={this.onChangeCurrency(onChange)}
-                                noOptionsMessage={() => t('noOptionsMessage')}
+                                notFoundContent={t('noOptionsMessage')}
                                 placeholder={t('placeholders.salaryCurrency')}
-                                classNamePrefix='jobot-forms'
+                                prefixCls='jobot-forms-rc-select'
                                 useNative={useNative}
                             />
                         )}
