@@ -90,9 +90,8 @@ class DateSelect extends Component {
         this.onChange(day, month, year);
     }
 
-    onChangeMonth = value => {
+    onChangeMonth = month => {
         const { day: current, year } = this.state;
-        const month = path(['value'], value);
         const day = month && !year && moment().month(month - 1).daysInMonth() < current ? moment().month(month - 1).daysInMonth() :
             month && year && moment().month(month - 1).year(year).daysInMonth() < current ? moment().month(month - 1).year(year).daysInMonth() :
                 current;
@@ -134,7 +133,7 @@ class DateSelect extends Component {
     }
 
     render() {
-        const { settings, t, disabled, input: { name } } = this.props;
+        const { settings, t, disabled, input: { name }, useNative } = this.props;
         const format = path(['format'], settings);
         const showDay = format ? contains('dd', format) : true;
         const showMonth = format ? contains('MM', format) : true;
@@ -160,16 +159,14 @@ class DateSelect extends Component {
             { showMonth &&
                 <FormSelect
                     id={`${name}-month`}
-                    isDisabled={disabled}
-                    value={find(propEq('value', month), options) || null}
+                    disabled={disabled}
+                    value={month || undefined}
                     onChange={this.onChangeMonth}
                     options={options}
                     placeholder={t('placeholders.datePicker.month')}
-                    classNamePrefix='jobot-forms'
-                    nativeStyles={{ width: 150, minWidth: 150, marginRight: 10 }}
-                    styles={{
-                        container: s => ({ ...s, width: 150, minWidth: 150, marginRight: 10 })
-                    }}
+                    prefixCls='jobot-forms-rc-select'
+                    className='jobot-forms-month-select'
+                    useNative={useNative}
                 />
             }
             { showYear &&

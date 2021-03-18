@@ -1,0 +1,360 @@
+
+.jobot-forms-rc-select-item {
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 4px 16px;
+}
+
+.jobot-forms-rc-select-item-group {
+    color: #999;
+    font-weight: bold;
+    font-size: 80%;
+}
+
+.jobot-forms-rc-select-item-option {
+    position: relative;
+}
+
+.jobot-forms-rc-select-item-option-grouped {
+    padding-left: 24px;
+}
+
+.jobot-forms-rc-select-item-option .jobot-forms-rc-select-item-option-state {
+    position: absolute;
+    right: 0;
+    top: 4px;
+    pointer-events: none;
+}
+
+.jobot-forms-rc-select-item-option-active {
+    background: #DDECFF;
+}
+
+.jobot-forms-rc-select-item-option-disabled {
+    color: #999;
+}
+
+.jobot-forms-rc-select-item-empty {
+    text-align: center;
+    color: #999;
+    padding: 10px;
+}
+
+.jobot-forms-rc-select-disabled .jobot-forms-rc-select-disabled,
+.jobot-forms-rc-select-disabled input {
+    cursor: not-allowed;
+}
+
+.jobot-forms-rc-select-disabled .jobot-forms-rc-select-selector {
+    opacity: 0.3;
+}
+
+.jobot-forms-rc-select-show-arrow.jobot-forms-rc-select-loading .jobot-forms-rc-select-arrow .jobot-forms-rc-select-arrow-icon::after {
+    box-sizing: border-box;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    border: 2px solid #999;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    transform: none;
+    margin-top: 4px;
+    animation: rcSelectLoadingIcon 0.5s infinite;
+}
+
+.jobot-forms-rc-select .jobot-forms-rc-select-selection-placeholder {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.jobot-forms-rc-select .jobot-forms-rc-select-selection-search-input {
+    appearance: none;
+    font-size: 16px;
+}
+
+.jobot-forms-rc-select .jobot-forms-rc-select-selection-search-input::-webkit-search-cancel-button {
+    display: none;
+    appearance: none;
+}
+
+.jobot-forms-rc-select-single .jobot-forms-rc-select-selector {
+    display: flex;
+    position: relative;
+}
+
+.jobot-forms-rc-select-single .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search {
+    width: 100%;
+}
+
+.jobot-forms-rc-select-single .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search-input {
+    width: 100%;
+}
+
+.jobot-forms-rc-select-single .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-item,
+.jobot-forms-rc-select-single .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-placeholder {
+    position: absolute;
+    top: 9px;
+    left: 11px;
+    pointer-events: none;
+}
+
+.jobot-forms-rc-select-single:not(.jobot-forms-rc-select-customize-input) .jobot-forms-rc-select-selector {
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.jobot-forms-rc-select-single:not(.jobot-forms-rc-select-customize-input) .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search-input {
+    border: none;
+    outline: none;
+    background: #fff;
+    width: 100%;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-item {
+    flex: none;
+    background: #bbb;
+    border-radius: 4px;
+    margin-right: 2px;
+    padding: 0 8px;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-item-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-overflow {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-overflow-item {
+    flex: none;
+    max-width: 100%;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search {
+    position: relative;
+    max-width: 100%;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search-input,
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search-mirror {
+    padding: 1px;
+    font-family: system-ui;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search-mirror {
+    position: absolute;
+    z-index: 999;
+    white-space: nowrap;
+    position: none;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search-input {
+    border: none;
+    outline: none;
+    background: rgba(255, 0, 0, 0.2);
+    width: 100%;
+}
+
+.jobot-forms-rc-select-allow-clear.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector {
+    padding-right: 20px;
+}
+
+.jobot-forms-rc-select-item-option-state-icon {
+    display: none;
+}
+
+.jobot-forms-rc-select-item-option-selected {
+    background-color: #2684FF;
+    color: #fff;
+}
+
+.jobot-forms-rc-select-allow-clear .jobot-forms-rc-select-clear {
+    position: absolute;
+    right: 30px;
+    top: 8px;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+}
+
+.jobot-forms-rc-select-show-arrow.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selector {
+    padding-right: 20px;
+}
+
+.jobot-forms-rc-select-show-arrow .jobot-forms-rc-select-arrow {
+    pointer-events: none;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+.jobot-forms-rc-select-show-arrow .jobot-forms-rc-select-arrow-icon::after {
+    content: '';
+    border: 5px solid transparent;
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-top-color: #999;
+    transform: translateY(5px);
+}
+
+.jobot-forms-rc-select-focused .jobot-forms-rc-select-selector {
+    border-color: rgb(38, 132, 255)
+}
+
+.jobot-forms-rc-select-dropdown {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    position: absolute;
+    background: #fff;
+}
+
+.jobot-forms-rc-select-dropdown-hidden {
+    display: none;
+}
+
+.jobot-forms-rc-select {
+    display: inline-block;
+    font-size: 16px;
+    width: 100%;
+    position: relative;
+}
+
+.jobot-forms-rc-select-selection__choice-zoom {
+  transition: all 0.3s;
+}
+
+.jobot-forms-rc-select-selection__choice-zoom-appear {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.jobot-forms-rc-select-selection__choice-zoom-appear.jobot-forms-rc-select-selection__choice-zoom-appear-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.jobot-forms-rc-select-selection__choice-zoom-leave {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.jobot-forms-rc-select-selection__choice-zoom-leave.jobot-forms-rc-select-selection__choice-zoom-leave-active {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.jobot-forms-rc-select-dropdown-slide-up-enter,
+.jobot-forms-rc-select-dropdown-slide-up-appear {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    transform-origin: 0 0;
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+    animation-play-state: paused;
+}
+
+.jobot-forms-rc-select-dropdown-slide-up-leave {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    transform-origin: 0 0;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+    animation-play-state: paused;
+}
+
+.jobot-forms-rc-select-dropdown-slide-up-enter.jobot-forms-rc-select-dropdown-slide-up-enter-active.jobot-forms-rc-select-dropdown-placement-bottomLeft,
+.jobot-forms-rc-select-dropdown-slide-up-appear.jobot-forms-rc-select-dropdown-slide-up-appear-active.jobot-forms-rc-select-dropdown-placement-bottomLeft {
+    animation-name: rcSelectDropdownSlideUpIn;
+    animation-play-state: running;
+}
+
+.jobot-forms-rc-select-dropdown-slide-up-leave.jobot-forms-rc-select-dropdown-slide-up-leave-active.jobot-forms-rc-select-dropdown-placement-bottomLeft {
+    animation-name: rcSelectDropdownSlideUpOut;
+    animation-play-state: running;
+}
+
+.jobot-forms-rc-select-dropdown-slide-up-enter.jobot-forms-rc-select-dropdown-slide-up-enter-active.jobot-forms-rc-select-dropdown-placement-topLeft,
+.jobot-forms-rc-select-dropdown-slide-up-appear.jobot-forms-rc-select-dropdown-slide-up-appear-active.jobot-forms-rc-select-dropdown-placement-topLeft {
+    animation-name: rcSelectDropdownSlideDownIn;
+    animation-play-state: running;
+}
+
+.jobot-forms-rc-select-dropdown-slide-up-leave.jobot-forms-rc-select-dropdown-slide-up-leave-active.jobot-forms-rc-select-dropdown-placement-topLeft {
+    animation-name: rcSelectDropdownSlideDownOut;
+    animation-play-state: running;
+}
+
+.jobot-forms-month-select {
+    width: 150px;
+    min-width: 150px;
+    margin-right: 10px;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selection-overflow-item .jobot-forms-rc-select-selection-item {
+    background: #f5f5f5;
+    border: 1px solid #f0f0f0;
+    border-radius: 2px;
+    padding: 4px 10px;
+    margin-top: 2px;
+    display: block;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selection-overflow-item .jobot-forms-rc-select-selection-item .jobot-forms-rc-select-selection-item-content {
+    margin-right: 10px;
+}
+
+.jobot-forms-rc-select-multiple .jobot-forms-rc-select-selection-overflow-item .jobot-forms-rc-select-selection-item .jobot-forms-rc-select-selection-item-remove {
+    color: rgba(0,0,0,.45);
+}
+
+@keyframes rcSelectDropdownSlideUpIn {
+    0% {
+        opacity: 0;
+        transform-origin: 0% 0%;
+        transform: scaleY(0);
+    }
+    100% {
+        opacity: 1;
+        transform-origin: 0% 0%;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes rcSelectDropdownSlideUpOut {
+    0% {
+        opacity: 1;
+        transform-origin: 0% 0%;
+        transform: scaleY(1);
+    }
+    100% {
+        opacity: 0;
+        transform-origin: 0% 0%;
+        transform: scaleY(0);
+    }
+}
+
+@keyframes rcSelectLoadingIcon {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
