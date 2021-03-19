@@ -4,16 +4,23 @@ import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 
+import styles from '../../styles/index.module.css';
+
 import { CompanyDictionaryContext } from '../../context/CompanyDictionary';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import FormSelect from './FormSelect';
 import { sorterByLabel } from './Select';
 
 class Select extends Component {
-    state = {
-        options: {},
-        loading: false,
-        error: false,
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            options: {},
+            loading: false,
+            error: false,
+            other: props.settings.userValueAllowed && !props.settings.multiple && props.input.value === (props.settings.userValueQuestion || 'Другое')
+        };
     }
 
     getDictionary = async (dictionaryId, parentId) => {
@@ -54,13 +61,18 @@ class Select extends Component {
 
                 const responseData = propOr([], 'items', await response.json());
                 const dictionaryKey = parentId || dictionaryId;
+                const data = responseData.map(item => ({
+                    ...item,
+                    value: item.id,
+                    label: item.value,
+                }));
 
                 this.setState({
                     options: {
-                        [dictionaryKey]: responseData,
+                        [dictionaryKey]: data,
                     },
                     loading: false,
-                }, () => changeContextOptions && changeContextOptions(field, responseData));
+                }, () => changeContextOptions && changeContextOptions(field, data));
             } catch (error) {
                 this.setState({ loading: false, error: true });
             }
@@ -136,7 +148,10 @@ class Select extends Component {
             if (multiple) {
                 onChange(value && value.length ? value : undefined);
             } else {
-                onChange(value || undefined);
+                const userValueQuestion = this.getUserValueQuestion().value;
+
+                onChange(this.allowUserValue() && value === userValueQuestion ? undefined : value);
+                this.allowUserValue() && this.setState({ other: value === userValueQuestion });
             }
         }
 
@@ -157,6 +172,23 @@ class Select extends Component {
         }
     }
 
+    onChangeOther = e => {
+        this.props.onChange(e.target.value ? {
+            value: 'Иное',
+            userValue: e.target.value,
+        } : undefined);
+    }
+
+    allowUserValue = () => {
+        return this.props.settings.userValueAllowed && !this.props.settings.multiple;
+    }
+
+    getUserValueQuestion = () => {
+        const value = this.props.settings.userValueQuestion || 'Другое';
+
+        return { label: value, value };
+    }
+
     getOptions = () => {
         const { settings, parentField, parentFieldValue, contextOptions } = this.props;
         const parentFieldOptions = prop(parentField, contextOptions);
@@ -166,15 +198,17 @@ class Select extends Component {
             pathOr([], ['options', parentFieldValue], this.state)
             : pathOr([], ['options', dictionaryKey], this.state);
 
-        return filter(allPass([
+        const filteredOptions = filter(allPass([
             item => {
                 if (settings.selection) {
-                    return contains(item.id, settings.selection);
+                    return contains(item.value, settings.selection);
                 } else {
                     return true;
                 }
             },
         ]), options);
+
+        return this.allowUserValue() ? [...filteredOptions, this.getUserValueQuestion()] : filteredOptions;
     }
 
     getParentOptions = () => {
@@ -229,7 +263,7 @@ class Select extends Component {
                 <FormSelect
                     id={name}
                     key={value}
-                    value={value || undefined}
+                    value={(this.allowUserValue() && this.state.other ? this.getUserValueQuestion().value : value) || undefined}
                     options={options}
                     onChange={this.onChange}
                     mode={multiple ? 'multiple' : 'single'}
@@ -241,12 +275,19 @@ class Select extends Component {
                     prefixCls='jobot-forms-rc-select'
                     disabled={disabled || this.getDisableStatus()}
                     loading={this.state.loading}
-                    openMenuOnClick={!this.state.error}
                     allowClear
+                    showArrow
                     virtual
                     {...(this.state.error ? { open: false } : {})}
                     useNative={useNative}
                 />
+                { this.allowUserValue() && this.state.other &&
+                    <input
+                        className={`input ${styles.formInput}`}
+                        style={{ marginTop: 10 }}
+                        value={pathOr('', ['userValue'], value)}
+                        onChange={this.onChangeOther} />
+                }
             </div>
         );
     }

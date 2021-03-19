@@ -4,11 +4,11 @@ import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 
 import '../../styles/rcselect.css';
+import styles from '../../styles/index.module.css';
 
 import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import withLocationValues from '../hocs/withLocationValues';
-import styles from '../../styles/index.module.css';
 import FormSelect from './FormSelect';
 
 export const sorterByLabel = (optionA, optionB) => optionA.label.localeCompare(optionB.label);
@@ -57,7 +57,7 @@ class Select extends Component {
             !equals(formValues[settings.regionField], prev.formValues[prev.settings.regionField]) ||
             !equals(formValues[settings.countryField], prev.formValues[prev.settings.countryField])
         )) {
-            this.onChange({ value: undefined });
+            this.onChange(undefined);
         }
 
         const newRequiredStatus = !isEmpty(options);
@@ -95,7 +95,7 @@ class Select extends Component {
     getUserValueQuestion = () => {
         const value = this.props.settings.userValueQuestion || 'Другое';
 
-        return value;
+        return { label: value, value };
     }
 
     allowUserValue = () => {
@@ -110,10 +110,10 @@ class Select extends Component {
         const filteredOptions = filter(allPass([
             item => {
                 if (countryParent || countryParent) {
-                    const regionEqual = regionParent === item.region;
-                    const countryEqual = countryParent === item.country;
+                    const regionEqual = regionParent ? regionParent === item.region : true;
+                    const countryEqual = countryParent ? countryParent === item.country : true;
 
-                    return regionEqual || countryEqual;
+                    return regionEqual && countryEqual;
                 } else {
                     return true;
                 }
@@ -136,6 +136,7 @@ class Select extends Component {
                 }
             },
         ]), options);
+
         return this.allowUserValue() ? [...filteredOptions, this.getUserValueQuestion()] : filteredOptions;
     }
 
@@ -150,7 +151,7 @@ class Select extends Component {
             <FormSelect
                 id={name}
                 key={value}
-                value={(this.allowUserValue() && this.state.other ? this.getUserValueQuestion() : value) || undefined}
+                value={(this.allowUserValue() && this.state.other ? this.getUserValueQuestion().value : value) || undefined}
                 onChange={this.onChange}
                 showSearch={options.length > 10}
                 filterSort={sorterByLabel}
@@ -165,6 +166,7 @@ class Select extends Component {
                 useNative={useNative}
                 virtual
                 allowClear
+                showArrow
             />
             { this.allowUserValue() && this.state.other &&
                 <input

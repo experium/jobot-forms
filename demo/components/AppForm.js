@@ -128,7 +128,7 @@ class AppForm extends Component {
 
         this.state = {
             error: false,
-            language: 'en',
+            language: localStorage.getItem('formLanguage') || 'en',
         };
 
         this.formRef = React.createRef();
@@ -159,7 +159,10 @@ class AppForm extends Component {
                         <div className='language-select'>
                             <ReactSelect
                                 prefixCls='jobot-forms-rc-select'
-                                onChange={value => this.setState({ language: value })}
+                                onChange={value => {
+                                    this.setState({ language: value });
+                                    localStorage.setItem('formLanguage', value);
+                                }}
                                 options={LANGUAGES_OPTIONS}
                                 value={this.state.language}
                             />
