@@ -5,7 +5,7 @@ import i18n from '../utils/i18n';
 
 import React, { Component } from 'react';
 import { Form as FinalFormForm, Field, FormSpy } from 'react-final-form';
-import { pathOr, prop, equals, isEmpty, forEach} from 'ramda';
+import { pathOr, prop, equals, isEmpty, forEach, path, includes, assocPath} from 'ramda';
 import arrayMutators from 'final-form-arrays';
 import { withTranslation } from 'react-i18next';
 import cx from 'classnames';
@@ -20,16 +20,20 @@ import { CompanyDictionaryContext } from '../context/CompanyDictionary';
 import { FormContext } from '../context/FormContext';
 import Fields from './Fields';
 import Spinner from './formComponents/Spinner';
-import ReCaptcha from './formComponents/ReCaptcha';
+import Captcha from './formComponents/Captcha';
 
-const getInitialValues = (initialValues, fields) => {
-    const values = initialValues || {};
+const getInitialValues = (initialValues, fields, captchaOptions) => {
+    let values = initialValues || {};
 
     forEach(field => {
         if (field.type === 'boolean' && !values[field.field]) {
             values[field.field] = false;
         }
     }, fields || []);
+
+    if (path(['captchaToken'], captchaOptions) && includes(path(['captchaType'], captchaOptions), ['math', 'symbols'])) {
+        values = assocPath(['_captcha', 'key'], captchaOptions.captchaToken, values);
+    }
 
     return values;
 };
@@ -57,7 +61,7 @@ class Form extends Component {
             language,
             dictionaries: {},
             errors: {},
-            initialValues: getInitialValues(props.initialValues, props.fields),
+            initialValues: getInitialValues(props.initialValues, props.fields, props.captchaOptions),
             fieldsWithoutValidation: {},
             options: {},
             submitted: false,
@@ -95,7 +99,7 @@ class Form extends Component {
 
     componentDidUpdate = (prevProps) => {
         const { language } = prevProps;
-        const { language: languageProps, initialValues, serverErrors, fields } = this.props;
+        const { language: languageProps, initialValues, serverErrors, fields, captchaOptions } = this.props;
 
         if (languageProps !== language) {
             this.setState({ language: languageProps }, () => {
@@ -103,8 +107,9 @@ class Form extends Component {
             });
         }
 
-        if (!equals(getInitialValues(initialValues, fields), getInitialValues(prevProps.initialValues, prevProps.fields))) {
-            this.setState({ initialValues: getInitialValues(initialValues, fields) });
+        if (!equals(getInitialValues(initialValues, fields, captchaOptions),
+            getInitialValues(prevProps.initialValues, prevProps.fields, prevProps.captchaOptions))) {
+            this.setState({ initialValues: getInitialValues(initialValues, fields, captchaOptions) });
         }
 
         if (serverErrors && !prevProps.serverErrors && this.state.submitted) {
@@ -194,9 +199,8 @@ class Form extends Component {
             submitting: externalSubmitting,
             serverErrors,
             htmlAttrs,
-            options,
-            selectHeight,
-            selectLineHeight
+            captcha,
+            captchaOptions
         } = this.props;
         const contextValue = {
             options: this.state.options,
@@ -255,17 +259,16 @@ class Form extends Component {
                                     fieldsWithoutValidation={this.state.fieldsWithoutValidation}
                                     errors={this.state.errors}
                                     language={language}
-                                    selectHeight={selectHeight}
-                                    selectLineHeight={selectLineHeight}
                                 />
                                 <div>
-                                    { !!options.captchaRequired &&
+                                    { !!captcha && captcha !== 'none' &&
                                         <Field
                                             key={language}
-                                            name='_captcha'
-                                            component={ReCaptcha}
+                                            name='_captcha.value'
+                                            component={Captcha}
                                             validate={value => value ? undefined : i18n.t('errors.captchaRequired')}
-                                            language={language} />
+                                            language={language}
+                                            options={captchaOptions} />
                                     }
                                     <Field name='personalDataAgreement' subscription={{ value: true }}>
                                         {({ input: { value } }) => (
