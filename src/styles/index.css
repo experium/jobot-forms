@@ -110,8 +110,14 @@
 }
 
 /* Modal */
+.pda-modal {
+    min-width: 50%;
+}
 .pda-modal a {
     word-break: break-all;
+}
+.pda-modal .pda-moda-text {
+    word-break: break-word;
 }
 @media screen and (max-width: 991px) {
     .pda-modal input.text {

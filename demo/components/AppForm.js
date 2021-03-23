@@ -101,7 +101,7 @@ const customComponents = {
                 }}
                 center
             >
-                <div dangerouslySetInnerHTML={{ __html: props.opd }} />
+                <div className='pda-modal-text' dangerouslySetInnerHTML={{ __html: props.opd }} />
                 <div style={{ marginTop: 15 }}>
                     <button className={styles.formBtn}
                         style={{ marginRight: 15 }}
