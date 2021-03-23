@@ -24,6 +24,13 @@ export const getVacancy = gql(`
                         domains
                     }
                 }
+            },
+            formPreset {
+                options {
+                    captchaType,
+                    captchaToken,
+                    captchaData
+                }
             }
         }
     }
