@@ -20,7 +20,7 @@ class ReCaptcha extends Component {
             hl={language || 'ru'}
         /> : includes(options.captchaType, ['symbols', 'math']) ?
             <Fragment>
-                <img src={options.captchaData} alt='captcha' />
+                <div dangerouslySetInnerHTML={{ __html: options.captchaData }} />
                 <input
                     id={name}
                     className={`input ${styles.formInput}`}
