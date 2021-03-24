@@ -196,6 +196,7 @@ class Form extends Component {
             opdSubmitDisabled,
             formRender,
             t,
+            disabled: externalDisabled,
             submitting: externalSubmitting,
             serverErrors,
             htmlAttrs,
@@ -220,6 +221,7 @@ class Form extends Component {
                     { (formProps) => {
                         const { handleSubmit, form: finalForm, submitFailed, submitting } = formProps;
                         const submitted = this.state.submitted || submitting || !!externalSubmitting;
+                        const disabled = submitted || !!externalDisabled;
 
                         if (!this.formProps) {
                             this.formProps = finalForm;
@@ -231,7 +233,7 @@ class Form extends Component {
                             ref={this.props.formRef}
                             noValidate
                         >
-                            <FormContext.Provider value={{ disabled: submitted, htmlAttrs }}>
+                            <FormContext.Provider value={{ disabled, htmlAttrs }}>
                                 <FormSpy
                                     subscription={{ submitFailed: true }}
                                     onChange={this.onChangeSubmitFailed} />
@@ -239,7 +241,7 @@ class Form extends Component {
                                     formRender={formRender}
                                     formProps={formProps}
                                     fields={fields}
-                                    submitted={submitted}
+                                    disabled={disabled}
                                     components={this.props.components}
                                     useNative={this.props.useNative}
                                     opd={this.props.opd}
@@ -272,7 +274,12 @@ class Form extends Component {
                                     }
                                     <Field name='personalDataAgreement' subscription={{ value: true }}>
                                         {({ input: { value } }) => (
-                                            <button className={styles.formBtn} type='submit' disabled={opdSubmitDisabled && !value || submitted} {...getAttrs('submit', htmlAttrs)}>
+                                            <button
+                                                className={styles.formBtn}
+                                                type='submit'
+                                                disabled={(opdSubmitDisabled && !value) || submitted || disabled}
+                                                {...getAttrs('submit', htmlAttrs)}
+                                            >
                                                 { submitted && <Spinner /> }
                                                 <span className='button-text'>
                                                     { t('send') }

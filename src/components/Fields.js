@@ -65,7 +65,7 @@ class Fields extends Component {
         dictionaryOptions: {},
         components: {},
         language: RU,
-        opdSubmitDisabled: true,
+        disabled: false,
         excludeDictionary: {},
         renameDictionary: {}
     };
@@ -297,7 +297,7 @@ class Fields extends Component {
     }
 
     render() {
-        const { fields, language, formProps, formRender, t, submitted } = this.props;
+        const { fields, language, formProps, formRender, t, disabled } = this.props;
 
         const FormRender = formRender || defaultFormRender;
 
@@ -328,7 +328,7 @@ class Fields extends Component {
                                                         )}
                                                         { this.renderCompositeRemoveButton(field, index) && (
                                                             <button
-                                                                disabled={submitted}
+                                                                disabled={disabled}
                                                                 className={styles.formSectionBtn}
                                                                 type='button'
                                                                 onClick={() => fieldProps.fields.remove(index)}
@@ -338,7 +338,7 @@ class Fields extends Component {
                                                         )}
                                                     </div>
                                                 )}
-                                                <button disabled={submitted} className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
+                                                <button disabled={disabled} className={styles.formSectionBtn} type='button' onClick={() => fieldProps.fields.push({})}>{t('addQuestionBlock')}</button>
                                             </div>
                                         }
                                     </FieldArray> :
