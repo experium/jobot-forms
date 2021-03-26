@@ -72,7 +72,7 @@ export default class FormSelect extends Component {
             >
                 { props.mode !== 'multiple' && <option value=''>Не выбрано</option> }
                 { props.options.map((item, index) => (
-                    <option key={item.value || index} value={item.value} selected={this.isNativeOptionSelected(item.value)}>
+                    <option key={item.value || index} value={item.value}>
                         {item.label}
                     </option>
                 ))}
