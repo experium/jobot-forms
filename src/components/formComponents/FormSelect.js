@@ -56,13 +56,7 @@ export default class FormSelect extends Component {
             <select
                 id={props.id}
                 className={`select-input ${styles.formInput} ${props.className || ''}`}
-                defaultValue={(
-                    props.mode === 'multiple' ?
-                        props.value
-                        : props.value ?
-                            String(props.value)
-                            : undefined
-                )}
+                value={props.mode === 'multiple' ? mapValueProp(this.state.value) : props.value || undefined}
                 disabled={props.isDisabled}
                 placeholder={props.placeholder}
                 onChange={this.onChangeNative}
@@ -70,7 +64,7 @@ export default class FormSelect extends Component {
                 style={nativeStyles}
                 multiple={props.mode === 'multiple'}
             >
-                { props.mode !== 'multiple' && <option value=''>Не выбрано</option> }
+                { props.mode !== 'multiple' ? <option value=''>Не выбрано</option> : null }
                 { props.options.map((item, index) => (
                     <option key={item.value || index} value={item.value}>
                         {item.label}

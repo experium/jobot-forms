@@ -212,6 +212,13 @@ class AppForm extends Component {
                                 getOpdValues={htmlOpd ? getOpdValues : undefined}
                                 serverErrors={error}
                                 allowFileExtensions={allowFileExtensions}
+                                initialValues={{
+                                    country: '605da91ef0c62a0058b1d280',
+                                    citizenship: [
+                                        '605da91ef0c62a0058b1d280',
+                                        '605da91ef0c62a0058b1d281'
+                                    ]
+                                }}
                                 translations={{
                                     en: {
                                         translation: {
