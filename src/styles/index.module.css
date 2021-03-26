@@ -114,14 +114,6 @@
     outline: none;
 }
 
-.formDateSelect {
-    display: flex;
-}
-.formDateSelect input {
-    width: 100px;
-    margin-right: 10px;
-}
-
 .formSection {
     margin-bottom: 30px;
 }
@@ -203,8 +195,12 @@
 }
 
 .formDateSelect input {
-    width: 100px;
+    max-width: 100px;
     margin-right: 10px;
+}
+
+.formDateSelect input:last-child {
+    margin-right: 0;
 }
 
 .amountField {

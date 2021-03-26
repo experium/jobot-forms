@@ -105,7 +105,10 @@
 .jobot-form-submit-failed .jobot-form-invalid .textarea,
 .jobot-form-submit-failed .jobot-form-invalid .rc-tree-select.rc-tree-select .rc-tree-select-selector,
 .jobot-form-submit-failed .jobot-form-invalid .jobot-forms__formDateSelect input,
-.jobot-form-submit-failed .jobot-form-invalid .jobot-forms__control {
+.jobot-form-submit-failed .jobot-form-invalid .jobot-forms__formMoneySelect input,
+.jobot-form-submit-failed .jobot-form-invalid .jobot-forms__control,
+.jobot-form-submit-failed .jobot-form-invalid .select-input,
+.jobot-form-submit-failed .jobot-form-invalid .jobot-forms-rc-select .jobot-forms-rc-select-selector {
     border-color: red;
 }
 

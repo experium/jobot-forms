@@ -74,7 +74,7 @@ class Money extends Component {
         const singleCurrency = this.getSingleCurrency();
 
         return (
-            <div id={`${name}-money`}>
+            <div id={`${name}-money`} className='jobot-forms__formMoneySelect'>
                 <div className={styles.amountField}>
                     <Field name={`${name}.amount`} key={name}>
                         {({ input: { value, onChange } }) => (

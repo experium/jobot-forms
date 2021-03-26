@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Masked from 'react-text-mask';
-import { contains, path, isNil, find, propEq } from 'ramda';
+import { contains, path, isNil } from 'ramda';
 import { withTranslation } from 'react-i18next';
 import moment from 'moment';
 
+import styles from '../../styles/index.module.css';
+
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { YEAR_MASK, DAY_MASK } from '../../constants/masks';
-import styles from '../../styles/index.module.css';
 import FormSelect from './FormSelect';
 
 class DateSelect extends Component {
@@ -133,7 +134,7 @@ class DateSelect extends Component {
     }
 
     render() {
-        const { settings, t, disabled, input: { name }, useNative } = this.props;
+        const { settings, t, disabled, input: { name, value }, useNative } = this.props;
         const format = path(['format'], settings);
         const showDay = format ? contains('dd', format) : true;
         const showMonth = format ? contains('MM', format) : true;
