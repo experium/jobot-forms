@@ -50,7 +50,7 @@ export default class FormSelect extends Component {
     }
 
     render() {
-        const { useNative, nativeStyles, ...props } = this.props;
+        const { useNative, ...props } = this.props;
 
         return isMobile().phone && useNative ?
             <select
@@ -61,7 +61,6 @@ export default class FormSelect extends Component {
                 placeholder={props.placeholder}
                 onChange={this.onChangeNative}
                 onBlur={this.onBlurNative}
-                style={nativeStyles}
                 multiple={props.mode === 'multiple'}
             >
                 { props.mode !== 'multiple' ? <option value=''>Не выбрано</option> : null }

@@ -4,6 +4,7 @@ import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 
 import '../../styles/rcselect.css';
+import '../../styles/select.css';
 import styles from '../../styles/index.module.css';
 
 import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';

@@ -31,7 +31,9 @@ module.exports = {
         contentBase: path.resolve(__dirname, '../.tmp'),
         watchContentBase: true,
         port: 8080,
+        host: '0.0.0.0',
         public: 'testjobotforms.me',
+        disableHostCheck: true,
         historyApiFallback: true,
         open: true,
     }

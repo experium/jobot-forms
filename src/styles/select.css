@@ -1,26 +1,3 @@
-.jobot-forms__control .jobot-forms__indicators *, .jobot-forms__control .jobot-forms__menu * {
-  cursor: pointer;
-}
-
-.jobot-forms__control.jobot-forms__control--is-focused {
-  box-shadow: none;
-}
-
-.jobot-forms__control .jobot-forms__clear-indicator {
-    padding-right: 0;
-}
-
-.jobot-forms__control.jobot-forms__control--is-disabled {
-  border: 1px solid #ccc;
-  background-color: rgba(239, 239, 239, 0.3);
-}
-
-.jobot-forms__menu .jobot-forms__menu-list {
-  padding-bottom: 0;
-  padding-top: 0;
-}
-
-.jobot-forms__indicators .loading-indicator-wrapper {
-  width: 40px;
-  text-align: center;
+.select-input {
+  background: #fff;
 }
