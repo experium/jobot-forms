@@ -52,7 +52,7 @@ class Money extends Component {
             if (currency) {
                 const currencyItem = find(propEq('value', currency), options);
 
-                return currencyItem.code;
+                return currencyItem.label;
             } else {
                 return undefined;
             }
@@ -74,7 +74,7 @@ class Money extends Component {
         const singleCurrency = this.getSingleCurrency();
 
         return (
-            <div id={`${name}-money`} className='jobot-forms__formMoneySelect'>
+            <div id={`${name}-money`} className={styles.formMoneySelect}>
                 <div className={styles.amountField}>
                     <Field name={`${name}.amount`} key={name}>
                         {({ input: { value, onChange } }) => (
@@ -92,16 +92,16 @@ class Money extends Component {
                 </div>
                 <div className={styles.currencyField}>
                     <Field
-                        key={name}
+                        key={`${name}-${singleCurrency}`}
                         name={`${name}.currency`}
-                        initialValue={ singleCurrency }
+                        initialValue={singleCurrency}
                     >
                         {({ input: { value, onChange } }) => (
                             <FormSelect
                                 id={`${name}-currency`}
                                 styles={customStyle}
                                 disabled={singleCurrency || disabled}
-                                value={singleCurrency}
+                                value={value || singleCurrency}
                                 options={options}
                                 onChange={this.onChangeCurrency(onChange)}
                                 notFoundContent={t('noOptionsMessage')}

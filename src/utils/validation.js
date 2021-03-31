@@ -199,8 +199,8 @@ const rules = {
         amount: field.required ? (
             yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })).required(() => i18n.t('errors.required'))
         ) : yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })),
-        currency: yup.string().when('amount', (amount, schema) => {
-            return amount ? schema.required(i18n.t('errors.currency')) : schema.nullable();
+        currency: yup.string().nullable().when('amount', (amount, schema) => {
+            return amount ? schema.required(() => i18n.t('errors.currency')) : schema;
         }),
     }),
     date: () => yup.string().nullable().test({

@@ -79,11 +79,11 @@ export default WrappedComponent =>
             const showServerError = !modifiedSinceLastSubmit && !dirtySinceLastSubmit && serverError;
 
             if (errorFromInput) {
-                return <div className={styles.error}>{ errorFromInput }</div>;
+                return <div className={styles.error}>{ `${errorFromInput}` }</div>;
             } else if (showServerError) {
-                return <div className={styles.error}>{ serverError }</div>;
+                return <div className={styles.error}>{ `${serverError}` }</div>;
             } else {
-                return submitFailed && error ? <div className={styles.error}>{ error }</div> : null;
+                return submitFailed && error ? <div className={styles.error}>{ `${error}` }</div> : null;
             }
         }
 

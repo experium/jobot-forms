@@ -203,11 +203,19 @@
     margin-right: 0;
 }
 
+.formMoneySelect {
+    display: flex;
+}
+
 .amountField {
     vertical-align: top;
     margin-right: 10px;
     width: calc(100% - 225px);
     display: inline-block;
+}
+
+.amountField input.formInput {
+    padding: 9px 10px;
 }
 
 .currencyField {
