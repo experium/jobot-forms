@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { contains, find, propEq, propOr, path, prop } from 'ramda';
+import { contains, join, find, propEq, propOr, path, prop, is, values } from 'ramda';
 import cx from 'classnames';
 
 import { isLinkedField } from '../../utils/field';
@@ -83,7 +83,9 @@ export default WrappedComponent =>
             } else if (showServerError) {
                 return <div className={styles.error}>{ `${serverError}` }</div>;
             } else {
-                return submitFailed && error ? <div className={styles.error}>{ `${error}` }</div> : null;
+                return submitFailed && error ? (
+                    <div className={styles.error}>{ `${is(Object, error) ? join('', values(error)) : error}` }</div>
+                ) : null;
             }
         }
 

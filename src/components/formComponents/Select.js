@@ -120,7 +120,7 @@ class Select extends Component {
                 }
             },
             item => {
-                if (settings.countries || settings.regions) {
+                if (prop('length', settings.countries) || prop('length', settings.regions)) {
                     return (
                         contains(item.region, settings.regions || [])
                         || contains(item.country, settings.countries || [])

@@ -197,8 +197,8 @@ const rules = {
     }),
     money: field => yup.object().shape({
         amount: field.required ? (
-            yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })).required(() => i18n.t('errors.required'))
-        ) : yup.number().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })),
+            yup.number().nullable().required(() => i18n.t('errors.required')).moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more }))
+        ) : yup.number().nullable().moreThan(0, ({ more }) => i18n.t('errors.moreThan', { more })),
         currency: yup.string().nullable().when('amount', (amount, schema) => {
             return amount ? schema.required(() => i18n.t('errors.currency')) : schema;
         }),
@@ -211,15 +211,15 @@ const rules = {
 };
 
 export const validate = (value, form, field, fieldsWithoutValidation, props) => {
-    let rule = rules[field.type] ? rules[field.type](field, props) : yup.string();
-    rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
-        (field.required || validateLink(field, form)) && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
-    );
-
     try {
+        let rule = rules[field.type] ? rules[field.type](field, props) : yup.string();
+        rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
+            (field.required || validateLink(field, form)) && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
+        );
+
         rule.validateSync(value);
         return undefined;
     } catch (e) {
-        return e.message;
+        return `${e.message}`;
     }
 };

@@ -44,9 +44,9 @@ class Money extends Component {
     }
 
     getSingleCurrency = () => {
-        const { settings, options = [] } = this.props;
+        const { settings, options = [], required, input } = this.props;
 
-        if (!isEmpty(options)) {
+        if (!isEmpty(options) && (required || prop('amount', input.value))) {
             const currency = prop('currency', settings);
 
             if (currency) {
@@ -74,7 +74,7 @@ class Money extends Component {
         const singleCurrency = this.getSingleCurrency();
 
         return (
-            <div id={`${name}-money`} className={styles.formMoneySelect}>
+            <div id={`${name}-money`} className={`jobot-forms__formMoneySelect ${styles.formMoneySelect}`}>
                 <div className={styles.amountField}>
                     <Field name={`${name}.amount`} key={name}>
                         {({ input: { value, onChange } }) => (
@@ -100,7 +100,7 @@ class Money extends Component {
                             <FormSelect
                                 id={`${name}-currency`}
                                 styles={customStyle}
-                                disabled={singleCurrency || disabled}
+                                disabled={singleCurrency && value || disabled}
                                 value={value || singleCurrency}
                                 options={options}
                                 onChange={this.onChangeCurrency(onChange)}

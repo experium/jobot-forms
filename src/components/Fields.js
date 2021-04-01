@@ -213,6 +213,7 @@ class Fields extends Component {
         const isLinked = isLinkedField(field);
 
         const validateField = (value, form) => validate(value, form, field, fieldsWithoutValidation, this.props, { htmlOpd, allowFileExtensions });
+
         const renderLinkedField = (props = {}) => (
             <Field
                 name={fieldName}
