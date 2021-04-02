@@ -131,7 +131,7 @@ class Select extends Component {
             },
             item => {
                 if (settings.selection) {
-                    return contains(item.value, settings.selection);
+                    return contains(item.value, settings.selection) || contains(item.internalId, settings.selection);
                 } else {
                     return true;
                 }

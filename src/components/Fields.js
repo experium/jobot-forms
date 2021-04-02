@@ -109,6 +109,7 @@ class Fields extends Component {
                         [type]: data.map((item) => ({
                             label: propOr(propOr('', 'name', item), optionsPaths.labelPath, item),
                             value: propOr(item.id, optionsPaths.valuePath, item),
+                            internalId: item.internalId,
                             country: item.country,
                             region: item.region,
                             translations: item.translations,
