@@ -200,7 +200,7 @@ class Select extends Component {
 
         const filteredOptions = filter(allPass([
             item => {
-                if (settings.selection) {
+                if (settings.selection && settings.selection.length) {
                     return contains(item.value, settings.selection);
                 } else {
                     return true;

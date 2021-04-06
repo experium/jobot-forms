@@ -9,7 +9,7 @@ import { getPhoneMask, getPhoneMaskRU } from '../../utils/mask';
 
 class MaskedInputComponent extends Component {
     render() {
-        const { input: { value, name }, onChange, mask, disabled, placeholder } = this.props;
+        const { input: { value, name }, settings: { keepCharPositions = false, guide = true }, onChange, mask, disabled, placeholder } = this.props;
 
         return <Masked
             id={name}
@@ -20,8 +20,9 @@ class MaskedInputComponent extends Component {
             mask={mask}
             placeholderChar={'\u2000'}
             placeholder={placeholder}
-            keepCharPositions={false}
-            guide />;
+            keepCharPositions={keepCharPositions}
+            guide={guide}
+        />;
     }
 }
 
@@ -33,7 +34,6 @@ export const PhoneInput = props => {
             {...props}
             mask={path(['settings', 'international'], props) ? getPhoneMask : getPhoneMaskRU}
             showMask={true}
-            guide={true}
             placeholder='+'
         />
     );
