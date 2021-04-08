@@ -21,6 +21,8 @@ class Select extends Component {
         this.state = {
             other: props.settings.userValueAllowed && !props.settings.multiple && props.input.value === (props.settings.userValueQuestion || 'Другое')
         };
+
+        this.selectContainer = React.createRef();
     }
 
     componentDidMount() {
@@ -148,7 +150,7 @@ class Select extends Component {
         const options = this.getOptions() || [];
         const isError = errors[dictionaryType];
 
-        return <Fragment>
+        return <div ref={this.selectContainer}>
             <FormSelect
                 id={name}
                 key={value}
@@ -168,6 +170,7 @@ class Select extends Component {
                 virtual
                 allowClear
                 showArrow
+                getPopupContainer={() => this.selectContainer.current}
             />
             { this.allowUserValue() && this.state.other &&
                 <input
@@ -176,7 +179,7 @@ class Select extends Component {
                     value={pathOr('', ['userValue'], value)}
                     onChange={this.onChangeOther} />
             }
-        </Fragment>;
+        </div>;
     }
 }
 
