@@ -84,6 +84,9 @@ class Fields extends Component {
                 const response = await fetch(`${apiUrl || ''}/api/${GEO_DICTIONARIES[type] ? type : `dictionary/${type || ''}`}${urlParams || ''}`, {
                     ...dictionaryOptions,
                     method: 'GET',
+                    headers: {
+                        'accept-language': 'ru-RU',
+                    },
                 });
 
                 if (!response.ok) {

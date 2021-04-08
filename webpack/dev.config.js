@@ -32,7 +32,7 @@ module.exports = {
         watchContentBase: true,
         port: 8080,
         host: '0.0.0.0',
-        public: 'testjobotforms.me',
+        public: 'testjobotforms.me:8080',
         disableHostCheck: true,
         historyApiFallback: true,
         open: true,
