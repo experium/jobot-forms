@@ -200,6 +200,11 @@ class AppForm extends Component {
                                     mutation({
                                         variables: {
                                             form, vacancy: match.params.id
+                                        },
+                                        context: {
+                                            headers: {
+                                                'accept-language': this.state.language,
+                                            }
                                         }
                                     });
                                 }}

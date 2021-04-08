@@ -85,7 +85,7 @@ class Fields extends Component {
                     ...dictionaryOptions,
                     method: 'GET',
                     headers: {
-                        'accept-language': 'ru-RU',
+                        'accept-language': this.props.language,
                     },
                 });
 
