@@ -3,12 +3,12 @@ import { allPass, path, contains, find, propEq, filter, prop, propOr, pathOr, is
 import { Field } from 'react-final-form';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
+import ReactSelect from 'rc-select';
 
 import styles from '../../styles/index.module.css';
 
 import { CompanyDictionaryContext } from '../../context/CompanyDictionary';
 import withFieldWrapper from '../hocs/withFieldWrapper';
-import FormSelect from './FormSelect';
 import { sorterByLabel } from './Select';
 
 class Select extends Component {
@@ -253,14 +253,14 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value, name }, settings, t, disabled, useNative } = this.props;
+        const { input: { value, name }, settings, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
         const placeholder = path(['placeholder'], settings) || null;
         const options = this.getOptions();
 
         return (
             <div>
-                <FormSelect
+                <ReactSelect
                     id={name}
                     key={value}
                     value={(this.allowUserValue() && this.state.other ? this.getUserValueQuestion().value : value) || undefined}
@@ -279,7 +279,6 @@ class Select extends Component {
                     showArrow
                     virtual
                     {...(this.state.error ? { open: false } : {})}
-                    useNative={useNative}
                 />
                 { this.allowUserValue() && this.state.other &&
                     <input

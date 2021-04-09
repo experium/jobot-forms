@@ -206,7 +206,6 @@ class Fields extends Component {
             fields,
             allowFileExtensions,
             renderOpdLabel,
-            useNative,
             fieldsWithoutValidation,
             errors,
             changeFieldValidation,
@@ -247,7 +246,6 @@ class Fields extends Component {
                 fields={fields}
                 allowFileExtensions={allowFileExtensions}
                 renderOpdLabel={renderOpdLabel}
-                useNative={useNative}
                 selectHeight={selectHeight}
                 selectLineHeight={selectLineHeight}
                 {...props}
@@ -286,7 +284,6 @@ class Fields extends Component {
                 fields={fields}
                 allowFileExtensions={allowFileExtensions}
                 renderOpdLabel={renderOpdLabel}
-                useNative={useNative}
                 selectHeight={selectHeight}
                 selectLineHeight={selectLineHeight}
             />
