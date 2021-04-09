@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { allPass, prop, path, contains, find, propEq, filter, equals, isEmpty, includes, pathOr, without, append } from 'ramda';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
+import ReactSelect from 'rc-select';
 
 import '../../styles/rcselect.css';
 import '../../styles/select.css';
@@ -10,7 +11,6 @@ import styles from '../../styles/index.module.css';
 import { GEO_DICTIONARIES_TYPES } from '../../constants/dictionaries';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import withLocationValues from '../hocs/withLocationValues';
-import FormSelect from './FormSelect';
 
 export const sorterByLabel = (optionA, optionB) => optionA.label.localeCompare(optionB.label);
 
@@ -144,14 +144,14 @@ class Select extends Component {
     }
 
     render() {
-        const { input: { value, name }, settings, errors, dictionaryType, t, disabled, useNative } = this.props;
+        const { input: { value, name }, settings, errors, dictionaryType, t, disabled } = this.props;
         const multiple = path(['multiple'], settings);
         const placeholder = path(['placeholder'], settings);
         const options = this.getOptions() || [];
         const isError = errors[dictionaryType];
 
         return <div ref={this.selectContainer}>
-            <FormSelect
+            <ReactSelect
                 id={name}
                 key={value}
                 value={(this.allowUserValue() && this.state.other ? this.getUserValueQuestion().value : value) || undefined}
@@ -166,7 +166,6 @@ class Select extends Component {
                 options={options}
                 mode={multiple ? 'multiple' : 'single'}
                 {...(isError ? { open: false } : {})}
-                useNative={useNative}
                 virtual
                 allowClear
                 showArrow

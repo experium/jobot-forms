@@ -3,12 +3,12 @@ import Masked from 'react-text-mask';
 import { contains, path, isNil } from 'ramda';
 import { withTranslation } from 'react-i18next';
 import moment from 'moment';
+import Select from 'rc-select';
 
 import styles from '../../styles/index.module.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { YEAR_MASK, DAY_MASK } from '../../constants/masks';
-import FormSelect from './FormSelect';
 
 class DateSelect extends Component {
     constructor(props) {
@@ -134,7 +134,7 @@ class DateSelect extends Component {
     }
 
     render() {
-        const { settings, t, disabled, input: { name, value }, useNative } = this.props;
+        const { settings, t, disabled, input: { name, value } } = this.props;
         const format = path(['format'], settings);
         const showDay = format ? contains('dd', format) : true;
         const showMonth = format ? contains('MM', format) : true;
@@ -158,7 +158,7 @@ class DateSelect extends Component {
                     guide />
             }
             { showMonth &&
-                <FormSelect
+                <Select
                     id={`${name}-month`}
                     disabled={disabled}
                     value={month || undefined}
@@ -167,7 +167,6 @@ class DateSelect extends Component {
                     placeholder={t('placeholders.datePicker.month')}
                     prefixCls='jobot-forms-rc-select'
                     className='jobot-forms-month-select'
-                    useNative={useNative}
                 />
             }
             { showYear &&

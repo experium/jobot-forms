@@ -243,7 +243,6 @@ class Form extends Component {
                                     fields={fields}
                                     disabled={disabled}
                                     components={this.props.components}
-                                    useNative={this.props.useNative}
                                     opd={this.props.opd}
                                     getFileUrl={this.props.getFileUrl}
                                     postFileUrl={this.props.postFileUrl}
