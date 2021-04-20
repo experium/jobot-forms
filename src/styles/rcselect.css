@@ -79,6 +79,7 @@
     font-size: 16px;
     height: 20px;
     cursor: default;
+    background: none;
 }
 
 .jobot-forms-rc-select .jobot-forms-rc-select-selection-search-input::-webkit-search-cancel-button {
