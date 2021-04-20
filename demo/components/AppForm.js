@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { compose, pathOr, find, propEq, path, has } from 'ramda';
+import { assocPath, compose, pathOr, find, propEq, path, has } from 'ramda';
 import ReactSelect from 'rc-select';
 import qs from 'qs';
 import Modal from 'react-responsive-modal';
@@ -193,7 +193,7 @@ class AppForm extends Component {
                                     // assocPath([1, 'settings', 'linkType'], 'hide'),
                                     // assocPath([1, 'settings', 'linkValue'], '1'),
                                     // phone
-                                    // assocPath([6, 'settings', 'international'], true),
+                                    assocPath([0, 'settings', 'international'], true),
                                     pathOr([], ['questions']),
                                 )(vacancy)}
                                 onSubmit={form => {

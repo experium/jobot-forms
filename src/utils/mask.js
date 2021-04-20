@@ -65,13 +65,12 @@ const templateToMask = (template) => {
 
 export const getPhoneMask = (rawValue, { previousConformedValue }) => {
     const asYouTypeNumber = new AsYouType();
-    asYouTypeNumber.input(rawValue);
+    asYouTypeNumber.input(rawValue ? `+${rawValue}`.replace('++', '+') : rawValue);
     const template = asYouTypeNumber.template;
 
     if (!template && previousConformedValue) {
-        const asYouTypeNumberPrev = new AsYouType();
-        asYouTypeNumberPrev.input(previousConformedValue);
-        const prevTemplate = asYouTypeNumberPrev.template;
+        asYouTypeNumber.input(previousConformedValue);
+        const prevTemplate = asYouTypeNumber.template;
 
         if (prevTemplate) {
             return templateToMask(prevTemplate);
