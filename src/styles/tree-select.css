@@ -282,6 +282,9 @@
   display: inline-block;
   font-size: 10px;
 }
+.jobot-forms-rc-select-selection-item-remove-icon {
+  cursor: pointer;
+}
 .rc-tree-select-multiple .rc-tree-select-selection-item-remove > * {
   line-height: 1;
 }
