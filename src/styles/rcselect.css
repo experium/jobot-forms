@@ -108,7 +108,6 @@
 .jobot-forms-rc-select-single .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-item,
 .jobot-forms-rc-select-single .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-placeholder {
     position: absolute;
-    top: 9px;
     left: 11px;
     pointer-events: none;
     white-space: nowrap;
