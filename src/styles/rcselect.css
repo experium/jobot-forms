@@ -125,7 +125,7 @@
 .jobot-forms-rc-select-single:not(.jobot-forms-rc-select-customize-input) .jobot-forms-rc-select-selector .jobot-forms-rc-select-selection-search-input {
     border: none;
     outline: none;
-    background: #fff;
+    background: none;
     width: 100%;
 }
 
