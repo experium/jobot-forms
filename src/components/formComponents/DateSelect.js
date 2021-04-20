@@ -44,6 +44,8 @@ class DateSelect extends Component {
             month,
             year
         };
+
+        this.selectContainer = React.createRef();
     }
 
     componentDidUpdate(prev) {
@@ -142,7 +144,7 @@ class DateSelect extends Component {
         const { day, month, year } = this.state;
         const options = t('MONTHS', { returnObjects: true });
 
-        return <div id={name} className={`jobot-forms__formDateSelect ${styles.formDateSelect}`}>
+        return <div id={name} className={`jobot-forms__formDateSelect ${styles.formDateSelect}`} ref={this.selectContainer}>
             { showDay &&
                 <Masked
                     id={`${name}-day`}
@@ -167,6 +169,7 @@ class DateSelect extends Component {
                     placeholder={t('placeholders.datePicker.month')}
                     prefixCls='jobot-forms-rc-select'
                     className='jobot-forms-month-select'
+                    getPopupContainer={() => this.selectContainer.current}
                 />
             }
             { showYear &&
