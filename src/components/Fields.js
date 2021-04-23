@@ -286,6 +286,7 @@ class Fields extends Component {
                 renderOpdLabel={renderOpdLabel}
                 selectHeight={selectHeight}
                 selectLineHeight={selectLineHeight}
+                language={language}
             />
         );
     }
