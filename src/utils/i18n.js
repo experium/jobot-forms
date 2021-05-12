@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 import { TRANSLATIONS } from '../constants/translations';
 
-export const browserLanguage = (window && window.navigator ? (window.navigator.language ||
+export const browserLanguage = (typeof window !== 'undefined' && window.navigator ? (window.navigator.language ||
     window.navigator.systemLanguage ||
     window.navigator.userLanguage) : 'ru').substr(0, 2).toLowerCase();
 

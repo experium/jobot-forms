@@ -3,19 +3,26 @@ import Recorder from 'recorder-js';
 import { withTranslation } from 'react-i18next';
 
 import MediaLength from './MediaLength';
+import { has} from '../../utils/MediaLength';
 import styles from '../../styles/index.module.css';
 
 class AudioFile extends Component {
-    state = {
-        recording: false,
-        audio: null
-    };
+    constructor(props) {
+        super(props);
 
-    recorder = new Recorder(new (window.AudioContext || window.webkitAudioContext)(), { type: 'audio/webm' });
+        this.state = {
+            recording: false,
+            audio: null
+        };
+
+        this.recorder = props.available ? new Recorder(new (window.AudioContext || window.webkitAudioContext)(), { type: 'audio/webm' }) : null;
+    }
 
     componentDidMount() {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => this.recorder.init(stream));
+        if (this.props.available) {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => this.recorder.init(stream));
+        }
     }
 
     cancel = () => this.setState({ audio: null });

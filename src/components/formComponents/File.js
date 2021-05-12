@@ -176,6 +176,7 @@ class File extends Component {
     openModal = () => {
         if (!this.state.available) {
             const { type } = this.props.settings || {};
+
             getusermedia(MEDIA[type], (error, stream) => {
                 if (error) {
                     this.setState({ visibleModal: true });
@@ -333,6 +334,7 @@ class File extends Component {
                     }}
                 >
                     <ModalContent
+                        key={this.state.available}
                         available={this.state.available}
                         onChange={this.onSaveModalContent} />
                 </Modal>
