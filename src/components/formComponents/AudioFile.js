@@ -3,7 +3,6 @@ import Recorder from 'recorder-js';
 import { withTranslation } from 'react-i18next';
 
 import MediaLength from './MediaLength';
-import { has} from '../../utils/MediaLength';
 import styles from '../../styles/index.module.css';
 
 class AudioFile extends Component {
