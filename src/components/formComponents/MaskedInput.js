@@ -9,6 +9,7 @@ import styles from '../../styles/index.module.css';
 
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { getPhoneMaskRU } from '../../utils/mask';
+import { browserLanguage } from '../../utils/i18n';
 
 class MaskedInput extends Component {
     render() {
@@ -31,9 +32,6 @@ class MaskedInput extends Component {
 
 export const PhoneInput = withFieldWrapper(props => {
     const { input: { value, name }, onChange, disabled, placeholder, language } = props;
-    const browserLanguage = (window.navigator ? (window.navigator.language ||
-        window.navigator.systemLanguage ||
-        window.navigator.userLanguage) : 'ru').substr(0, 2).toLowerCase();
 
     return path(['settings', 'international'], props) ? (
         <FlagedInput
