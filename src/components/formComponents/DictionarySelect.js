@@ -259,7 +259,7 @@ class Select extends Component {
         const options = this.getOptions();
 
         return (
-            <div>
+            <div id={`${name}-select`}>
                 <ReactSelect
                     id={name}
                     key={value}

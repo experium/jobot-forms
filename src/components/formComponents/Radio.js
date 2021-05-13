@@ -36,7 +36,7 @@ class RadioComponent extends Component {
         const { input: { value = [], name }, options, disabled } = this.props;
 
         return options && !isEmpty(options) ? (
-            <div className='radio-block'>
+            <div id={`${name}-radio`} className='radio-block'>
                 { options.map(({ value: checkboxValue, label }) => {
                     return (
                         <label className='radio-wrapper' key={label}>

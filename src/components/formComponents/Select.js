@@ -150,7 +150,7 @@ class Select extends Component {
         const options = this.getOptions() || [];
         const isError = errors[dictionaryType];
 
-        return <div ref={this.selectContainer}>
+        return <div ref={this.selectContainer} id={`${name}-select`}>
             <ReactSelect
                 id={name}
                 key={value}

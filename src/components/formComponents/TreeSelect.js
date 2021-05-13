@@ -251,7 +251,7 @@ class TreeSelectComponent extends Component {
         const noOptionsMessage = path(['noOptionsMessage'], settings);
 
         return (
-            <div >
+            <div id={`${name}-tree-select`}>
                 <TreeSelect
                     id={name}
                     className={`${error ? 'error' : ''}`}
