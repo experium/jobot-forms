@@ -1,7 +1,6 @@
 dist: trusty
 language: node_js
-version: 1.0
-node_js: lts
+node_js: lts/*
 
 script:
 - echo "skipping tests"
@@ -9,7 +8,7 @@ script:
 jobs:
   include:
     - stage: npm release
-      node_js: lts
+      node_js: lts/*
       before_deploy:
       - yarn install
       - yarn package
