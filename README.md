@@ -13,6 +13,7 @@
     fields={fields}
     onSubmit={values => console.log(values)}
     opd='Personal Data Agreement'
+    opdLabel='offerta'
     postFileUrl='/file'
     getFileUrl={id => `/file/${id}`}
 />
@@ -36,6 +37,7 @@ Form components
 - `submitting`: loading
 - `serverErrors`: errors object
 - `opd`: personal data agreement text
+- `opdLabelType`: personal data agreement label type ['opd', 'oferta']
 - `htmlOpd`: personal data agreement html template
 - `getOpdValues`: personal data agreement html template values map
 - `opdSubmitDisabled`: disable submit with no opd

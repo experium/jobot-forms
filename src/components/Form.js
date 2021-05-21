@@ -49,7 +49,7 @@ class Form extends Component {
         renameDictionary: {},
         options: {},
         selectHeight: 34,
-        selectLineHeight: 18
+        selectLineHeight: 18,
     };
 
     constructor(props) {
@@ -75,6 +75,7 @@ class Form extends Component {
         if (props.translations) {
             i18n.addResources('ru', 'translation', pathOr({}, ['ru', 'translation'], props.translations));
             i18n.addResources('en', 'translation', pathOr({}, ['en', 'translation'], props.translations));
+            i18n.addResources('ua', 'translation', pathOr({}, ['ua', 'translation'], props.translations));
         }
     }
 
@@ -244,6 +245,7 @@ class Form extends Component {
                                     disabled={disabled}
                                     components={this.props.components}
                                     opd={this.props.opd}
+                                    opdLabelType={this.props.opdLabelType}
                                     getFileUrl={this.props.getFileUrl}
                                     postFileUrl={this.props.postFileUrl}
                                     apiUrl={this.props.apiUrl}

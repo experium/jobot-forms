@@ -146,6 +146,7 @@ class AppForm extends Component {
         const vacancy = pathOr({}, ['vacancy'], data);
         const companyCaptcha = path(['company', 'companySettings', 'captcha', 'landings'], vacancy);
         const companyPda = path(['company', 'companySettings', 'pda'], vacancy);
+        const companyPdaLabel = path(['company', 'companySettings', 'pdaLabel'], vacancy);
         const searchPath = qs.parse(search, { ignoreQueryPrefix: true });
         const components = has('custom', searchPath) ? customComponents : {};
         const htmlOpd = has('htmlOpd', searchPath) ? htmlOpdText2 : null;
@@ -209,6 +210,7 @@ class AppForm extends Component {
                                     });
                                 }}
                                 opd={vacancy.pda || companyPda}
+                                opdLabelType={companyPdaLabel}
                                 postFileUrl={`${POST_FILE}/${vacancy.id}`}
                                 getFileUrl={id => `${GET_FILE}/${id}`}
                                 language={this.state.language}
@@ -235,6 +237,12 @@ class AppForm extends Component {
                                         translation: {
                                             'send': 'OK',
                                             'errors.required': 'Введите значение',
+                                        }
+                                    },
+                                    ua: {
+                                        translation: {
+                                            'send': 'OK',
+                                            'errors.required': 'Введiте значенiе',
                                         }
                                     }
                                 }}

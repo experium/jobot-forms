@@ -19,7 +19,7 @@ i18n
             useSuspense: false
         },
         lng: 'ru',
-        whitelist: ['ru', 'en'],
+        whitelist: ['ru', 'en', 'ua'],
     });
 
 export default i18n;

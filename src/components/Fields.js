@@ -7,7 +7,8 @@ import { withTranslation } from 'react-i18next';
 import styles from '../styles/index.module.css';
 
 import Input from './formComponents/Input';
-import Checkbox, { PersonalDataAgreement, Boolean } from './formComponents/Checkbox';
+import Checkbox, { Boolean } from './formComponents/Checkbox';
+import PersonalDataAgreement from './formComponents/PersonalDataAgreement';
 import Select, { LocationSelect } from './formComponents/Select';
 import DictionarySelect from './formComponents/DictionarySelect';
 import TreeSelect from './formComponents/TreeSelect';
@@ -195,6 +196,7 @@ class Fields extends Component {
     renderField = (field, name, form) => {
         const {
             opd,
+            opdLabelType,
             getFileUrl,
             postFileUrl,
             apiUrl,
@@ -224,6 +226,7 @@ class Fields extends Component {
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
+                opdLabelType={opdLabelType}
                 language={language}
                 validate={validateField}
                 getDictionary={this.getDictionary}
@@ -263,6 +266,7 @@ class Fields extends Component {
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
+                opdLabelType={opdLabelType}
                 validate={validateField}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}

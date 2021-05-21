@@ -7,4 +7,8 @@ export const LANGUAGES_OPTIONS = [
         label: 'En',
         value: 'en',
     },
+    {
+        label: 'Ua',
+        value: 'ua',
+    },
 ];
