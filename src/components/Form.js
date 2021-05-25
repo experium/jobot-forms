@@ -50,6 +50,7 @@ class Form extends Component {
         options: {},
         selectHeight: 34,
         selectLineHeight: 18,
+        customValidation: {}
     };
 
     constructor(props) {
@@ -202,7 +203,8 @@ class Form extends Component {
             serverErrors,
             htmlAttrs,
             captcha,
-            captchaOptions
+            captchaOptions,
+            customValidation
         } = this.props;
         const contextValue = {
             options: this.state.options,
@@ -262,6 +264,7 @@ class Form extends Component {
                                     fieldsWithoutValidation={this.state.fieldsWithoutValidation}
                                     errors={this.state.errors}
                                     language={language}
+                                    customValidation={customValidation}
                                 />
                                 <div>
                                     { !!captcha && captcha !== 'none' &&

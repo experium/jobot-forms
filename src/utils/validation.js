@@ -211,11 +211,14 @@ const rules = {
 };
 
 export const validate = (value, form, field, fieldsWithoutValidation, props) => {
+    const customValidation = path(['customValidation', field.field], props);
+
     try {
         let rule = rules[field.type] ? rules[field.type](field, props) : yup.string();
         rule = (field.type === 'personalDataAgreement') ? rule.nullable().required(() => i18n.t('errors.required')) : (
             (field.required || validateLink(field, form)) && !fieldsWithoutValidation[field.field] ? rule.nullable().required(() => i18n.t('errors.required')) : rule.nullable()
         );
+        rule = customValidation ? customValidation(rule) : rule;
 
         rule.validateSync(value);
         return undefined;

@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { assocPath, compose, pathOr, find, propEq, path, has } from 'ramda';
+import { assocPath, compose, pathOr, path, has } from 'ramda';
 import ReactSelect from 'rc-select';
 import qs from 'qs';
 import Modal from 'react-responsive-modal';
