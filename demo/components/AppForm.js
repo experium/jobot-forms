@@ -267,6 +267,10 @@ class AppForm extends Component {
                                 }}
                                 captcha={companyCaptcha}
                                 captchaSettings={captchaSettings}
+                                getOpdValues={({ values }) => ({
+                                    name: `${values.lastName || ''} ${values.firstName || ''} ${values.middleName || ''}`
+                                })}
+                                updateOpdValuesOn={['lastName', 'firstName', 'middleName']}
                             />
                         }
                     </Mutation>

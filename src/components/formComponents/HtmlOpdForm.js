@@ -40,7 +40,7 @@ const commonStyle = `
     }
 `;
 
-const getHtml = body => `
+export const getHtml = body => `
     <!DOCTYPE html>
     <html lang="en">
         <head>
