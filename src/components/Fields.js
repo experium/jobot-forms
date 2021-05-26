@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Field } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, isEmpty, filter, includes } from 'ramda';
+import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, isEmpty, filter, includes, keys, forEach, trim } from 'ramda';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
 
@@ -25,6 +25,7 @@ import LinkedFieldWrapper from './hocs/LinkedFieldWrapper';
 import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
 import { isLinkedField } from '../utils/field';
 import { fieldArrayInitialValues } from '../constants/form';
+import { getHtml } from './formComponents/HtmlOpdForm';
 
 const CompositeError = ({ meta }) => {
     return (is(String, meta.error) && meta.error && meta.submitFailed) ? (
@@ -193,6 +194,31 @@ class Fields extends Component {
         }
     };
 
+    onChange = (_, field) => {
+        const values = this.props.formProps.form.getState().values;
+        const html = path(['personalDataAgreement', 'htmlContent'], values);
+
+        if (includes(field.field, this.props.updateOpdValuesOn) && html) {
+            const opdValues = this.props.getOpdValues ? this.props.getOpdValues({ values }) : {};
+
+            const container = document.createElement('div');
+            container.innerHTML = html;
+            const el = container.querySelector('.opd-html-form');
+            const form = document.createElement('div');
+            form.append(el);
+            const inputs = form.querySelectorAll('input');
+
+            forEach(input => {
+                const value = path([input.name], opdValues);
+                if (value) {
+                    input.setAttribute('value', trim(`${value || ''}`));
+                }
+            }, inputs);
+
+            this.props.formProps.form.change('personalDataAgreement.htmlContent', getHtml(form.innerHTML));
+        }
+    }
+
     renderField = (field, name, form) => {
         const {
             opd,
@@ -212,7 +238,8 @@ class Fields extends Component {
             errors,
             changeFieldValidation,
             selectHeight,
-            selectLineHeight
+            selectLineHeight,
+            updateOpdValues
         } = this.props;
         const fieldName = name || field.field;
         const isLinked = isLinkedField(field);
@@ -251,6 +278,8 @@ class Fields extends Component {
                 renderOpdLabel={renderOpdLabel}
                 selectHeight={selectHeight}
                 selectLineHeight={selectLineHeight}
+                updateOpdValues={updateOpdValues}
+                onChange={value => this.onChange(value, field)}
                 {...props}
             />
         );
@@ -291,6 +320,7 @@ class Fields extends Component {
                 selectHeight={selectHeight}
                 selectLineHeight={selectLineHeight}
                 language={language}
+                onChange={value => this.onChange(value, field)}
             />
         );
     }
