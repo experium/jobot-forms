@@ -30,7 +30,7 @@ class ReCaptcha extends Component {
                     style={{ marginTop: 15, maxWidth: 150, display: 'block' }}
                 />
             </Fragment>
-            : null;
+            : 'CAPTCH TYPE OPTIONS ERROR';
     }
 }
 

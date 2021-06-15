@@ -31,6 +31,7 @@ Form components
 - `postFileUrl`: post file url
 - `getFileUrl`: get file url function
 
+- `company`: company id for form state
 - `language`: language state
 - `translations`: i18n translation object expand or replace
 - `allowFileExtensions`: allow file settings for document types

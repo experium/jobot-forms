@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Field } from 'react-final-form';
-import { path, pathOr, contains, prop, propOr, is, mapObjIndexed, isEmpty, filter, includes, keys, forEach, trim } from 'ramda';
+import { assocPath, path, pathOr, contains, prop, propOr, is, mapObjIndexed, isEmpty, filter, includes, forEach, trim } from 'ramda';
 import { FieldArray } from 'react-final-form-arrays';
 import { withTranslation } from 'react-i18next';
+import qs from 'qs';
 
 import styles from '../styles/index.module.css';
 
@@ -24,6 +25,7 @@ import withFieldWrapper from './hocs/withFieldWrapper';
 import LinkedFieldWrapper from './hocs/LinkedFieldWrapper';
 import { isLinkedQuestion, findChildGeoQuestionsNames } from '../utils/questions';
 import { isLinkedField } from '../utils/field';
+import { translateOptionLabel } from '../utils/i18n';
 import { fieldArrayInitialValues } from '../constants/form';
 import { getHtml } from './formComponents/HtmlOpdForm';
 
@@ -83,13 +85,18 @@ class Fields extends Component {
             const { apiUrl, dictionaryOptions } = this.props;
 
             try {
-                const response = await fetch(`${apiUrl || ''}/api/${GEO_DICTIONARIES[type] ? type : `dictionary/${type || ''}`}${urlParams || ''}`, {
-                    ...dictionaryOptions,
-                    method: 'GET',
-                    headers: {
-                        'accept-language': this.props.language,
-                    },
-                });
+                urlParams = qs.parse(urlParams || {}, { ignoreQueryPrefix: true });
+                urlParams = assocPath(['filter', 'company'], this.props.company, urlParams);
+                const response = await fetch(
+                    `${apiUrl || ''}/api/${GEO_DICTIONARIES[type] ? type : `dictionary/${type || ''}`}?${qs.stringify(urlParams) || ''}`,
+                    {
+                        ...dictionaryOptions,
+                        method: 'GET',
+                        headers: {
+                            'accept-language': RU,
+                        },
+                    }
+                );
 
                 if (!response.ok) {
                     throw new Error();
@@ -166,9 +173,7 @@ class Fields extends Component {
         } else {
             return options.map(option => ({
                 ...option,
-                label: path(['translations', 'value'], option) ? pathOr(option.label, ['translations', 'value', language], option) : (
-                    pathOr(option.label, ['translations', language], option)
-                ),
+                label: translateOptionLabel(option, language)
             }));
         }
     }
@@ -226,6 +231,7 @@ class Fields extends Component {
             getFileUrl,
             postFileUrl,
             apiUrl,
+            company,
             language,
             components,
             htmlOpd,
@@ -254,6 +260,7 @@ class Fields extends Component {
                 options={this.getOptions(field)}
                 opd={opd}
                 opdLabelType={opdLabelType}
+                company={company}
                 language={language}
                 validate={validateField}
                 getDictionary={this.getDictionary}

@@ -209,6 +209,7 @@ class AppForm extends Component {
                                         }
                                     });
                                 }}
+                                company={vacancy.company.id}
                                 opd={vacancy.pda || companyPda}
                                 opdLabelType={companyPdaLabel}
                                 postFileUrl={`${POST_FILE}/${vacancy.id}`}

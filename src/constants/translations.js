@@ -36,6 +36,7 @@ export const TRANSLATIONS = {
             ],
             'loading': 'Loading...',
             'noOptionsMessage': 'There is no data',
+            'otherOption': 'Other',
             'placeholders': {
                 'datePicker': {
                     'day': 'Day',
@@ -104,6 +105,7 @@ export const TRANSLATIONS = {
             ],
             'loading': 'Загрузка...',
             'noOptionsMessage': 'Нет данных',
+            'otherOption': 'Другое',
             'placeholders': {
                 'datePicker': {
                     'day': 'День',
@@ -173,6 +175,7 @@ export const TRANSLATIONS = {
             ],
             'loading': 'Завантаження..',
             'noOptionsMessage': 'немає даних',
+            'otherOption': 'інше',
             'placeholders': {
                 'datePicker': {
                     'day': 'День',

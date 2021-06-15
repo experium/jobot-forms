@@ -8,6 +8,7 @@ import ReactSelect from 'rc-select';
 import styles from '../../styles/index.module.css';
 
 import { CompanyDictionaryContext } from '../../context/CompanyDictionary';
+import { translateOptionLabel } from '../../utils/i18n';
 import withFieldWrapper from '../hocs/withFieldWrapper';
 import { sorterByLabel } from './Select';
 
@@ -184,13 +185,13 @@ class Select extends Component {
     }
 
     getUserValueQuestion = () => {
-        const value = this.props.settings.userValueQuestion || 'Другое';
+        const value = this.props.settings.userValueQuestion || this.props.t('otherOption');
 
         return { label: value, value };
     }
 
     getOptions = () => {
-        const { settings, parentField, parentFieldValue, contextOptions } = this.props;
+        const { language, settings, parentField, parentFieldValue, contextOptions } = this.props;
         const parentFieldOptions = prop(parentField, contextOptions);
         const dictionaryKey = settings.parent || settings.dictionary;
 
@@ -208,7 +209,11 @@ class Select extends Component {
             },
         ]), options);
 
-        return this.allowUserValue() ? [...filteredOptions, this.getUserValueQuestion()] : filteredOptions;
+        return (this.allowUserValue() ? [...filteredOptions, this.getUserValueQuestion()] : filteredOptions)
+            .map(option => ({
+                ...option,
+                label: translateOptionLabel(option, language),
+            }));
     }
 
     getParentOptions = () => {

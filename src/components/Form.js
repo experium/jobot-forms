@@ -195,6 +195,7 @@ class Form extends Component {
     render() {
         const {
             fields,
+            company,
             language,
             opdSubmitDisabled,
             formRender,
@@ -268,6 +269,7 @@ class Form extends Component {
                                     language={language}
                                     customValidation={customValidation}
                                     updateOpdValuesOn={updateOpdValuesOn}
+                                    company={company}
                                 />
                                 <div>
                                     { !!captcha && captcha !== 'none' &&
