@@ -162,7 +162,8 @@ class Fields extends Component {
         const options = this.props.dictionaries[path(['settings', 'dictionary'], field)] ||
             this.props.dictionaries[DICTIONARIES_NAMES[field.type]] ||
             this.props.dictionaries[GEO_DICTIONARIES[field.type]] ||
-            pathOr([], ['settings', 'choices'], field).map(({ value, id }) => ({ label: value, value: id }));
+            pathOr([], ['settings', 'choices'], field)
+                .map(({ value, id, translations }) => ({ label: value, value: id, translations: translations && translations.choices }));
 
         if (isEmpty(options)) {
             return [];

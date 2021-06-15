@@ -96,7 +96,7 @@ class Select extends Component {
     }
 
     getUserValueQuestion = () => {
-        const value = this.props.settings.userValueQuestion || 'Другое';
+        const value = this.props.settings.userValueQuestion || this.props.t('otherOption');
 
         return { label: value, value };
     }
