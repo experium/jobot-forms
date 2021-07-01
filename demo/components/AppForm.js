@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { graphql, Mutation } from 'react-apollo';
-import { assocPath, compose, pathOr, path, has } from 'ramda';
+import { assocPath, compose, pathOr, path, has, pick } from 'ramda';
 import ReactSelect from 'rc-select';
 import qs from 'qs';
 import Modal from 'react-responsive-modal';
@@ -146,7 +146,6 @@ class AppForm extends Component {
         const vacancy = pathOr({}, ['vacancy'], data);
         const companyCaptcha = path(['company', 'companySettings', 'captcha', 'landings'], vacancy);
         const companyPda = path(['company', 'companySettings', 'pda'], vacancy);
-        const companyPdaLabel = path(['company', 'companySettings', 'pdaLabel'], vacancy);
         const searchPath = qs.parse(search, { ignoreQueryPrefix: true });
         const components = has('custom', searchPath) ? customComponents : {};
         const htmlOpd = has('htmlOpd', searchPath) ? htmlOpdText2 : null;
@@ -211,7 +210,7 @@ class AppForm extends Component {
                                 }}
                                 company={vacancy.company.id}
                                 opd={vacancy.pda || companyPda}
-                                opdLabelType={companyPdaLabel}
+                                opdSettings={pick(['translations', 'pdaLabelStart', 'pdaLabelEnd', 'pdaLabelLink', 'pdaLinkType', 'pdaLink'], pathOr({}, ['company', 'companySettings'], vacancy))}
                                 postFileUrl={`${POST_FILE}/${vacancy.id}`}
                                 getFileUrl={id => `${GET_FILE}/${id}`}
                                 language={this.state.language}

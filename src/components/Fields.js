@@ -228,7 +228,7 @@ class Fields extends Component {
     renderField = (field, name, form) => {
         const {
             opd,
-            opdLabelType,
+            opdSettings,
             getFileUrl,
             postFileUrl,
             apiUrl,
@@ -260,7 +260,7 @@ class Fields extends Component {
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
-                opdLabelType={opdLabelType}
+                opdSettings={opdSettings}
                 company={company}
                 language={language}
                 validate={validateField}
@@ -303,7 +303,7 @@ class Fields extends Component {
                 fieldType={field.type}
                 options={this.getOptions(field)}
                 opd={opd}
-                opdLabelType={opdLabelType}
+                opdSettings={opdSettings}
                 validate={validateField}
                 getDictionary={this.getDictionary}
                 dictionaryType={this.getDictionaryType(field)}

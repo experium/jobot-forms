@@ -38,7 +38,7 @@ Form components
 - `submitting`: loading
 - `serverErrors`: errors object
 - `opd`: personal data agreement text
-- `opdLabelType`: personal data agreement label type ['opd', 'oferta']
+- `opdSettings`: personal data agreement settings object
 - `htmlOpd`: personal data agreement html template
 - `getOpdValues`: personal data agreement html template values map
 - `opdSubmitDisabled`: disable submit with no opd

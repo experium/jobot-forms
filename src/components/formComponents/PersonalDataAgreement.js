@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Modal from 'react-responsive-modal';
 import { withTranslation } from 'react-i18next';
 import { FormSpy } from 'react-final-form';
+import { path, pathOr } from 'ramda';
 
 import 'rc-checkbox/assets/index.css';
 import 'react-responsive-modal/styles.css';
@@ -12,18 +13,14 @@ import HtmlOpdForm from './HtmlOpdForm';
 import { FormContext } from '../../context/FormContext';
 import { getAttrs } from '../../utils/attrs';
 
-const opdLabelTexts = {
-    'oferta': 'opdOffertaLabel',
-};
-
-const opdLinkTexts = {
-    'oferta': 'opdOffertaLink',
-};
-
 class PersonalDataAgreementComponent extends Component {
     state = {
         opened: false,
         openedHtml: false
+    };
+
+    static defaultProps = {
+        opdSettings: {}
     };
 
     open = event => {
@@ -38,14 +35,16 @@ class PersonalDataAgreementComponent extends Component {
     closeHtml = () => this.setState({ openedHtml: false });
 
     getLabel = () => {
-        const { t, renderOpdLabel, opd, opdLabelType } = this.props;
+        const { t, renderOpdLabel, opd, opdSettings, language } = this.props;
         const label = t('opdLabelCustom');
         const modalLinkProps = {
             className: opd ? styles.formLink : styles.withoutOpd,
             onClick: this.open
         };
-        const opdLabel = opdLabelTexts[opdLabelType] || 'opdLabel';
-        const opdLink = opdLinkTexts[opdLabelType] || 'opdLink';
+        const linkText = pathOr(pathOr(t('opdLink'), ['pdaLabelLink'], opdSettings), ['translations', 'pdaLabelLink', language], opdSettings);
+        const link = pathOr(path(['pdaLink'], opdSettings), ['translations', 'pdaLink', language], opdSettings);
+        const opdText = pathOr(opd, ['translations', 'pda', language], opdSettings);
+        const opdType = pathOr('modal', ['pdaLinkType'], opdSettings);
 
         return <span>
             { renderOpdLabel ? renderOpdLabel(modalLinkProps) :
@@ -53,7 +52,14 @@ class PersonalDataAgreementComponent extends Component {
                     label
                 ) : (
                     <Fragment>
-                        {t(opdLabel)} <span {...modalLinkProps}>{t(opdLink)}</span>
+                        { pathOr(pathOr(t('opdLabel'), ['pdaLabelStart'], opdSettings), ['translations', 'pdaLabelStart', language], opdSettings) }
+                        { ' ' }
+                        { opdType === 'modal' ?
+                            <span {...modalLinkProps}>{ linkText }</span> :
+                            <a href={`//${link}`} target='_blank'>{ linkText }</a>
+                        }
+                        { ' ' }
+                        { pathOr(pathOr('.', ['pdaLabelEnd'], opdSettings), ['translations', 'pdaLabelEnd', language], opdSettings) }
                     </Fragment>
                 )
             }
@@ -66,7 +72,7 @@ class PersonalDataAgreementComponent extends Component {
                 }}
                 center
             >
-                <div dangerouslySetInnerHTML={{ __html: this.props.opd }} />
+                <div dangerouslySetInnerHTML={{ __html: opdText }} />
             </Modal>
         </span>;
     }

@@ -250,7 +250,7 @@ class Form extends Component {
                                     disabled={disabled}
                                     components={this.props.components}
                                     opd={this.props.opd}
-                                    opdLabelType={this.props.opdLabelType}
+                                    opdSettings={this.props.opdSettings}
                                     getFileUrl={this.props.getFileUrl}
                                     postFileUrl={this.props.postFileUrl}
                                     apiUrl={this.props.apiUrl}

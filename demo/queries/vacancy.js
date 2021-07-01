@@ -19,6 +19,12 @@ export const getVacancy = gql(`
                 id,
                 companySettings {
                     pda,
+                    translations,
+                    pdaLabelStart,
+                    pdaLabelEnd,
+                    pdaLabelLink,
+                    pdaLinkType,
+                    pdaLink,
                     allowFileExtensions,
                     captcha {
                         landings,
