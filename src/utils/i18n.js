@@ -20,7 +20,7 @@ i18n
             useSuspense: false
         },
         lng: 'ru',
-        whitelist: ['ru', 'en', 'ua'],
+        whitelist: ['ru', 'en', 'ua', 'et', 'lt', 'lv'],
     });
 
 export const translateOptionLabel = (option, language) => (

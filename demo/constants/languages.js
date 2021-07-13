@@ -11,4 +11,16 @@ export const LANGUAGES_OPTIONS = [
         label: 'Ua',
         value: 'ua',
     },
+    {
+        label: 'Et',
+        value: 'et',
+    },
+    {
+        label: 'Lt',
+        value: 'lt',
+    },
+    {
+        label: 'Lv',
+        value: 'lv',
+    },
 ];

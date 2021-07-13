@@ -244,6 +244,24 @@ class AppForm extends Component {
                                             'send': 'OK',
                                             'errors.required': 'Введiте значенiе',
                                         }
+                                    },
+                                    et: {
+                                        translation: {
+                                            'send': 'OK',
+                                            'errors.required': 'Nõutud',
+                                        }
+                                    },
+                                    lt: {
+                                        translation: {
+                                            'send': 'OK',
+                                            'errors.required': 'Obligāti',
+                                        }
+                                    },
+                                    lv: {
+                                        translation: {
+                                            'send': 'OK',
+                                            'errors.required': 'Būtina',
+                                        }
                                     }
                                 }}
                                 htmlAttrs={{
